@@ -35,6 +35,7 @@ abstract contract BaseTest is Test, TestOwner {
     uint256 constant TOKEN_10B = 1e28; // 1e10 = 10B tokens with 18 decimals
     uint256 constant PAIR_1 = 1e9;
 
+    uint256 csrNftId;
     TestOwner owner;
     TestOwner owner2;
     TestOwner owner3;
@@ -68,7 +69,8 @@ abstract contract BaseTest is Test, TestOwner {
         USDC = new MockERC20("USDC", "USDC", 6);
         FRAX = new MockERC20("FRAX", "FRAX", 18);
         DAI = new MockERC20("DAI", "DAI", 18);
-        VELO = new Flow(msg.sender);
+        VELO = new Flow(msg.sender, msg.sender);
+        csrNftId = VELO.csrNftId();
         WEVE = new MockERC20("WEVE", "WEVE", 18);
         LR = new MockERC20("LR", "LR", 18);
         WETH = new TestWETH();
@@ -114,14 +116,14 @@ abstract contract BaseTest is Test, TestOwner {
     }
 
     function deployPairFactoryAndRouter() public {
-        factory = new PairFactory();
+        factory = new PairFactory(csrNftId);
         assertEq(factory.allPairsLength(), 0);
         factory.setFee(true, 1); // set fee back to 0.01% for old tests
         factory.setFee(false, 1);
         factory.setTeam(address(msg.sender)); // set team
         factory.setTank(address(msg.sender)); // set tank
 
-        router = new Router(address(factory), address(WETH));
+        router = new Router(address(factory), address(WETH), csrNftId);
         assertEq(router.factory(), address(factory));
         lib = new VelodromeLibrary(address(router));
     }

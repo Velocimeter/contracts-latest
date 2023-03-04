@@ -25,7 +25,7 @@ contract VeloGovernorTest is BaseTest {
         mintFlow(owners, amounts);
 
         VeArtProxy artProxy = new VeArtProxy();
-        escrow = new VotingEscrow(address(VELO), address(artProxy));
+        escrow = new VotingEscrow(address(VELO), address(artProxy), csrNftId);
 
         VELO.approve(address(escrow), 97 * TOKEN_1);
         escrow.create_lock(97 * TOKEN_1, 4 * 365 * 86400);
@@ -40,10 +40,10 @@ contract VeloGovernorTest is BaseTest {
 
         deployPairFactoryAndRouter();
 
-        gaugeFactory = new GaugeFactory();
-        bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedExternalBribeFactory();
-        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
+        gaugeFactory = new GaugeFactory(csrNftId);
+        bribeFactory = new BribeFactory(csrNftId);
+        wxbribeFactory = new WrappedExternalBribeFactory(csrNftId);
+        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory), csrNftId);
 
         escrow.setVoter(address(voter));
         wxbribeFactory.setVoter(address(voter));
@@ -53,9 +53,9 @@ contract VeloGovernorTest is BaseTest {
         FRAX.approve(address(router), TOKEN_100K);
         router.addLiquidity(address(FRAX), address(USDC), true, TOKEN_100K, USDC_100K, TOKEN_100K, USDC_100K, address(owner), block.timestamp);
 
-        distributor = new RewardsDistributor(address(escrow));
+        distributor = new RewardsDistributor(address(escrow), csrNftId);
 
-        minter = new Minter(address(voter), address(escrow), address(distributor));
+        minter = new Minter(address(voter), address(escrow), address(distributor), csrNftId);
         distributor.setDepositor(address(minter));
         VELO.setMinter(address(minter));
 
@@ -67,7 +67,7 @@ contract VeloGovernorTest is BaseTest {
         address gaugeAddress = voter.gauges(address(pair));
         gauge = Gauge(gaugeAddress);
 
-        governor = new VeloGovernor(escrow);
+        governor = new VeloGovernor(escrow, csrNftId);
         voter.setGovernor(address(governor));
     }
 

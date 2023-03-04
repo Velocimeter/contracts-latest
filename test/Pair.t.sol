@@ -31,7 +31,7 @@ contract PairTest is BaseTest {
         mintLR(owners, amounts);
 
         VeArtProxy artProxy = new VeArtProxy();
-        escrow = new VotingEscrow(address(VELO), address(artProxy));
+        escrow = new VotingEscrow(address(VELO), address(artProxy), csrNftId);
     }
 
     function createLock() public {
@@ -244,10 +244,10 @@ contract PairTest is BaseTest {
     }
 
     function deployVoter() public {
-        gaugeFactory = new GaugeFactory();
-        bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedExternalBribeFactory();
-        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
+        gaugeFactory = new GaugeFactory(csrNftId);
+        bribeFactory = new BribeFactory(csrNftId);
+        wxbribeFactory = new WrappedExternalBribeFactory(csrNftId);
+        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory), csrNftId);
 
         escrow.setVoter(address(voter));
         wxbribeFactory.setVoter(address(voter));
@@ -258,9 +258,9 @@ contract PairTest is BaseTest {
     function deployMinter() public {
         routerAddLiquidity();
 
-        distributor = new RewardsDistributor(address(escrow));
+        distributor = new RewardsDistributor(address(escrow), csrNftId);
 
-        minter = new Minter(address(voter), address(escrow), address(distributor));
+        minter = new Minter(address(voter), address(escrow), address(distributor), csrNftId);
         distributor.setDepositor(address(minter));
         VELO.setMinter(address(minter));
         address[] memory tokens = new address[](5);

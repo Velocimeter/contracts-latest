@@ -19,7 +19,7 @@ contract ImbalanceTest is BaseTest {
         amounts[0] = 1e25;
         mintFlow(owners, amounts);
         VeArtProxy artProxy = new VeArtProxy();
-        escrow = new VotingEscrow(address(VELO), address(artProxy));
+        escrow = new VotingEscrow(address(VELO), address(artProxy), csrNftId);
     }
 
     function createLock() public {
@@ -79,10 +79,10 @@ contract ImbalanceTest is BaseTest {
     }
 
     function deployVoter() public {
-        gaugeFactory = new GaugeFactory();
-        bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedExternalBribeFactory();
-        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
+        gaugeFactory = new GaugeFactory(csrNftId);
+        bribeFactory = new BribeFactory(csrNftId);
+        wxbribeFactory = new WrappedExternalBribeFactory(csrNftId);
+        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory), csrNftId);
         wxbribeFactory.setVoter(address(voter));
         factory.setVoter(address(voter));
         address[] memory tokens = new address[](4);

@@ -3,9 +3,10 @@ pragma solidity 0.8.13;
 
 import 'contracts/interfaces/IPairFactory.sol';
 import 'contracts/Pair.sol';
+import 'contracts/interfaces/ITurnstile.sol';
 
 contract PairFactory is IPairFactory {
-
+    address public constant turnstile = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     bool public isPaused;
     address public pauser;
     address public pendingPauser;
@@ -28,6 +29,8 @@ contract PairFactory is IPairFactory {
     address internal _temp1;
     bool internal _temp;
 
+    uint256 public immutable csrNftId;
+
     event PairCreated(address indexed token0, address indexed token1, bool stable, address pair, uint);
     event TeamSet(address indexed setter, address indexed team);
     event VoterSet(address indexed setter, address indexed voter);
@@ -40,13 +43,15 @@ contract PairFactory is IPairFactory {
 
     event FeeSet(address indexed setter, bool stable, uint256 fee);
 
-    constructor() {
+    constructor(uint256 _csrNftId) {
         pauser = msg.sender;
         isPaused = false;
         feeManager = msg.sender;
         stableFee = 3; // 0.03%
         volatileFee = 25; // 0.25%
         deployer = msg.sender;
+        ITurnstile(turnstile).assign(_csrNftId);
+        csrNftId = _csrNftId;
     }
 
     function setTeam(address _team) external {
@@ -135,7 +140,7 @@ contract PairFactory is IPairFactory {
         require(getPair[token0][token1][stable] == address(0), 'PE'); // Pair: PAIR_EXISTS - single check is sufficient
         bytes32 salt = keccak256(abi.encodePacked(token0, token1, stable)); // notice salt includes stable as well, 3 parameters
         (_temp0, _temp1, _temp) = (token0, token1, stable);
-        pair = address(new Pair{salt:salt}());
+        pair = address(new Pair{salt:salt}(csrNftId));
         getPair[token0][token1][stable] = pair;
         getPair[token1][token0][stable] = pair; // populate mapping in the reverse direction
         allPairs.push(pair);

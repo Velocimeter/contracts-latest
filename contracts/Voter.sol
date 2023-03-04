@@ -12,11 +12,11 @@ import 'contracts/interfaces/IPair.sol';
 import 'contracts/interfaces/IPairFactory.sol';
 import 'contracts/interfaces/IVoter.sol';
 import 'contracts/interfaces/IVotingEscrow.sol';
-
+import 'contracts/interfaces/ITurnstile.sol';
 import 'contracts/interfaces/IWrappedExternalBribeFactory.sol';
 
 contract Voter is IVoter {
-
+    address public constant turnstile = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     address public immutable _ve; // the ve token that governs these contracts
     address public immutable factory; // the PairFactory
     address internal immutable base;
@@ -56,7 +56,7 @@ contract Voter is IVoter {
     event Detach(address indexed owner, address indexed gauge, uint tokenId);
     event Whitelisted(address indexed whitelister, address indexed token);
 
-    constructor(address __ve, address _factory, address _gauges, address _bribes, address _wrappedExternalBribeFactory) {
+    constructor(address __ve, address _factory, address _gauges, address _bribes, address _wrappedExternalBribeFactory, uint256 _csrNftId) {
         _ve = __ve;
         factory = _factory;
         base = IVotingEscrow(__ve).token();
@@ -66,6 +66,7 @@ contract Voter is IVoter {
         minter = msg.sender;
         governor = msg.sender;
         emergencyCouncil = msg.sender;
+        ITurnstile(turnstile).assign(_csrNftId);
     }
 
     // simple re-entrancy check

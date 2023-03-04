@@ -25,7 +25,7 @@ contract KillGaugesTest is BaseTest {
     amounts[2] = 1e25;
     mintFlow(owners, amounts);
     VeArtProxy artProxy = new VeArtProxy();
-    escrow = new VotingEscrow(address(VELO), address(artProxy));
+    escrow = new VotingEscrow(address(VELO), address(artProxy), csrNftId);
 
     VELO.approve(address(escrow), 100 * TOKEN_1);
     escrow.create_lock(100 * TOKEN_1, 4 * 365 * 86400);
@@ -33,15 +33,16 @@ contract KillGaugesTest is BaseTest {
 
     deployPairFactoryAndRouter();
 
-    gaugeFactory = new GaugeFactory();
-    bribeFactory = new BribeFactory();
-    wxbribeFactory = new WrappedExternalBribeFactory();
+    gaugeFactory = new GaugeFactory(csrNftId);
+    bribeFactory = new BribeFactory(csrNftId);
+    wxbribeFactory = new WrappedExternalBribeFactory(csrNftId);
     voter = new Voter(
       address(escrow),
       address(factory),
       address(gaugeFactory),
       address(bribeFactory),
-      address(wxbribeFactory)
+      address(wxbribeFactory),
+      csrNftId
     );
 
     escrow.setVoter(address(voter));
@@ -49,9 +50,9 @@ contract KillGaugesTest is BaseTest {
     factory.setVoter(address(voter));
 
     deployPairWithOwner(address(owner));
-    distributor = new RewardsDistributor(address(escrow));
+    distributor = new RewardsDistributor(address(escrow), csrNftId);
 
-    minter = new Minter(address(voter), address(escrow), address(distributor));
+    minter = new Minter(address(voter), address(escrow), address(distributor), csrNftId);
     distributor.setDepositor(address(minter));
     VELO.setMinter(address(minter));
     address[] memory tokens = new address[](4);

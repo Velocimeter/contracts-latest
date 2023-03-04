@@ -8,10 +8,11 @@ import 'contracts/interfaces/IPairCallee.sol';
 import 'contracts/factories/PairFactory.sol';
 
 import 'contracts/interfaces/IBribe.sol';
+import 'contracts/interfaces/ITurnstile.sol';
 
 // The base pair of pools, either stable or volatile
 contract Pair is IPair {
-
+    address public constant turnstile = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     string public name;
     string public symbol;
     uint8 public constant decimals = 18;
@@ -81,7 +82,7 @@ contract Pair is IPair {
     event ExternalBribeSet(address indexed setter, address indexed externalBribe);
     event HasGaugeSet(address indexed setter, bool value);
 
-    constructor() {
+    constructor(uint256 _csrNftId) {
         factory = msg.sender;
         voter = PairFactory(msg.sender).voter();
         tank = PairFactory(msg.sender).tank();
@@ -99,6 +100,7 @@ contract Pair is IPair {
         decimals1 = 10**IERC20(_token1).decimals();
 
         observations.push(Observation(block.timestamp, 0, 0));
+        ITurnstile(turnstile).assign(_csrNftId);
     }
 
     // simple re-entrancy check
