@@ -23,7 +23,7 @@ contract NFTVoteTest is BaseTest {
     deployOwners();
 
     VeArtProxy artProxy = new VeArtProxy();
-    escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0]);
+    escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0], csrNftId);
     gov = new TestL2Governance(escrow);
 
     // test variable to vote on

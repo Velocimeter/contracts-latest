@@ -15,7 +15,7 @@ contract VotingEscrowTest is BaseTest {
         mintFlow(owners, amounts);
 
         VeArtProxy artProxy = new VeArtProxy();
-        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0]);
+        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0], csrNftId);
     }
 
     function testCreateLock() public {

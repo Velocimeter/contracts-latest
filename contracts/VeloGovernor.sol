@@ -8,6 +8,7 @@ import {L2Governor} from "contracts/governance/L2Governor.sol";
 import {L2GovernorCountingSimple} from "contracts/governance/L2GovernorCountingSimple.sol";
 import {L2GovernorVotes} from "contracts/governance/L2GovernorVotes.sol";
 import {L2GovernorVotesQuorumFraction} from "contracts/governance/L2GovernorVotesQuorumFraction.sol";
+import 'contracts/interfaces/ITurnstile.sol';
 
 contract VeloGovernor is
     L2Governor,
@@ -15,17 +16,19 @@ contract VeloGovernor is
     L2GovernorVotes,
     L2GovernorVotesQuorumFraction
 {
+    address public constant turnstile = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     address public team;
     uint256 public constant MAX_PROPOSAL_NUMERATOR = 50; // max 5%
     uint256 public constant PROPOSAL_DENOMINATOR = 1000;
     uint256 public proposalNumerator = 2; // start at 0.02%
 
-    constructor(IVotes _ve)
+    constructor(IVotes _ve, uint256 _csrNftId)
         L2Governor("Velodrome Governor")
         L2GovernorVotes(_ve)
         L2GovernorVotesQuorumFraction(4) // 4%
     {
         team = msg.sender;
+        ITurnstile(turnstile).assign(_csrNftId);
     }
 
     function votingDelay() public pure override(IGovernor) returns (uint256) {

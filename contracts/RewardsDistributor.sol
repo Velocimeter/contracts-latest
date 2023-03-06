@@ -5,6 +5,7 @@ import 'openzeppelin-contracts/contracts/utils/math/Math.sol';
 import 'contracts/interfaces/IERC20.sol';
 import 'contracts/interfaces/IRewardsDistributor.sol';
 import 'contracts/interfaces/IVotingEscrow.sol';
+import 'contracts/interfaces/ITurnstile.sol';
 
 /*
 
@@ -28,6 +29,7 @@ contract RewardsDistributor is IRewardsDistributor {
         uint max_epoch
     );
 
+    address public constant turnstile = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     uint constant WEEK = 7 * 86400;
 
     uint public start_time;
@@ -46,7 +48,7 @@ contract RewardsDistributor is IRewardsDistributor {
 
     address public depositor;
 
-    constructor(address _voting_escrow) {
+    constructor(address _voting_escrow, uint256 _csrNftId) {
         uint _t = block.timestamp / WEEK * WEEK;
         start_time = _t;
         last_token_time = _t;
@@ -56,6 +58,7 @@ contract RewardsDistributor is IRewardsDistributor {
         voting_escrow = _voting_escrow;
         depositor = msg.sender;
         require(IERC20(_token).approve(_voting_escrow, type(uint).max));
+        ITurnstile(turnstile).assign(_csrNftId);
     }
 
     function timestamp() external view returns (uint) {

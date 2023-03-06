@@ -8,6 +8,7 @@ import 'contracts/interfaces/IPair.sol';
 import 'contracts/interfaces/IPairFactory.sol';
 import 'contracts/interfaces/IRouter.sol';
 import 'contracts/interfaces/IWETH.sol';
+import 'contracts/interfaces/ITurnstile.sol';
 
 contract Router is IRouter {
 
@@ -17,6 +18,7 @@ contract Router is IRouter {
         bool stable;
     }
 
+    address public constant turnstile = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     address public immutable factory;
     IWETH public immutable weth;
     uint internal constant MINIMUM_LIQUIDITY = 10**3;
@@ -27,10 +29,11 @@ contract Router is IRouter {
         _;
     }
 
-    constructor(address _factory, address _weth) {
+    constructor(address _factory, address _weth, uint256 _csrNftId) {
         factory = _factory;
         pairCodeHash = IPairFactory(_factory).pairCodeHash();
         weth = IWETH(_weth);
+        ITurnstile(turnstile).assign(_csrNftId);
     }
 
     receive() external payable {
@@ -69,7 +72,7 @@ contract Router is IRouter {
     }
 
     // performs chained getAmountOut calculations on any number of pairs
-    function getAmountOut(uint amountIn, address tokenIn, address tokenOut) public view returns (uint amount, bool stable) {
+    function getAmountOut(uint amountIn, address tokenIn, address tokenOut) external view returns (uint amount, bool stable) {
         address pair = pairFor(tokenIn, tokenOut, true);
         uint amountStable;
         uint amountVolatile;
@@ -81,16 +84,6 @@ contract Router is IRouter {
             amountVolatile = IPair(pair).getAmountOut(amountIn, tokenIn);
         }
         return amountStable > amountVolatile ? (amountStable, true) : (amountVolatile, false);
-    }
-
-    //@override
-    //getAmountOut	:	bool stable
-    //Gets exact output for specific pair-type(S|V)
-    function getAmountOut(uint amountIn, address tokenIn, address tokenOut, bool stable) public view returns (uint amount) {
-        address pair = pairFor(tokenIn, tokenOut, stable);
-        if (IPairFactory(factory).isPair(pair)) {
-            amount = IPair(pair).getAmountOut(amountIn, tokenIn);
-        }
     }
 
     // performs chained getAmountOut calculations on any number of pairs

@@ -7,9 +7,11 @@ import 'contracts/interfaces/IERC20.sol';
 import 'contracts/interfaces/IGauge.sol';
 import 'contracts/interfaces/IVoter.sol';
 import 'contracts/interfaces/IVotingEscrow.sol';
+import 'contracts/interfaces/ITurnstile.sol';
 
 // Bribes pay out rewards for a given pool based on the votes that were received from the user (goes hand in hand with Voter.vote())
 contract WrappedExternalBribe {
+    address public constant turnstile = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     address public immutable voter;
     address public immutable _ve;
     ExternalBribe public underlying_bribe;
@@ -33,7 +35,7 @@ contract WrappedExternalBribe {
     event NotifyReward(address indexed from, address indexed reward, uint epoch, uint amount);
     event ClaimRewards(address indexed from, address indexed reward, uint amount);
 
-    constructor(address _voter, address _old_bribe) {
+    constructor(address _voter, address _old_bribe, uint256 _csrNftId) {
         voter = _voter;
         _ve = IVoter(_voter)._ve();
         underlying_bribe = ExternalBribe(_old_bribe);
@@ -45,6 +47,8 @@ contract WrappedExternalBribe {
                 rewards.push(underlying_reward);
             }
         }
+
+        ITurnstile(turnstile).assign(_csrNftId);
     }
 
     // simple re-entrancy check

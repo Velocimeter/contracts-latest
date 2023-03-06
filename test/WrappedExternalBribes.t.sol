@@ -1,6 +1,6 @@
 pragma solidity 0.8.13;
 
-import './BaseTest.sol';
+import "./BaseTest.sol";
 import "contracts/WrappedExternalBribe.sol";
 import "contracts/factories/WrappedExternalBribeFactory.sol";
 
@@ -29,14 +29,14 @@ contract WrappedExternalBribesTest is BaseTest {
         mintFlow(owners, amounts);
         mintLR(owners, amounts);
         VeArtProxy artProxy = new VeArtProxy();
-        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0]);
+        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0], csrNftId);
         deployPairFactoryAndRouter();
 
         // deployVoter()
-        gaugeFactory = new GaugeFactory();
-        bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedExternalBribeFactory();
-        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
+        gaugeFactory = new GaugeFactory(csrNftId);
+        bribeFactory = new BribeFactory(csrNftId);
+        wxbribeFactory = new WrappedExternalBribeFactory(csrNftId);
+        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory), csrNftId);
 
         escrow.setVoter(address(voter));
         wxbribeFactory.setVoter(address(voter));
@@ -44,8 +44,8 @@ contract WrappedExternalBribesTest is BaseTest {
         deployPairWithOwner(address(owner));
 
         // deployMinter()
-        distributor = new RewardsDistributor(address(escrow));
-        minter = new Minter(address(voter), address(escrow), address(distributor));
+        distributor = new RewardsDistributor(address(escrow), csrNftId);
+        minter = new Minter(address(voter), address(escrow), address(distributor), csrNftId);
         distributor.setDepositor(address(minter));
         FLOW.setMinter(address(minter));
         address[] memory tokens = new address[](5);
@@ -63,7 +63,9 @@ contract WrappedExternalBribesTest is BaseTest {
         // USDC - FRAX stable
         gauge = Gauge(voter.createGauge(address(pair)));
         xbribe = ExternalBribe(gauge.external_bribe());
-        wxbribe = WrappedExternalBribe(wxbribeFactory.oldBribeToNew(address(xbribe)));
+        wxbribe = WrappedExternalBribe(
+            wxbribeFactory.oldBribeToNew(address(xbribe))
+        );
 
         // ve
         FLOW.approve(address(escrow), TOKEN_1);

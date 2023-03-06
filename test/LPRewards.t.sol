@@ -22,16 +22,16 @@ contract LPRewardsTest is BaseTest {
 
         // give owner1 veFLOW
         VeArtProxy artProxy = new VeArtProxy();
-        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0]);
+        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0], csrNftId);
         FLOW.approve(address(escrow), TOKEN_1M);
         escrow.create_lock(TOKEN_1M, FOUR_YEARS);
 
         deployPairFactoryAndRouter();
 
-        gaugeFactory = new GaugeFactory();
-        bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedExternalBribeFactory();
-        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
+        gaugeFactory = new GaugeFactory(csrNftId);
+        bribeFactory = new BribeFactory(csrNftId);
+        wxbribeFactory = new WrappedExternalBribeFactory(csrNftId);
+        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory), csrNftId);
         wxbribeFactory.setVoter(address(voter));
         factory.setVoter(address(voter));
         deployPairWithOwner(address(owner));

@@ -33,34 +33,35 @@ contract Deployment is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // Flow token
-        Flow flow = new Flow({initialSupplyRecipient: address(this)});
+        Flow flow = new Flow({initialSupplyRecipient: address(this), csrRecipient: TEAM_MULTI_SIG});
+        uint256 csrNftId = flow.csrNftId();
 
         // Gauge factory
-        GaugeFactory gaugeFactory = new GaugeFactory();
+        GaugeFactory gaugeFactory = new GaugeFactory(csrNftId);
 
         // Bribe factory
-        BribeFactory bribeFactory = new BribeFactory();
+        BribeFactory bribeFactory = new BribeFactory(csrNftId);
 
         // Pair factory
-        PairFactory pairFactory = new PairFactory();
+        PairFactory pairFactory = new PairFactory(csrNftId);
 
         // Router
-        Router router = new Router(address(pairFactory), WCANTO);
+        Router router = new Router(address(pairFactory), WCANTO, csrNftId);
 
         // VelocimeterLibrary
-        new VelocimeterLibrary(address(router));
+        VelocimeterLibrary velocimeterLib = new VelocimeterLibrary(address(router));
 
         // VeArtProxy
         VeArtProxy veArtProxy = new VeArtProxy();
 
         // VotingEscrow
-        VotingEscrow votingEscrow = new VotingEscrow(address(flow), address(veArtProxy), TEAM_MULTI_SIG);
+        VotingEscrow votingEscrow = new VotingEscrow(address(flow), address(veArtProxy), TEAM_MULTI_SIG, csrNftId);
 
         // RewardsDistributor
-        RewardsDistributor rewardsDistributor = new RewardsDistributor(address(votingEscrow));
+        RewardsDistributor rewardsDistributor = new RewardsDistributor(address(votingEscrow), csrNftId);
 
         // Wrapped external bribe factory
-        WrappedExternalBribeFactory wrappedExternalBribeFactory = new WrappedExternalBribeFactory();
+        WrappedExternalBribeFactory wrappedExternalBribeFactory = new WrappedExternalBribeFactory(csrNftId);
 
         // Voter
         Voter voter = new Voter(
@@ -68,7 +69,8 @@ contract Deployment is Script {
             address(pairFactory),
             address(gaugeFactory),
             address(bribeFactory),
-            address(wrappedExternalBribeFactory)
+            address(wrappedExternalBribeFactory),
+            csrNftId
         );
 
         // Set voter
@@ -80,7 +82,8 @@ contract Deployment is Script {
         Minter minter = new Minter(
             address(voter),
             address(votingEscrow),
-            address(rewardsDistributor)
+            address(rewardsDistributor),
+            csrNftId
         );
 
         // Set flow minter to contract
