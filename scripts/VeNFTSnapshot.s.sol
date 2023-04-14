@@ -9,10 +9,10 @@ import {VotingEscrow} from "../contracts/VotingEscrow.sol";
 
 contract VeNFTSnapshot is Script {
     function run() external view {
-        VotingEscrow votingEscrow = VotingEscrow(0x990efF367C6c4aece43c1E98099061c897730F27);
+        VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
         // From https://alto.build/collections/0x990eff367c6c4aece43c1e98099061c897730f27
-        uint256 currentTokenId = 0;
-        uint256 maxTokenId = 267;
+        uint256 currentTokenId = 73;
+        uint256 maxTokenId = 75;
         while (currentTokenId <= maxTokenId) {
             address owner = votingEscrow.ownerOf(currentTokenId);
 
@@ -31,3 +31,5 @@ contract VeNFTSnapshot is Script {
         }
     }
 }
+
+// 
