@@ -12,4 +12,5 @@ interface IPair {
     function getAmountOut(uint, address) external view returns (uint);
     function setHasGauge(bool value) external;
     function setExternalBribe(address _externalBribe) external;
+    function externalBribe() external view returns(address);
 }
