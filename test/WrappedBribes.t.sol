@@ -395,4 +395,159 @@ contract WrappedBribesTest is BaseTest {
         assertEq(post_post, post);
         assertEq(post_post - pre, TOKEN_1 / 2);
     }
+
+   function testBribesCanClaimLeftOverRewardAfterBeingHandled() public {
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // create a bribe
+        LR.approve(address(wxbribe), TOKEN_1);
+        wxbribe.notifyRewardAmount(address(LR), TOKEN_1);
+
+        // fwd half a week
+        uint epochTimestamp = block.timestamp;
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // rewards
+        address[] memory rewards = new address[](1);
+        rewards[0] = address(LR);
+
+        wxbribe.handleLeftOverRewards(epochTimestamp, rewards);
+
+        // vote
+        address[] memory pools = new address[](1);
+        pools[0] = address(pair);
+        uint256[] memory weights = new uint256[](1);
+        weights[0] = 10000;
+        voter.vote(1, pools, weights);
+
+        vm.startPrank(address(owner2));
+        voter.vote(2, pools, weights);
+        vm.stopPrank();
+
+        // fwd a week
+        vm.warp(block.timestamp + 1 weeks);
+
+        uint256 pre = LR.balanceOf(address(owner));
+        uint256 earned = wxbribe.earned(address(LR), 1);
+        assertEq(earned, TOKEN_1 / 2);
+
+        vm.startPrank(address(voter));
+        // once
+        wxbribe.getRewardForOwner(1, rewards);
+        uint256 post = LR.balanceOf(address(owner));
+        // twice
+        wxbribe.getRewardForOwner(1, rewards);
+        vm.stopPrank();
+
+        uint256 post_post = LR.balanceOf(address(owner));
+        assertEq(post_post, post);
+        assertEq(post_post - pre, TOKEN_1 / 2);
+    }
+
+    function testBribesCanClaimLeftOverRewardAfterBeingHandledPlusAddingMoreBribes() public {
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // create a bribe
+        LR.approve(address(wxbribe), TOKEN_1);
+        wxbribe.notifyRewardAmount(address(LR), TOKEN_1);
+
+        // fwd half a week
+        uint epochTimestamp = block.timestamp;
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // add more bribe
+        LR.approve(address(wxbribe), TOKEN_1);
+        wxbribe.notifyRewardAmount(address(LR), TOKEN_1);
+
+        // rewards
+        address[] memory rewards = new address[](1);
+        rewards[0] = address(LR);
+
+        wxbribe.handleLeftOverRewards(epochTimestamp, rewards);
+
+        // vote
+        address[] memory pools = new address[](1);
+        pools[0] = address(pair);
+        uint256[] memory weights = new uint256[](1);
+        weights[0] = 10000;
+        voter.vote(1, pools, weights);
+
+        vm.startPrank(address(owner2));
+        voter.vote(2, pools, weights);
+        vm.stopPrank();
+
+        // fwd a week
+        vm.warp(block.timestamp + 1 weeks);
+
+        uint256 pre = LR.balanceOf(address(owner));
+        uint256 earned = wxbribe.earned(address(LR), 1);
+        assertEq(earned, TOKEN_1);
+
+        vm.startPrank(address(voter));
+        // once
+        wxbribe.getRewardForOwner(1, rewards);
+        uint256 post = LR.balanceOf(address(owner));
+        // twice
+        wxbribe.getRewardForOwner(1, rewards);
+        vm.stopPrank();
+
+        uint256 post_post = LR.balanceOf(address(owner));
+        assertEq(post_post, post);
+        assertEq(post_post - pre, TOKEN_1);
+    }
+
+    function testBribesCanClaimLeftOverRewardAfterBeingHandledAfterSeveralEpochs() public {
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // create a bribe
+        LR.approve(address(wxbribe), TOKEN_1);
+        wxbribe.notifyRewardAmount(address(LR), TOKEN_1);
+
+        // fwd half a week
+        uint epochTimestamp = block.timestamp;
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // add more bribe
+        LR.approve(address(wxbribe), TOKEN_1);
+        wxbribe.notifyRewardAmount(address(LR), TOKEN_1);
+
+        // rewards
+        address[] memory rewards = new address[](1);
+        rewards[0] = address(LR);
+
+        // vote
+        address[] memory pools = new address[](1);
+        pools[0] = address(pair);
+        uint256[] memory weights = new uint256[](1);
+        weights[0] = 10000;
+        voter.vote(1, pools, weights);
+
+        vm.startPrank(address(owner2));
+        voter.vote(2, pools, weights);
+        vm.stopPrank();
+
+        // fwd a week
+        vm.warp(block.timestamp + 3 weeks);
+
+        wxbribe.handleLeftOverRewards(epochTimestamp, rewards);
+
+        vm.warp(block.timestamp + 1 weeks);
+
+        uint256 pre = LR.balanceOf(address(owner));
+        uint256 earned = wxbribe.earned(address(LR), 1);
+        assertEq(earned, TOKEN_1);
+
+        vm.startPrank(address(voter));
+        // once
+        wxbribe.getRewardForOwner(1, rewards);
+        uint256 post = LR.balanceOf(address(owner));
+        // twice
+        wxbribe.getRewardForOwner(1, rewards);
+        vm.stopPrank();
+
+        uint256 post_post = LR.balanceOf(address(owner));
+        assertEq(post_post, post);
+        assertEq(post_post - pre, TOKEN_1);
+    }
+
 }

@@ -171,6 +171,47 @@ contract WrappedBribe {
         emit NotifyReward(msg.sender, token, adjustedTstamp, amount);
     }
 
+    // This is an external function that can only be called by teams to handle unclaimed rewards due to zero vote
+    function handleLeftOverRewards(uint epochTimestamp, address[] memory tokens) external {
+        require(msg.sender == IVotingEscrow(_ve).team(), "only team");
+
+        // require that supply of that epoch to be ZERO
+        uint epochStart = getEpochStart(epochTimestamp);
+        (_ts, _supply) = underlying_bribe.supplyCheckpoints(underlying_bribe.getPriorSupplyIndex(epochStart + DURATION));
+        if (epochStart + DURATION > _bribeStart(_ts)) {
+            require(_supply == 0, "this epoch has votes");
+        }
+
+        // do sth like notifyRewardAmount
+        uint length = tokens.length;
+        for (uint i = 0; i < length;) {
+            // check bribe amount 
+            uint previousEpochRewards = tokenRewardsPerEpoch[tokens[i]][epochStart];
+            require(previousEpochRewards != 0, "no bribes for this epoch");
+
+            // get timestamp of current epoch
+            uint adjustedTstamp = getEpochStart(block.timestamp);
+
+            // get notified reward of current epoch
+            uint currentEpochRewards = tokenRewardsPerEpoch[tokens[i]][adjustedTstamp];
+
+            // add previous unclaimed rewards to current epoch
+            tokenRewardsPerEpoch[tokens[i]][adjustedTstamp] = currentEpochRewards + previousEpochRewards;
+
+            // remove token rewards from previous epoch
+            tokenRewardsPerEpoch[tokens[i]][epochStart] = 0;
+
+            // amend period finish
+            periodFinish[tokens[i]] = adjustedTstamp + DURATION;
+
+            emit HandleLeftOverRewards(tokens[i], epochStart, adjustedTstamp, previousEpochRewards);
+
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
     function swapOutRewardToken(uint i, address oldToken, address newToken) external {
         require(msg.sender == IVotingEscrow(_ve).team(), 'only team');
         require(rewards[i] == oldToken);
