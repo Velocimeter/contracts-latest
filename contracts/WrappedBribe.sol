@@ -32,6 +32,7 @@ contract WrappedBribe {
 
     event NotifyReward(address indexed from, address indexed reward, uint epoch, uint amount);
     event ClaimRewards(address indexed from, address indexed reward, uint amount);
+    event HandleLeftOverRewards(address indexed reward, uint originalEpoch, uint updatedEpoch, uint amount);
 
     constructor(address _voter, address _old_bribe) {
         voter = _voter;
@@ -177,7 +178,7 @@ contract WrappedBribe {
 
         // require that supply of that epoch to be ZERO
         uint epochStart = getEpochStart(epochTimestamp);
-        (_ts, _supply) = underlying_bribe.supplyCheckpoints(underlying_bribe.getPriorSupplyIndex(epochStart + DURATION));
+        (uint _ts, uint _supply) = underlying_bribe.supplyCheckpoints(underlying_bribe.getPriorSupplyIndex(epochStart + DURATION));
         if (epochStart + DURATION > _bribeStart(_ts)) {
             require(_supply == 0, "this epoch has votes");
         }
