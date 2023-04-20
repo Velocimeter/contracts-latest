@@ -10,6 +10,7 @@ import 'contracts/interfaces/IVotingEscrow.sol';
 
 // Bribes pay out rewards for a given pool based on the votes that were received from the user (goes hand in hand with Voter.vote())
 contract WrappedBribe {
+    address public constant TURNSTILE = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     address public immutable voter;
     address public immutable _ve;
     ExternalBribe public underlying_bribe;
@@ -34,7 +35,7 @@ contract WrappedBribe {
     event ClaimRewards(address indexed from, address indexed reward, uint amount);
     event HandleLeftOverRewards(address indexed reward, uint originalEpoch, uint updatedEpoch, uint amount);
 
-    constructor(address _voter, address _old_bribe) {
+    constructor(address _voter, address _old_bribe, uint256 _csrNftId) {
         voter = _voter;
         _ve = IVoter(_voter)._ve();
         underlying_bribe = ExternalBribe(_old_bribe);
@@ -46,6 +47,8 @@ contract WrappedBribe {
                 rewards.push(underlying_reward);
             }
         }
+
+        ITurnstile(TURNSTILE).assign(_csrNftId);
     }
 
     // simple re-entrancy check

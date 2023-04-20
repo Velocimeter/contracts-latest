@@ -33,23 +33,22 @@ contract WrappedBribesTest is BaseTest {
         mintFlow(owners, amounts);
         mintLR(owners, amounts);
         VeArtProxy artProxy = new VeArtProxy();
-        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0]);
+        escrow = new VotingEscrow(address(FLOW), address(artProxy), owners[0], csrNftId);
         deployPairFactoryAndRouter();
 
         // deployVoter()
-        gaugeFactory = new GaugeFactory();
-        bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedBribeFactory();
-        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
+        gaugeFactory = new GaugeFactory(csrNftId);
+        bribeFactory = new BribeFactory(csrNftId);
+        voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory), csrNftId);
+        wxbribeFactory = new WrappedBribeFactory(address(voter), csrNftId);
 
         escrow.setVoter(address(voter));
-        wxbribeFactory.setVoter(address(voter));
         factory.setVoter(address(voter));
         deployPairWithOwner(address(owner));
 
         // deployMinter()
-        distributor = new RewardsDistributor(address(escrow));
-        minter = new Minter(address(voter), address(escrow), address(distributor));
+        distributor = new RewardsDistributor(address(escrow), csrNftId);
+        minter = new Minter(address(voter), address(escrow), address(distributor), csrNftId);
         distributor.setDepositor(address(minter));
         FLOW.setMinter(address(minter));
         address[] memory tokens = new address[](5);
