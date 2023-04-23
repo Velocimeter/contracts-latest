@@ -1,0 +1,84 @@
+{"version":"1.0","chainId":"7700","createdAt":1681525813061,"meta":
+{"name":"Transactions Batch","description":"","txBuilderVersion":"1.13.3","createdFromSafeAddress":"0x13eeB8EdfF60BbCcB24Ec7Dd5668aa246525Dc51",
+"createdFromOwnerAddress":"","checksum":"0xaa13b4862fb52b324563a2d64429c2e2f6b31ea76c4bc82c1056ad0f4bdb8b1c"},
+"transactions":[
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"33","_poolVote":"[0x2Cc24302fa019C5A8F252afC9A69fCfBB8Dd8D2F]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"34","_poolVote":"[0x7e79E7B91526414F49eA4D3654110250b7D9444f]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"35","_poolVote":"[0x57E8eFA2639A4cA7069cD90f7e27092758271e6b]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"36","_poolVote":"[0x2267DAa9B7458F5cFE03d3485cc871800977c2c6]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"38","_poolVote":"[0xddA6259A93649346535db8744502493ee023208D]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"39","_poolVote":"[0x1086b26cf340801b26ca2df58d20ce688fd3e779]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"40","_poolVote":"[0x1f20056b539366909c702bb93e1c65ed2878c9e2]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"41","_poolVote":"[0x1d4e33e07ddf9cc8edb204102c3238b6a2c0e3fb]","_weights":"[10000]"}},
+    
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"42","_poolVote":"[0xa2f7ecE2f2A0ffd24889223dE9a8D8F4F8E3943F]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"47","_poolVote":"[0x4031f455edfbc025fc4c81379a74c44a7d3592f5]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"48","_poolVote":"[0x5cbb5ed3c767d7bcc7f8796acf37a9d181233a2f]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"55","_poolVote":"[0x9d047638826096ec3abca3cda9973db19c89a786]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"56","_poolVote":"[0x7e282e6538163e7afb76027490486f59b3218310]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"58","_poolVote":"[0x2Cc24302fa019C5A8F252afC9A69fCfBB8Dd8D2F]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"59","_poolVote":"[0x7e79E7B91526414F49eA4D3654110250b7D9444f]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"60","_poolVote":"[0x57E8eFA2639A4cA7069cD90f7e27092758271e6b]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"61","_poolVote":"[0x2267DAa9B7458F5cFE03d3485cc871800977c2c6]","_weights":"[10000]"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"62","_poolVote":"[0xddA6259A93649346535db8744502493ee023208D]","_weights":"[10000]"}},    
+    
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"64","_poolVote":"[0x009b522b35AD579E3B1EAE044864AEF74196b077]","_weights":"[10000]"}},
+    
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":
+    {"inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}],"name":"vote","payable":false},
+    "contractInputsValues":{"tokenId":"65","_poolVote":"[0x5cbb5ed3c767d7bcc7f8796acf37a9d181233a2f]","_weights":"[10000]"}}
+    ]}

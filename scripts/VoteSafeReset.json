@@ -1,0 +1,53 @@
+{"version":"1.0","chainId":"7700","createdAt":1681525813061,"meta":
+{"name":"Transactions Batch","description":"","txBuilderVersion":"1.13.3","createdFromSafeAddress":"0x13eeB8EdfF60BbCcB24Ec7Dd5668aa246525Dc51",
+"createdFromOwnerAddress":"","checksum":"0xaa13b4862fb52b324563a2d64429c2e2f6b31ea76c4bc82c1056ad0f4bdb8b1c"},
+"transactions":[
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"49"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"50"}},
+    
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"63"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"66"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"67"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"68"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"69"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"70"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"71"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"73"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"74"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"75"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"76"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"79"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"80"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,"contractMethod":{"inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}],"name":"reset","payable":false},
+    "contractInputsValues":{"_tokenId":"81"}}      
+    
+    ]}

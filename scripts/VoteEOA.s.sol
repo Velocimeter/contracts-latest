@@ -36,14 +36,14 @@ contract VoteEOA is Script {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
         // voter.vote(29, FLOW_WCANTO, ONEHUNDRED ); // 3M 
-        // voter.vote(30, FLOW_WCANTO, ONEHUNDRED ); // 3M 
-        // voter.vote(31, FLOW_ETH, ONEHUNDRED ); // 3M 
-        // voter.vote(32, FLOW_multiBTC, ONEHUNDRED ); // 3M 
-        // voter.vote(52, FLOW_USDC, ONEHUNDRED ); //  2M 
-        // voter.vote(53, FLOW_NOTE, ONEHUNDRED ); //  2M 
-        // voter.vote(54, FLOW_ATOM, ONEHUNDRED ); // 2M 
+        // voter.vote(30, FLOW_ETH, ONEHUNDRED ); // 3M 
+        // voter.vote(31, FLOW_USDC, ONEHUNDRED ); // 3M 
+        // voter.vote(32, FLOW_USDC, ONEHUNDRED ); // 3M 
+        // voter.vote(51, FLOW_ETH, ONEHUNDRED ); // 2M 
+        // voter.vote(52, FLOW_ETH, ONEHUNDRED ); //  2M 
+        // voter.vote(53, FLOW_ETH, ONEHUNDRED ); //  2M 
+        // voter.vote(54, FLOW_ETH, ONEHUNDRED ); // 2M 
 
-        // voter.vote(51, ?????????, ONEHUNDRED ); // 2M 
 
 
         // voter.reset(29); // 3m
@@ -54,16 +54,12 @@ contract VoteEOA is Script {
         // voter.reset(52); // 2m
         // voter.reset(53); // 2m
         // voter.reset(54); // 2m
-        // voter.reset(84); // 1m 2yr
-        // voter.reset(85); // 1m 2yr Eth:Flow
-        // voter.reset(86); // 1m 2yr WCanto:Flow
-        // voter.reset(87); // 1m 2yr Eth:Flow
-        // voter.reset(88); // 1m 2yr Note:Flow
-        // voter.reset(89); // 1m 1yr
-        voter.reset(90); // 1m 1yr RESET
-        voter.reset(91); // 1m 1yr
-        voter.reset(92); // 1m 1yr
-        voter.reset(93); // 1m 1yr
+        // voter.reset(84); // 1m 2yr listed on ALTO
+        // voter.reset(85); // 1m 2yr
+        // voter.reset(90); // 1m 1yr 
+        // voter.reset(91); // 1m 1yr
+        // voter.reset(92); // 1m 1yr
+        // voter.reset(93); // 1m 1yr voted on SOMM:NOTE
 
 
         // rewardsDistributor.claim(29); // 3m
@@ -76,10 +72,6 @@ contract VoteEOA is Script {
         // rewardsDistributor.claim(54); // 2m
         // rewardsDistributor.claim(84); // 1m 2yr
         // rewardsDistributor.claim(85); // 1m 2yr Eth:Flow
-        // rewardsDistributor.claim(86); // 1m 2yr WCanto:Flow
-        // rewardsDistributor.claim(87); // 1m 2yr Eth:Flow
-        // rewardsDistributor.claim(88); // 1m 2yr Note:Flow
-        // rewardsDistributor.claim(89); // 1m 1yr
         // rewardsDistributor.claim(90); // 1m 1yr RESET
         // rewardsDistributor.claim(91); // 1m 1yr
         // rewardsDistributor.claim(92); // 1m 1yr

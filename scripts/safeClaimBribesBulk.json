@@ -1,0 +1,113 @@
+{"version":"1.0","chainId":"7700","createdAt":1681446510231,"meta":{"name":"Transactions Batch","description":"","txBuilderVersion":"1.13.3","createdFromSafeAddress":"0x13eeB8EdfF60BbCcB24Ec7Dd5668aa246525Dc51",
+"createdFromOwnerAddress":"","checksum":"0xa0eeb70b15132d31e1591cd2e9044ea702a98e0e2ed75a3c5aabe4d88f93505f"},
+"transactions":[
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0xD43529af9d607403754a6b4eA27cD4893a89F868]","_tokens":"[[0xB5b060055F0d1eF5174329913ef861bC3aDdF029,0xbDdCf6AB290E7Ad076CA103183730d1Bf0661112,0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687]]",
+    "_tokenId":"80"}}
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0xd80461ff2AFC779460A9e056790e5e35f68c7bd5]","_tokens":"[[0x826551890Dc65655a0Aceca109aB11AbDbD7a07B,0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055]]",
+    "_tokenId":"75"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x845F5B4a86Ef186e9f080d886ED7BffE4900D5a0]","_tokens":"[[0x826551890Dc65655a0Aceca109aB11AbDbD7a07B,0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265]]",
+    "_tokenId":"63"}}
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x2786D43eA95c004beFec476404b36e25d4f8329f]","_tokens":"[[0x08638a74A8134c747Dce29B57472cc2B57F35653,0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"33"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x2786D43eA95c004beFec476404b36e25d4f8329f]","_tokens":"[[0x08638a74A8134c747Dce29B57472cc2B57F35653,0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"34"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x2786D43eA95c004beFec476404b36e25d4f8329f]","_tokens":"[[0x08638a74A8134c747Dce29B57472cc2B57F35653,0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"35"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x2786D43eA95c004beFec476404b36e25d4f8329f]","_tokens":"[[0x08638a74A8134c747Dce29B57472cc2B57F35653,0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"36"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x7C41d90eCc615D58Cc30F03269Ef8AFb299AC346]","_tokens":"[[0x4e71a2e537b7f9d9413d3991d37958c0b5e1e503,0x80b5a32e4f032b2a058b4f29ec95eefeeb87adcd]]",
+    "_tokenId":"39"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x7C41d90eCc615D58Cc30F03269Ef8AFb299AC346]","_tokens":"[[0x4e71a2e537b7f9d9413d3991d37958c0b5e1e503,0x80b5a32e4f032b2a058b4f29ec95eefeeb87adcd]]",
+    "_tokenId":"40"}},
+    
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x1c3b3E7E7E05B4Da3Be1C0bEe5b773b1Bb35abf1]","_tokens":"[[0x4e71a2e537b7f9d9413d3991d37958c0b5e1e503,0x826551890dc65655a0aceca109ab11abdbd7a07b,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"41"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x1c3b3E7E7E05B4Da3Be1C0bEe5b773b1Bb35abf1]","_tokens":"[[0x4e71a2e537b7f9d9413d3991d37958c0b5e1e503,0x826551890dc65655a0aceca109ab11abdbd7a07b,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"42"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x34bb935a50CfDD2F9AcF9fE0Ed71275e05E41314]","_tokens":"[[0x381Ea7A7EE6a1e2982e01E7b6837f775a1a4B07F,0x4e71A2E537B7f9D9413D3991D37958c0b5e1e503,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"55"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0xcc7d2390e8014e94120088778e5d17af865c3856]","_tokens":"[[0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844,0x826551890Dc65655a0Aceca109aB11AbDbD7a07B]]",
+    "_tokenId":"56"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x845F5B4a86Ef186e9f080d886ED7BffE4900D5a0]","_tokens":"[[0x826551890Dc65655a0Aceca109aB11AbDbD7a07B,0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265]]",
+    "_tokenId":"64"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x241f8ceB3f50E880Dd0b203B8B44531E2d259240]","_tokens":"[[0xB5b060055F0d1eF5174329913ef861bC3aDdF029,0xbDdCf6AB290E7Ad076CA103183730d1Bf0661112,0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687]]",
+    "_tokenId":"68"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x241f8ceB3f50E880Dd0b203B8B44531E2d259240]","_tokens":"[[0xB5b060055F0d1eF5174329913ef861bC3aDdF029,0xbDdCf6AB290E7Ad076CA103183730d1Bf0661112,0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687]]",
+    "_tokenId":"67"}},
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0xfb7502e28815e7ad0f6f7f12db7c65cf5312483c]","_tokens":"[[0x826551890Dc65655a0Aceca109aB11AbDbD7a07B,0xFb7F77faaA3b69ef4C15d6305C79AD92B387C89F,0xb5b060055f0d1ef5174329913ef861bc3addf029]]",
+    "_tokenId":"70"}}
+
+    {"to":"0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389","value":"0","data":null,
+    "contractMethod":{"inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}],
+    "name":"claimBribes","payable":false},
+    "contractInputsValues":{"_bribes":"[0x40e0711d9e07b306eda5a62c1156f4879bd6da53]","_tokens":"[[0xB5b060055F0d1eF5174329913ef861bC3aDdF029,0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055]]",
+    "_tokenId":"74"}}
+
+    
+    ]}
