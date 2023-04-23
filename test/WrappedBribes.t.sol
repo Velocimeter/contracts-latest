@@ -630,4 +630,76 @@ contract WrappedBribesTest is BaseTest {
         uint256 accountBalance2 = wxbribe.tokenRewardBalance(address(LR));
         assertEq(accountBalance2, TOKEN_1);
     }
+
+    function testCanUpdateRewardAmountCorrectlyAfterClaiming() public {
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // create a bribe
+        LR.approve(address(wxbribe), TOKEN_1);
+        wxbribe.notifyRewardAmount(address(LR), TOKEN_1);
+
+        // transfer LR token to wxbribe
+        LR.transfer(address(wxbribe), TOKEN_1);
+
+        // vote
+        address[] memory pools = new address[](1);
+        pools[0] = address(pair);
+        uint256[] memory weights = new uint256[](1);
+        weights[0] = 10000;
+        voter.vote(1, pools, weights);
+
+        vm.startPrank(address(owner2));
+        voter.vote(2, pools, weights);
+        vm.stopPrank();
+
+        // fwd half a week
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        uint256 pre = LR.balanceOf(address(owner));
+        uint256 earned = wxbribe.earned(address(LR), 1);
+        assertEq(earned, TOKEN_1 / 2);
+
+        // rewards
+        address[] memory rewards = new address[](1);
+        rewards[0] = address(LR);
+
+        vm.startPrank(address(voter));
+        // once
+        wxbribe.getRewardForOwner(1, rewards);
+        uint256 post = LR.balanceOf(address(owner));
+        // twice
+        wxbribe.getRewardForOwner(1, rewards);
+        vm.stopPrank();
+
+        uint256 post_post = LR.balanceOf(address(owner));
+        assertEq(post_post, post);
+        assertEq(post_post - pre, TOKEN_1 / 2);
+
+        uint256 accountBalance1 = wxbribe.tokenRewardBalance(address(LR));
+
+        // update reward amount before epoch flip
+        wxbribe.updateRewardAmount(rewards);
+
+        uint256 accountBalance2 = wxbribe.tokenRewardBalance(address(LR));
+        assertEq(accountBalance2 - accountBalance1, TOKEN_1);
+
+        // epoch flip
+        vm.warp(block.timestamp + 1 weeks);
+
+        pre = LR.balanceOf(address(owner));
+        earned = wxbribe.earned(address(LR), 1);
+        assertEq(earned, TOKEN_1 / 2);
+
+        vm.startPrank(address(voter));
+        // once
+        wxbribe.getRewardForOwner(1, rewards);
+        post = LR.balanceOf(address(owner));
+        // twice
+        wxbribe.getRewardForOwner(1, rewards);
+        vm.stopPrank();
+
+        post_post = LR.balanceOf(address(owner));
+        assertEq(post_post, post);
+        assertEq(post_post - pre, TOKEN_1 / 2);
+    }
 }
