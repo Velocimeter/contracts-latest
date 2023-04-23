@@ -156,7 +156,7 @@ contract WrappedExternalBribe {
     }
 
     function notifyRewardAmount(address token, uint amount) external lock {
-        require(amount > 0);
+        // require(amount > 0);
         if (!isReward[token]) {
           require(IVoter(voter).isWhitelisted(token), "bribe tokens must be whitelisted");
           require(rewards.length < MAX_REWARD_TOKENS, "too many rewards tokens");
@@ -166,10 +166,14 @@ contract WrappedExternalBribe {
         uint epochRewards = tokenRewardsPerEpoch[token][adjustedTstamp];
 
         uint256 balanceBefore = IERC20(token).balanceOf(address(this));
-        _safeTransferFrom(token, msg.sender, address(this), amount);
-        uint256 balanceAfter = IERC20(token).balanceOf(address(this));
+        if (amount > 0 ){
+            _safeTransferFrom(token, msg.sender, address(this), amount);
+            uint256 balanceAfter = IERC20(token).balanceOf(address(this));
 
-        amount = balanceAfter - balanceBefore;
+            amount = balanceAfter - balanceBefore;
+        }{
+            amount = balanceBefore;
+        }
         
         tokenRewardsPerEpoch[token][adjustedTstamp] = epochRewards + amount;
 
