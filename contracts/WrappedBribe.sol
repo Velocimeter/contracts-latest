@@ -23,6 +23,7 @@ contract WrappedBribe {
 
     address[] public rewards;
     mapping(address => bool) public isReward;
+    mapping(address => uint) public tokenRewardBalance;
 
     /// @notice A checkpoint for marking balance
     struct RewardCheckpoint {
@@ -79,10 +80,17 @@ contract WrappedBribe {
     // allows a user to claim rewards for a given token
     function getReward(uint tokenId, address[] memory tokens) external lock  {
         require(IVotingEscrow(_ve).isApprovedOrOwner(msg.sender, tokenId));
+
+        uint256 balanceBefore;
+
         for (uint i = 0; i < tokens.length; i++) {
             uint _reward = earned(tokens[i], tokenId);
             lastEarn[tokens[i]][tokenId] = block.timestamp;
-            if (_reward > 0) _safeTransfer(tokens[i], msg.sender, _reward);
+            if (_reward > 0) {
+                balanceBefore = IERC20(tokens[i]).balanceOf(address(this));
+                _safeTransfer(tokens[i], msg.sender, _reward);
+                tokenRewardBalance[tokens[i]] -= balanceBefore - IERC20(tokens[i]).balanceOf(address(this));
+            }
 
             emit ClaimRewards(msg.sender, tokens[i], _reward);
         }
@@ -92,10 +100,17 @@ contract WrappedBribe {
     function getRewardForOwner(uint tokenId, address[] memory tokens) external lock  {
         require(msg.sender == voter);
         address _owner = IVotingEscrow(_ve).ownerOf(tokenId);
+
+        uint256 balanceBefore;
+
         for (uint i = 0; i < tokens.length; i++) {
             uint _reward = earned(tokens[i], tokenId);
             lastEarn[tokens[i]][tokenId] = block.timestamp;
-            if (_reward > 0) _safeTransfer(tokens[i], _owner, _reward);
+            if (_reward > 0) {
+                balanceBefore = IERC20(tokens[i]).balanceOf(address(this));
+                _safeTransfer(tokens[i], _owner, _reward);
+                tokenRewardBalance[tokens[i]] -= balanceBefore - IERC20(tokens[i]).balanceOf(address(this));
+            }
 
             emit ClaimRewards(_owner, tokens[i], _reward);
         }
@@ -161,6 +176,7 @@ contract WrappedBribe {
         amount = balanceAfter - balanceBefore;
         
         tokenRewardsPerEpoch[token][adjustedTstamp] = epochRewards + amount;
+        tokenRewardBalance[token] += amount;
 
         periodFinish[token] = adjustedTstamp + DURATION;
 
@@ -170,6 +186,32 @@ contract WrappedBribe {
         }
 
         emit NotifyReward(msg.sender, token, adjustedTstamp, amount);
+    }
+
+    function updateRewardAmount(address[] memory tokens) external lock {
+        uint256 length = tokens.length;
+        uint256 adjustedTstamp = getEpochStart(block.timestamp);
+
+        uint256 rewardBalance;
+        uint256 difference;
+
+        for (uint256 i = 0; i < length;) {
+            rewardBalance = tokenRewardBalance[tokens[i]];
+            difference = IERC20(tokens[i]).balanceOf(address(this)) - rewardBalance;
+
+            if (difference != 0) {
+                tokenRewardsPerEpoch[tokens[i]][adjustedTstamp] += difference;
+                tokenRewardBalance[tokens[i]] = rewardBalance + difference;
+
+                periodFinish[tokens[i]] = adjustedTstamp + DURATION;
+
+                emit NotifyReward(msg.sender, tokens[i], adjustedTstamp, difference);
+            }
+
+            unchecked {
+                ++i;
+            }
+        }
     }
 
     // This is an external function that can only be called by teams to handle unclaimed rewards due to zero vote
