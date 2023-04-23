@@ -549,4 +549,84 @@ contract WrappedBribesTest is BaseTest {
         assertEq(post_post - pre, TOKEN_1);
     }
 
+    function testCanUpdateRewardAmountWithBalanceDiscrepancy() public {
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // transfer LR tokens to wxbribe
+        LR.transfer(address(wxbribe), TOKEN_1);
+
+        // vote
+        address[] memory pools = new address[](1);
+        pools[0] = address(pair);
+        uint256[] memory weights = new uint256[](1);
+        weights[0] = 10000;
+        voter.vote(1, pools, weights);
+
+        vm.startPrank(address(owner2));
+        voter.vote(2, pools, weights);
+        vm.stopPrank();
+
+        // try to get reward for owner
+        address[] memory tokens = new address[](1);
+        tokens[0] = address(LR);
+
+        uint256 balance1 = LR.balanceOf(address(owner));
+        uint256 pre_pre_earned = wxbribe.earned(address(LR), 1);
+        assertEq(pre_pre_earned, 0);
+        vm.startPrank(address(voter));
+        wxbribe.getRewardForOwner(1, tokens);
+        vm.stopPrank();
+
+        uint256 balance2 = LR.balanceOf(address(owner));
+        assertEq(balance2 - balance1, 0);
+        uint256 pre_earned = wxbribe.earned(address(LR), 1);
+        assertEq(pre_earned, 0);
+
+        // update reward amount before epoch flip
+        wxbribe.updateRewardAmount(tokens);
+
+        // fwd half a week
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        uint256 pre = LR.balanceOf(address(owner));
+        uint256 earned = wxbribe.earned(address(LR), 1);
+        assertEq(earned, TOKEN_1 / 2);
+
+        vm.startPrank(address(voter));
+        // once
+        wxbribe.getRewardForOwner(1, tokens);
+        uint256 post = LR.balanceOf(address(owner));
+        // twice
+        wxbribe.getRewardForOwner(1, tokens);
+        vm.stopPrank();
+
+        uint256 post_post = LR.balanceOf(address(owner));
+        assertEq(post_post, post);
+        assertEq(post_post - pre, TOKEN_1 / 2);
+    }
+
+    function testCannotUpdateRewardAmountWithoutBalanceDiscrepancy() public {
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // create a bribe
+        LR.approve(address(wxbribe), TOKEN_1);
+        wxbribe.notifyRewardAmount(address(LR), TOKEN_1);
+
+        uint256 actualBalance1 = LR.balanceOf(address(wxbribe));
+        assertEq(actualBalance1, TOKEN_1);
+
+        uint256 accountBalance1 = wxbribe.tokenRewardBalance(address(LR));
+        assertEq(accountBalance1, TOKEN_1);
+
+        // try to update reward amount
+        address[] memory tokens = new address[](1);
+        tokens[0] = address(LR);
+        wxbribe.updateRewardAmount(tokens);
+
+        uint256 actualBalance2 = LR.balanceOf(address(wxbribe));
+        assertEq(actualBalance2, TOKEN_1);
+
+        uint256 accountBalance2 = wxbribe.tokenRewardBalance(address(LR));
+        assertEq(accountBalance2, TOKEN_1);
+    }
 }
