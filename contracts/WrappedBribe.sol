@@ -5,6 +5,7 @@ import 'openzeppelin-contracts/contracts/utils/math/Math.sol';
 import 'contracts/ExternalBribe.sol';
 import 'contracts/interfaces/IERC20.sol';
 import 'contracts/interfaces/IGauge.sol';
+import 'contracts/interfaces/ITurnstile.sol';
 import 'contracts/interfaces/IVoter.sol';
 import 'contracts/interfaces/IVotingEscrow.sol';
 
