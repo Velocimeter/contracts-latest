@@ -28,6 +28,7 @@ contract AutoBribe is Ownable {
     address public project;
     uint256 public nextWeek;
     address[] public bribeTokens;
+    bool sealed;
     mapping(address => bool) bribeTokensDeposited;
     mapping(address => uint256) bribeTokenToWeeksLeft;
 
@@ -108,6 +109,7 @@ contract AutoBribe is Ownable {
     //####Admin Functions#####
     function emptyOut() public {
         require(msg.sender == project);
+        require(!sealed);
 
         uint256 length = bribeTokens.length;
         uint256 amount;
@@ -123,6 +125,15 @@ contract AutoBribe is Ownable {
                 ++i;
             }
         }
+    }
+    //Allows project to seal the vault making it not possible for them to withdraw their tokens
+    function seal() public {
+        require(msg.sender = project);
+        sealed = true;
+    }
+    //Allows Velocimeter to re allow project to withdraw their tokens
+    function unSeal() public onlyOwner {
+        sealed = false;
     }
 
     function setProject(address _newWallet) public {
