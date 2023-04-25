@@ -39,7 +39,7 @@ contract WrappedBribesTest is BaseTest {
         // deployVoter()
         gaugeFactory = new GaugeFactory();
         bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedBribeFactory();
+        wxbribeFactory = new WrappedBribeFactory(address(owner));
         voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
 
         escrow.setVoter(address(voter));
@@ -308,7 +308,6 @@ contract WrappedBribesTest is BaseTest {
         // Middle of epoch 4
         vm.warp(block.timestamp + 1 weeks / 2);
 
-        uint256 pre = LR.balanceOf(address(owner));
         console2.log("");
         console2.log("Epoch 4: BEFORE checking 1");
         uint256 earned = wxbribe.earned(address(LR), 1);
