@@ -34,7 +34,7 @@ contract WrappedBribeFactory {
     function createAutoBribe(address existing_bribe) external returns (address auto_bribe) {
         address wBribe = oldBribeToNew[existing_bribe];
         require(
-            oldBribeToNew[existing_bribe] != address(0),
+            wBribe != address(0),
             "Wrapped bribe not yet created"
         );
         require(
