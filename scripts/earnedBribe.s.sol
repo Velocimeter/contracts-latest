@@ -14,6 +14,7 @@ address constant flow = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
 address constant wCanto = 0x826551890Dc65655a0Aceca109aB11AbDbD7a07B;
 address constant note = 0x4e71A2E537B7f9D9413D3991D37958c0b5e1e503;
 address constant multiBTC = 0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844;
+address constant wBTC = 0x08638a74A8134c747Dce29B57472cc2B57F35653;
 address constant bnb = 0xFb7F77faaA3b69ef4C15d6305C79AD92B387C89F;
 
 
@@ -21,13 +22,15 @@ address constant bnb = 0xFb7F77faaA3b69ef4C15d6305C79AD92B387C89F;
 address constant wCanto_MultiBTC_exBribe = 0xcC7d2390e8014e94120088778E5D17AF865C3856;
 address constant note_wCanto_exBribe = 0x1c3b3E7E7E05B4Da3Be1C0bEe5b773b1Bb35abf1;
 address constant bnb_wCant0_exBribe = 0xfb7502e28815E7Ad0f6f7f12DB7c65cF5312483c;
+address constant wBTC_multiBTC = 0x2786D43eA95c004beFec476404b36e25d4f8329f;
+address constant wCanto_Flow = 0x1aF8bAD14e87798f6B7D1f2a928Dcf650b1E2827;
 
 
 contract earnedBribe is Script { 
-      address private wBribe = bnb_wCant0_exBribe;
-      address private tkn1 = bnb;
-      address private tkn2 = wCanto;
-      uint256 private nftID = 4;
+      address private wBribe = wCanto_Flow;
+      address private tkn1 = wCanto;
+      address private tkn2 = flow;
+      uint256 private nftID = 49;
 
 
     function run() external {
@@ -72,3 +75,4 @@ contract earnedBribe is Script {
 
 // note    400
 // wcanto  1220
+// wbtc 0.00389324

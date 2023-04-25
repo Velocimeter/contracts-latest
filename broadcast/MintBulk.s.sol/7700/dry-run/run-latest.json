@@ -1,0 +1,139 @@
+{
+  "transactions": [
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0xB5b060055F0d1eF5174329913ef861bC3aDdF029",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://mainnode.plexnode.org:8545",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
+        "to": "0xb5b060055f0d1ef5174329913ef861bc3addf029",
+        "gas": "0x107dc",
+        "value": "0x0",
+        "data": "0x095ea7b30000000000000000000000008e003242406fba53619769f31606ef2ed8a65c0000000000000000000000000000000000000000000000d3c21bcecceda1000000",
+        "nonce": "0x1b7",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://mainnode.plexnode.org:8545",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
+        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
+        "gas": "0x98803",
+        "value": "0x0",
+        "data": "0xd4e54c3b000000000000000000000000000000000000000000002a5a058fc295ed000000000000000000000000000000000000000000000000000000000000000784ce0000000000000000000000000050230fbfc593c92e55ae27d3f25633ddb9693ef6",
+        "nonce": "0x1b8",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://mainnode.plexnode.org:8545",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
+        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
+        "gas": "0x9dc47",
+        "value": "0x0",
+        "data": "0xd4e54c3b000000000000000000000000000000000000000000002a5a058fc295ed000000000000000000000000000000000000000000000000000000000000000784ce0000000000000000000000000050230fbfc593c92e55ae27d3f25633ddb9693ef6",
+        "nonce": "0x1b9",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://mainnode.plexnode.org:8545",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
+        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
+        "gas": "0x9d64c",
+        "value": "0x0",
+        "data": "0xd4e54c3b000000000000000000000000000000000000000000002a5a058fc295ed000000000000000000000000000000000000000000000000000000000000000784ce0000000000000000000000000050230fbfc593c92e55ae27d3f25633ddb9693ef6",
+        "nonce": "0x1ba",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://mainnode.plexnode.org:8545",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
+        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
+        "gas": "0xa5c8d",
+        "value": "0x0",
+        "data": "0xd4e54c3b000000000000000000000000000000000000000000002a5a058fc295ed000000000000000000000000000000000000000000000000000000000000000784ce0000000000000000000000000050230fbfc593c92e55ae27d3f25633ddb9693ef6",
+        "nonce": "0x1bb",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://mainnode.plexnode.org:8545",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
+        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
+        "gas": "0xb6b51",
+        "value": "0x0",
+        "data": "0xd4e54c3b000000000000000000000000000000000000000000002a5a058fc295ed000000000000000000000000000000000000000000000000000000000000000784ce0000000000000000000000000050230fbfc593c92e55ae27d3f25633ddb9693ef6",
+        "nonce": "0x1bc",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [],
+  "path": "/Users/chris/Documents/Velocimeter/contracts-latest/broadcast/MintBulk.s.sol/7700/dry-run/run-latest.json",
+  "returns": {},
+  "timestamp": 1682398714,
+  "chain": 7700,
+  "multi": false,
+  "commit": "b40c438"
+}

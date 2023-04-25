@@ -60,7 +60,7 @@ contract CRE8R is Script {
     function getRebase() private {
         RewardsDistributor rewardsDistributor = RewardsDistributor(0x73278a66b75aC0714c4B049dFF26e5CddF365c85);
         uint256 claimable = rewardsDistributor.claimable(tknID);
-        if (claimable > 10000 * 1e18){
+        if (claimable > 50000 * 1e18){
           rewardsDistributor.claim(tknID);
         }
     }

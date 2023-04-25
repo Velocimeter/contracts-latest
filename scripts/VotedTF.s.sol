@@ -15,7 +15,7 @@ contract VotedTF is Script {
     function run() external view {
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
-        uint256 nftA = 50;
+        uint256 nftA = 6;
         uint256 nftB = 71;
         uint256 nftC = 73;
         // uint256 nftD = 76;

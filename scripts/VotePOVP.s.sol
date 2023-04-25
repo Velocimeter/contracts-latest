@@ -45,7 +45,7 @@ contract VotePOVP is Script {
         RewardsDistributor rewardsDistributor = RewardsDistributor(0x73278a66b75aC0714c4B049dFF26e5CddF365c85);
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
-        // rewardsDistributor.claim_many(tokenIds);
+        getRebase();
 
         // votingEscrow.increase_unlock_time(2, 126242339); 
         // votingEscrow.increase_unlock_time(3, 126242339);
@@ -79,5 +79,11 @@ contract VotePOVP is Script {
 
 
     }
-
+    function getRebase() private {
+        RewardsDistributor rewardsDistributor = RewardsDistributor(0x73278a66b75aC0714c4B049dFF26e5CddF365c85);
+        uint256 claimable = rewardsDistributor.claimable(2);
+        if (claimable > 50000 * 1e18){
+          rewardsDistributor.claim_many(tokenIds);
+        }
+    }
 }
