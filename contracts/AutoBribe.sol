@@ -6,18 +6,16 @@ import "openzeppelin-contracts/contracts/utils/math/SafeMath.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 import "openzeppelin-contracts/contracts/utils/Context.sol";
 import "openzeppelin-contracts/contracts/utils/Address.sol";
-import {WrappedBribe} from 'contracts/WrappedBribe.sol';
+import {WrappedBribe} from "contracts/WrappedBribe.sol";
 
 pragma solidity 0.8.13;
 
 // the purpose of this contract is to allow the projects to deposit bribes that will bribe their pools for a period of time
-// they will need to know the appropriate wrappedExternalBribe contract address
 // they will need to set up a public keeper, anyone can send the bribes
 // bribes are divided evenly into the amount of weeks designated when they deposit
-// each new deposit, will check for additional bribe tokens that may have been sent to the contract by accident
-// each new deposit will make a bribe immediately!
+// each new deposit will NOT make a bribe immediately!
 // calling the bribe function is public and is rewarded with a share of the bribe token
-// !!!!!!!!!!!this contract only handles a single bribe token, and a single bribe contract!!!!!!!!!
+// !!!!!!!!!!!this contract handles multiple bribe tokens, and a single bribe contract!!!!!!!!!
 
 contract AutoBribe is Ownable {
     using SafeERC20 for IERC20;
@@ -26,6 +24,7 @@ contract AutoBribe is Ownable {
     address public immutable wBribe;
 
     address public project;
+    bool sealed;
     uint256 public nextWeek;
     address[] public bribeTokens;
     bool sealed;
@@ -91,7 +90,10 @@ contract AutoBribe is Ownable {
                     msg.sender,
                     gasReward
                 );
-                WrappedBribe(wBribe).notifyRewardAmount(_bribeToken, bribeAmount - gasReward);
+                WrappedBribe(wBribe).notifyRewardAmount(
+                    _bribeToken,
+                    bribeAmount - gasReward
+                );
                 bribeTokenToWeeksLeft[_bribeToken] = weeksLeft - 1;
             }
             unchecked {
@@ -126,11 +128,24 @@ contract AutoBribe is Ownable {
             }
         }
     }
+
     //Allows project to seal the vault making it not possible for them to withdraw their tokens
     function seal() public {
         require(msg.sender = project);
         sealed = true;
     }
+
+    //Allows Velocimeter to re allow project to withdraw their tokens
+    function unSeal() public onlyOwner {
+        sealed = false;
+    }
+
+    //Allows project to seal the vault making it not possible for them to withdraw their tokens
+    function seal() public {
+        require(msg.sender = project);
+        sealed = true;
+    }
+
     //Allows Velocimeter to re allow project to withdraw their tokens
     function unSeal() public onlyOwner {
         sealed = false;
