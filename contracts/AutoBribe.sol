@@ -26,7 +26,7 @@ contract AutoBribe is Ownable {
     address public immutable wBribe;
 
     address public project;
-    bool sealed;
+    bool public sealed;
     uint256 public nextWeek;
     address[] public bribeTokens;
     mapping(address => bool) bribeTokensDeposited;
