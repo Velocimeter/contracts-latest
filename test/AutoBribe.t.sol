@@ -4,6 +4,7 @@ import "./BaseTest.sol";
 import "contracts/AutoBribe.sol";
 import "contracts/WrappedBribe.sol";
 import "contracts/factories/WrappedBribeFactory.sol";
+import "contracts/factories/WrappedExternalBribeFactory.sol";
 import "forge-std/console2.sol";
 
 contract AutoBribeTest is BaseTest {
@@ -11,6 +12,7 @@ contract AutoBribeTest is BaseTest {
     GaugeFactory gaugeFactory;
     BribeFactory bribeFactory;
     WrappedBribeFactory wbribeFactory;
+    WrappedExternalBribeFactory wxbribeFactory;
     Voter voter;
     RewardsDistributor distributor;
     Minter minter;
@@ -42,18 +44,19 @@ contract AutoBribeTest is BaseTest {
         // deployVoter()
         gaugeFactory = new GaugeFactory();
         bribeFactory = new BribeFactory();
-        wbribeFactory = new WrappedBribeFactory(address(owner));
+        wxbribeFactory = new WrappedExternalBribeFactory();
         voter = new Voter(
             address(escrow),
             address(factory),
             address(gaugeFactory),
             address(bribeFactory),
-            address(wbribeFactory)
+            address(wxbribeFactory)
         );
+        wbribeFactory = new WrappedBribeFactory(address(voter));
 
         escrow.setVoter(address(voter));
-        wbribeFactory.setVoter(address(voter));
         factory.setVoter(address(voter));
+        wxbribeFactory.setVoter(address(voter));
         deployPairWithOwner(address(owner));
 
         // deployMinter()
@@ -76,8 +79,8 @@ contract AutoBribeTest is BaseTest {
         // USDC - FRAX stable
         gauge = Gauge(voter.createGauge(address(pair)));
         xbribe = ExternalBribe(gauge.external_bribe());
-        wbribe = WrappedBribe(wbribeFactory.oldBribeToNew(address(xbribe)));
-        autoBribe = new AutoBribe(address(wbribe), address(owner), csrNftId);
+        wbribe = WrappedBribe(wbribeFactory.createBribe(address(xbribe)));
+        autoBribe = new AutoBribe(address(wbribe), address(owner));
 
         vm.startPrank(address(owner));
         autoBribe.setProject(address(owner2));
