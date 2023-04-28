@@ -8,12 +8,10 @@ contract WrappedBribeFactory {
     address public constant TURNSTILE = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
     uint256 public immutable csrNftId;
     address public immutable voter;
-    address public immutable team;
     mapping(address => address) public oldBribeToNew;
     address public last_bribe;
 
-    constructor(address _team, address _voter, uint256 _csrNftId) {
-        team = _team;
+    constructor(address _voter, uint256 _csrNftId) {
         voter = _voter;
         ITurnstile(TURNSTILE).assign(_csrNftId);
         csrNftId = _csrNftId;

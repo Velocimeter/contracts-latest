@@ -40,7 +40,7 @@ contract WrappedBribesTest is BaseTest {
         gaugeFactory = new GaugeFactory(csrNftId);
         bribeFactory = new BribeFactory(csrNftId);
         voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory), csrNftId);
-        wxbribeFactory = new WrappedBribeFactory(address(owner), address(voter), csrNftId);
+        wxbribeFactory = new WrappedBribeFactory(address(voter), csrNftId);
 
         escrow.setVoter(address(voter));
         factory.setVoter(address(voter));
