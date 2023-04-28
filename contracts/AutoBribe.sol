@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-import "openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
-import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
-import "openzeppelin-contracts/contracts/utils/math/SafeMath.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 import "openzeppelin-contracts/contracts/utils/Context.sol";
 import "openzeppelin-contracts/contracts/utils/Address.sol";
-import 'contracts/interfaces/ITurnstile.sol';
-import {WrappedBribe} from 'contracts/WrappedBribe.sol';
+import "contracts/interfaces/ITurnstile.sol";
+import "contracts/interfaces/IERC20.sol";
+import "contracts/WrappedBribe.sol";
 
 pragma solidity 0.8.13;
 
@@ -19,18 +17,26 @@ pragma solidity 0.8.13;
 // !!!!!!!!!!!this contract handles multiple bribe tokens, and a single bribe contract!!!!!!!!!
 
 contract AutoBribe is Ownable {
-    using SafeERC20 for IERC20;
-    using SafeMath for uint256;
-
-    address public constant TURNSTILE = 0xEcf044C5B4b867CFda001101c617eCd347095B44;
+    address public constant TURNSTILE =
+        0xEcf044C5B4b867CFda001101c617eCd347095B44;
     address public immutable wBribe;
 
     address public project;
     bool public depositSealed;
     uint256 public nextWeek;
     address[] public bribeTokens;
-    mapping(address => bool) bribeTokensDeposited;
-    mapping(address => uint256) bribeTokenToWeeksLeft;
+    mapping(address => bool) public bribeTokensDeposited;
+    mapping(address => uint256) public bribeTokenToWeeksLeft;
+
+    event Deposited(
+        address indexed _bribeToken,
+        uint256 _amount,
+        uint256 _weeks
+    );
+    event Bribed(uint256 indexed _timestamp, address _briber);
+    event EmptiedOut(uint256 indexed _timestamp, address project);
+    event Sealed(uint256 indexed _timestamp);
+    event UnSealed(uint256 indexed _timestamp);
 
     constructor(address _wBribe, address _team, uint256 _csrNftId) {
         wBribe = _wBribe;
@@ -66,16 +72,19 @@ contract AutoBribe is Ownable {
         require(msg.sender == project, "only the project can bribe");
         require(_amount > 0, "Why are you depositing 0 tokens?");
         require(_weeks > 0, "You have to put at least 1 week");
-        IERC20(_bribeToken).safeTransferFrom(
-            msg.sender,
+        _safeTransferFrom(_bribeToken, msg.sender, address(this), _amount);
+        uint256 allowance = IERC20(_bribeToken).allowance(
             address(this),
-            _amount
+            wBribe
         );
+        _safeApprove(_bribeToken, wBribe, allowance + _amount);
         if (!bribeTokensDeposited[_bribeToken]) {
             bribeTokensDeposited[_bribeToken] = true;
             bribeTokens.push(_bribeToken);
         }
-        bribeTokenToWeeksLeft[_bribeToken] = _weeks;
+        bribeTokenToWeeksLeft[_bribeToken] += _weeks;
+
+        emit Deposited(_bribeToken, _amount, _weeks);
     }
 
     function bribe() public {
@@ -87,11 +96,7 @@ contract AutoBribe is Ownable {
                 uint256 weeksLeft = bribeTokenToWeeksLeft[_bribeToken];
                 uint256 bribeAmount = balance(_bribeToken) / weeksLeft;
                 uint256 gasReward = bribeAmount / 10000;
-                IERC20(_bribeToken).safeTransferFrom(
-                    address(this),
-                    msg.sender,
-                    gasReward
-                );
+                _safeTransfer(_bribeToken, msg.sender, gasReward);
                 WrappedBribe(wBribe).notifyRewardAmount(
                     _bribeToken,
                     bribeAmount - gasReward
@@ -103,6 +108,8 @@ contract AutoBribe is Ownable {
             }
         }
 
+        emit Bribed(nextWeek, msg.sender);
+
         nextWeek = nextWeek + 604800;
     }
 
@@ -112,43 +119,85 @@ contract AutoBribe is Ownable {
 
     //####Admin Functions#####
     function emptyOut() public {
-        require(msg.sender == project);
-        require(!depositSealed);
+        require(msg.sender == project, "only project can empty out");
+        require(!depositSealed, "deposit is sealed");
         uint256 length = bribeTokens.length;
         uint256 amount;
 
         for (uint256 i = 0; i < length; ) {
             address bribeToken = bribeTokens[i];
             amount = balance(bribeToken);
-            bribeTokensDeposited[bribeToken] = false;
             bribeTokenToWeeksLeft[bribeToken] = 0;
-            IERC20(bribeToken).safeTransfer(msg.sender, amount);
+            _safeTransfer(bribeToken, msg.sender, amount);
 
             unchecked {
                 ++i;
             }
         }
+
+        emit EmptiedOut(block.timestamp, project);
     }
 
     //Allows project to seal the vault making it not possible for them to withdraw their tokens
     function seal() public {
-        require(msg.sender = project);
+        require(msg.sender == project, "only project can seal");
         depositSealed = true;
+
+        emit Sealed(block.timestamp);
     }
 
     //Allows Velocimeter to re allow project to withdraw their tokens
     function unSeal() public onlyOwner {
         depositSealed = false;
+
+        emit UnSealed(block.timestamp);
     }
 
     function setProject(address _newWallet) public {
-        require(msg.sender == project || msg.sender == owner());
+        require(
+            msg.sender == project || msg.sender == owner(),
+            "only project or team"
+        );
         project = _newWallet;
     }
 
     function inCaseTokensGetStuck(address _token) external onlyOwner {
         require(!bribeTokensDeposited[_token], "!bribeToken");
         uint256 amount = IERC20(_token).balanceOf(address(this));
-        IERC20(_token).safeTransfer(msg.sender, amount);
+        _safeTransfer(_token, msg.sender, amount);
+    }
+
+    function _safeTransfer(address token, address to, uint256 value) internal {
+        require(token.code.length > 0);
+        (bool success, bytes memory data) = token.call(
+            abi.encodeWithSelector(IERC20.transfer.selector, to, value)
+        );
+        require(success && (data.length == 0 || abi.decode(data, (bool))));
+    }
+
+    function _safeTransferFrom(
+        address token,
+        address from,
+        address to,
+        uint256 value
+    ) internal {
+        require(token.code.length > 0);
+        (bool success, bytes memory data) = token.call(
+            abi.encodeWithSelector(
+                IERC20.transferFrom.selector,
+                from,
+                to,
+                value
+            )
+        );
+        require(success && (data.length == 0 || abi.decode(data, (bool))));
+    }
+
+    function _safeApprove(address token, address spender, uint value) internal {
+        require(token.code.length > 0);
+        (bool success, bytes memory data) = token.call(
+            abi.encodeWithSelector(IERC20.approve.selector, spender, value)
+        );
+        require(success && (data.length == 0 || abi.decode(data, (bool))));
     }
 }
