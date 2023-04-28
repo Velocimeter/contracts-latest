@@ -23,6 +23,7 @@ contract AutoBribe is Ownable {
 
     address public project;
     bool public depositSealed;
+    bool public initialized;
     uint256 public nextWeek;
     address[] public bribeTokens;
     mapping(address => bool) public bribeTokensDeposited;
@@ -95,7 +96,7 @@ contract AutoBribe is Ownable {
                 _bribeToken = bribeTokens[i];
                 uint256 weeksLeft = bribeTokenToWeeksLeft[_bribeToken];
                 uint256 bribeAmount = balance(_bribeToken) / weeksLeft;
-                uint256 gasReward = bribeAmount / 10000;
+                uint256 gasReward = bribeAmount / 200;
                 _safeTransfer(_bribeToken, msg.sender, gasReward);
                 WrappedBribe(wBribe).notifyRewardAmount(
                     _bribeToken,
@@ -155,9 +156,12 @@ contract AutoBribe is Ownable {
 
     function setProject(address _newWallet) public {
         require(
-            msg.sender == project || msg.sender == owner(),
+            msg.sender == project || (msg.sender == owner() && !initialized),
             "only project or team"
         );
+        if (!initialized) {
+            initialized = true;
+        }
         project = _newWallet;
     }
 
