@@ -19,6 +19,7 @@ contract WrappedBribe {
 
     mapping(address => mapping(uint => uint)) public tokenRewardsPerEpoch;
     mapping(address => uint) public periodFinish;
+    mapping(address => uint) public lastUpdated;
     mapping(address => mapping(uint => uint)) public lastEarn;
 
     address[] public rewards;
@@ -204,6 +205,7 @@ contract WrappedBribe {
                 tokenRewardBalance[tokens[i]] = rewardBalance + difference;
 
                 periodFinish[tokens[i]] = adjustedTstamp + DURATION;
+                lastUpdated[tokens[i]] = block.timetstamp;
 
                 emit NotifyReward(msg.sender, tokens[i], adjustedTstamp, difference);
             }
