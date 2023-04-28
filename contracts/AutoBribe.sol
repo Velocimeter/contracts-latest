@@ -153,7 +153,7 @@ contract AutoBribe is Ownable {
     function setProject(address _newWallet) public {
         require(
             msg.sender == project || (msg.sender == owner() && !initialized),
-            "only project or team"
+            "only project / team can only set once"
         );
         if (!initialized) {
             initialized = true;
