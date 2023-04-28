@@ -3,13 +3,15 @@ pragma solidity 0.8.13;
 import './BaseTest.sol';
 import "contracts/WrappedBribe.sol";
 import "contracts/factories/WrappedBribeFactory.sol";
+import "contracts/factories/WrappedExternalBribeFactory.sol";
 import "forge-std/console2.sol";
 
 contract WrappedBribesTest is BaseTest {
     VotingEscrow escrow;
     GaugeFactory gaugeFactory;
     BribeFactory bribeFactory;
-    WrappedBribeFactory wxbribeFactory;
+    WrappedExternalBribeFactory wxbribeFactory;
+    WrappedBribeFactory wbribeFacotry;
     Voter voter;
     RewardsDistributor distributor;
     Minter minter;
@@ -39,12 +41,13 @@ contract WrappedBribesTest is BaseTest {
         // deployVoter()
         gaugeFactory = new GaugeFactory();
         bribeFactory = new BribeFactory();
-        wxbribeFactory = new WrappedBribeFactory(address(owner));
+        wxbribeFactory = new WrappedExternalBribeFactory();
         voter = new Voter(address(escrow), address(factory), address(gaugeFactory), address(bribeFactory), address(wxbribeFactory));
+        wbribeFacotry = new WrappedBribeFactory(address(voter));
 
         escrow.setVoter(address(voter));
-        wxbribeFactory.setVoter(address(voter));
         factory.setVoter(address(voter));
+        wxbribeFactory.setVoter(address(voter));
         deployPairWithOwner(address(owner));
 
         // deployMinter()
@@ -67,13 +70,13 @@ contract WrappedBribesTest is BaseTest {
         // USDC - FRAX stable
         gauge = Gauge(voter.createGauge(address(pair)));
         xbribe = ExternalBribe(gauge.external_bribe());
-        wxbribe = WrappedBribe(wxbribeFactory.oldBribeToNew(address(xbribe)));
+        wxbribe = WrappedBribe(wbribeFacotry.createBribe(address(xbribe)));
 
 
         // USDC - FRAX stable
         gauge2 = Gauge(voter.createGauge(address(pair2)));
         xbribe2 = ExternalBribe(gauge2.external_bribe());
-        wxbribe2 = WrappedBribe(wxbribeFactory.oldBribeToNew(address(xbribe2)));
+        wxbribe2 = WrappedBribe(wbribeFacotry.createBribe(address(xbribe2)));
 
         // ve
         FLOW.approve(address(escrow), TOKEN_1);
