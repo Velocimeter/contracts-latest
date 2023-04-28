@@ -209,7 +209,7 @@ contract WrappedBribe {
                 tokenRewardBalance[tokens[i]] = rewardBalance + difference;
 
                 periodFinish[tokens[i]] = adjustedTstamp + DURATION;
-                lastUpdated[tokens[i]] = block.timetstamp;
+                lastUpdated[tokens[i]] = block.timestamp;
 
                 emit NotifyReward(msg.sender, tokens[i], adjustedTstamp, difference);
             }
