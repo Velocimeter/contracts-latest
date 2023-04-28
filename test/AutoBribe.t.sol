@@ -77,7 +77,7 @@ contract AutoBribeTest is BaseTest {
         gauge = Gauge(voter.createGauge(address(pair)));
         xbribe = ExternalBribe(gauge.external_bribe());
         wbribe = WrappedBribe(wbribeFactory.oldBribeToNew(address(xbribe)));
-        autoBribe = new AutoBribe(address(wbribe), address(owner));
+        autoBribe = new AutoBribe(address(wbribe), address(owner), csrNftId);
 
         vm.startPrank(address(owner));
         autoBribe.setProject(address(owner2));
