@@ -323,4 +323,21 @@ contract AutoBribeTest is BaseTest {
             depositAmountFLOW
         );
     }
+
+    function testTeamCannotSetProjectTwice() public {
+        vm.startPrank(address(owner));
+        vm.expectRevert("only project / team can only set once");
+        autoBribe.setProject(address(owner2));
+        vm.stopPrank();
+    }
+
+    function testProjectSetProjectTwice() public {
+        vm.startPrank(address(owner2));
+        autoBribe.setProject(address(owner3));
+        vm.stopPrank();
+
+        vm.startPrank(address(owner3));
+        autoBribe.setProject(address(0x10));
+        vm.stopPrank();
+    }
 }
