@@ -149,17 +149,6 @@ contract AutoBribe is Ownable {
         emit UnSealed(block.timestamp);
     }
 
-    //Allows project to seal the vault making it not possible for them to withdraw their tokens
-    function seal() public {
-        require(msg.sender = project);
-        sealed = true;
-    }
-
-    //Allows Velocimeter to re allow project to withdraw their tokens
-    function unSeal() public onlyOwner {
-        sealed = false;
-    }
-
     function setProject(address _newWallet) public {
         require(
             msg.sender == project || msg.sender == owner(),
