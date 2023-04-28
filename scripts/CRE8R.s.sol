@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 
-// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://canto.slingshot.finance	  -vvv --broadcast
+// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://canto.slingshot.finance	  -vvv --broadcast --slow
+// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://mainnode.plexnode.org:8545	  -vvv --broadcast --slow
+
 
 pragma solidity 0.8.13;
 
@@ -27,6 +29,8 @@ address constant flowAddy = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
 address constant hotwallet = 0xA67D2c03c3cfe6177a60cAed0a4cfDA7C7a563e0;
 address constant cre8rGauge = 0x187ed9851D7ADB5798D9A8e8FF40005d23D68682;
 address constant stETHGauge = 0x85ff8B9AD71B667EF44E3A7D1aBeC3fE55d30831;
+address constant eth = 0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687;
+address constant cre8r = 0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055;
 uint256 constant tknID = 83;
 
 
@@ -43,15 +47,30 @@ contract CRE8R is Script {
         uint256 govPrivateKey = vm.envUint("CRE8R_PRIVATE_KEY");
         vm.startBroadcast(govPrivateKey);
 
-        getRewards();
-        getRebase();
-        increaseLock();
-        increaseTime();
-        vote();
+        // getRewards();
+        // getRebase();
+        // increaseLock();
+        // increaseTime();
+        // vote();
+
+        // claimBribes();
 
         vm.stopBroadcast();
 
         }       
+
+    // function claimBribes() private{
+    //   address[] memory cre8r_eth_wbribe = [0xf81568C88b8dCD42764c31437f918eBBB705F067];
+ function claimBribes() private { 
+      address[] memory cre8r_eth_wbribe = new address[](1); 
+      cre8r_eth_wbribe[0] = 0xf81568C88b8dCD42764c31437f918eBBB705F067
+      address[][] memory bribes = new address[][](1);
+      address[] memory bribeArray = new address[](2);
+      bribeArray[0] = eth;
+      bribeArray[1] = cre8r;
+      bribes[0] = bribeArray; 
+      
+      voter.claimBribes(cre8r_eth_wbribe, bribes, tknID);
 
     function getRewards() private {        
         IGauge(cre8rGauge).getReward(hotwallet, rewards);

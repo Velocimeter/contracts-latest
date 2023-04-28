@@ -25,13 +25,14 @@ contract VoteEOA is Script {
     address[] private FLOW_ATOM = [0xddA6259A93649346535db8744502493ee023208D];
     address[] private ACS_USDC = [0x9A408eC2c41FADC0D73a61F46060E83fF864D2E6];
     address[] private ETH_WCANTO = [0x96D976892c6f01Ab5c13E843B38BEe90C2238F03];
+    address[] private underFLOW_FLOW = [0x531aa71E2B01Db990B8B1f5d94fBfdc9FFc217B6];
 
 
       uint256[] ONEHUNDRED = [10000];
       uint256[] FIFTY = [5000];
       uint256[] THIRTY = [3000];
 
-    uint256[] tokenIds = [29,30,31,32,51,52,53,54];
+    uint256[] tokenIds = [29,30,31,32,51,52,53,54,85];
 
 
     function run() external {
@@ -40,8 +41,17 @@ contract VoteEOA is Script {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
+        getRebase();
+        // getRebase(29);
+        // getRebase(30);
+        // getRebase(31);
+        // getRebase(32);
+        // getRebase(51);
+        // getRebase(52);
+        // getRebase(53);
+        // getRebase(29);
+        
 
-        getRebase(); 
         // votingEscrow.increase_unlock_time(29, 126242339); 
         // votingEscrow.increase_unlock_time(30, 126242339);
         // votingEscrow.increase_unlock_time(31, 126242339); 
@@ -60,6 +70,7 @@ contract VoteEOA is Script {
         voter.vote(52, FLOW_ETH, ONEHUNDRED ); //  2M 
         voter.vote(53, FLOW_ETH, ONEHUNDRED ); //  2M 
         voter.vote(54, FLOW_ETH, ONEHUNDRED ); // 2M 
+        voter.vote(85, underFLOW_FLOW, ONEHUNDRED); //1M
 
 
 
@@ -71,12 +82,12 @@ contract VoteEOA is Script {
         // voter.reset(52); // 2m
         // voter.reset(53); // 2m
         // voter.reset(54); // 2m
+        // voter.reset(85); // 1m 4yr voting
         // voter.reset(84); // 1m 2yr listed on ALTO
-        // voter.reset(85); // 1m 2yr
         // voter.reset(90); // 1m 1yr 
         // voter.reset(91); // 1m 1yr
         // voter.reset(92); // 1m 1yr
-        // voter.reset(93); // 1m 1yr voted on SOMM:NOTE
+        // voter.reset(93); // 1m 1yr 
 
 
         vm.stopBroadcast();

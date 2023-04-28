@@ -61,19 +61,19 @@ contract VotePOVP is Script {
         // votingEscrow.increase_unlock_time(13, 126242339); 
         // votingEscrow.increase_unlock_time(14, 126242339); 
 
-        voter.vote(2, FLOW_USDC, ONEHUNDRED ); // 1M  
-        voter.vote(3, FLOW_USDC, ONEHUNDRED ); // 1M 
-        voter.vote(4, WCANTO_BNB, ONEHUNDRED ); // 1M
-        voter.vote(5, FLOW_WCANTO, ONEHUNDRED ); // 1M
-        voter.vote(6, FLOW_WCANTO, ONEHUNDRED ); // 1M reset()
-        voter.vote(7, FLOW_WCANTO, ONEHUNDRED ); // 2M
-        voter.vote(8, FLOW_NOTE, ONEHUNDRED ); //  2M
-        voter.vote(9, FLOW_NOTE, ONEHUNDRED ); // 2M
-        voter.vote(10, FLOW_NOTE, ONEHUNDRED ); //  2M
-        voter.vote(11, FLOW_NOTE, ONEHUNDRED ); // 2M
-        voter.vote(12, FLOW_WCANTO, ONEHUNDRED ); // 2M
-        voter.vote(13, FLOW_WCANTO, ONEHUNDRED ); //  3M
-        voter.vote(14, FLOW_WCANTO, ONEHUNDRED ); // 3M
+        voter.vote(2, FLOW_USDC, ONEHUNDRED); // 1M  
+        voter.vote(3, FLOW_USDC, ONEHUNDRED); // 1M 
+        voter.vote(4, WCANTO_BNB, ONEHUNDRED); // 1M
+        voter.vote(5, FLOW_WCANTO, ONEHUNDRED); // 1M
+        voter.vote(6, FLOW_WCANTO, ONEHUNDRED); // 1M reset()
+        voter.vote(7, FLOW_WCANTO, ONEHUNDRED); // 2M
+        voter.vote(8, FLOW_NOTE, ONEHUNDRED); //  2M
+        voter.vote(9, FLOW_NOTE, ONEHUNDRED); // 2M
+        voter.vote(10, FLOW_NOTE, ONEHUNDRED); //  2M
+        voter.vote(11, FLOW_NOTE, ONEHUNDRED); // 2M
+        voter.vote(12, FLOW_WCANTO, ONEHUNDRED); // 2M
+        voter.vote(13, FLOW_WCANTO, ONEHUNDRED); //  3M
+        voter.vote(14, FLOW_WCANTO, ONEHUNDRED); // 3M
 
         vm.stopBroadcast();
 

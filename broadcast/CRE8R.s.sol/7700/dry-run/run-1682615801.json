@@ -1,0 +1,97 @@
+{
+  "transactions": [
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x187ed9851D7ADB5798D9A8e8FF40005d23D68682",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://canto.slingshot.finance",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xa67d2c03c3cfe6177a60caed0a4cfda7c7a563e0",
+        "to": "0x187ed9851d7adb5798d9a8e8ff40005d23d68682",
+        "gas": "0x6a341",
+        "value": "0x0",
+        "data": "0x31279d3d000000000000000000000000a67d2c03c3cfe6177a60caed0a4cfda7c7a563e000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000b5b060055f0d1ef5174329913ef861bc3addf029",
+        "nonce": "0x47",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x85ff8B9AD71B667EF44E3A7D1aBeC3fE55d30831",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://canto.slingshot.finance",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xa67d2c03c3cfe6177a60caed0a4cfda7c7a563e0",
+        "to": "0x85ff8b9ad71b667ef44e3a7d1abec3fe55d30831",
+        "gas": "0x712ae",
+        "value": "0x0",
+        "data": "0x31279d3d000000000000000000000000a67d2c03c3cfe6177a60caed0a4cfda7c7a563e000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000b5b060055f0d1ef5174329913ef861bc3addf029",
+        "nonce": "0x48",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://canto.slingshot.finance",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xa67d2c03c3cfe6177a60caed0a4cfda7c7a563e0",
+        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
+        "gas": "0x5131d",
+        "value": "0x0",
+        "data": "0xa183af520000000000000000000000000000000000000000000000000000000000000053000000000000000000000000000000000000000000000764e7062eb9841a8a50",
+        "nonce": "0x49",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://canto.slingshot.finance",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xa67d2c03c3cfe6177a60caed0a4cfda7c7a563e0",
+        "to": "0x8e3525dbc8356c08d2d55f3acb6416b5979d3389",
+        "gas": "0x4d01b",
+        "value": "0x0",
+        "data": "0x7ac09bf70000000000000000000000000000000000000000000000000000000000000053000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000001000000000000000000000000237f9c6d2bbeacc91049710ac47e3eac83cdc55c00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000002710",
+        "nonce": "0x4a",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [],
+  "path": "/Users/chris/Documents/Velocimeter/contracts-latest/broadcast/CRE8R.s.sol/7700/dry-run/run-latest.json",
+  "returns": {},
+  "timestamp": 1682615801,
+  "chain": 7700,
+  "multi": false,
+  "commit": "6d587fa"
+}
