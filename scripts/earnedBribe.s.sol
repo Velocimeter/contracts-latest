@@ -6,6 +6,8 @@ pragma solidity 0.8.13;
 import "forge-std/console2.sol";
 import {Script} from "../lib/forge-std/src/Script.sol";
 import {WrappedExternalBribe} from "../contracts/WrappedExternalBribe.sol";
+import {Voter} from "../contracts/Voter.sol";
+import {Pair} from "../contracts/Pair.sol";
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 
@@ -23,6 +25,7 @@ address constant eth = 0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687;
 address constant multiBTC = 0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844;
 address constant wBTC = 0x08638a74A8134c747Dce29B57472cc2B57F35653;
 address constant somm = 0xFA3C22C069B9556A4B2f7EcE1Ee3B467909f4864;
+address constant yfx = 0x8901cB2e82CC95c01e42206F8d1F417FE53e7Af0;
 
 
 // wExBribe addresses
@@ -35,20 +38,29 @@ address constant wCanto_Flow = 0x1aF8bAD14e87798f6B7D1f2a928Dcf650b1E2827;
 address constant busd_note = 0x34bb935a50CfDD2F9AcF9fE0Ed71275e05E41314;
 address constant wCanto_somm = 0x90Cd1d0F111c688C5FE89e7f3F8216F13f7Bbb3E;
 address constant cre8r_eth = 0xf81568C88b8dCD42764c31437f918eBBB705F067;
+address constant flow_somm = 0x7d82cf9EA31cF0B96b9a38671D3aE90076A9f5E0;
+address constant note_yfx = 0x5b2DB4398f579c53Ca04d1430DDC5f58100ae49d;
 
 
 
 contract earnedBribe is Script { 
-      address private wBribe = multiBTC_wCanto;
-      address private tkn1 = multiBTC;
-      address private tkn2 = usdt;
-      uint256 private nftID = 448;
+      address private wBribe = wCanto_somm;
+      address private tkn1 = wCanto;
+      address private tkn2 = somm;
+      uint256 private nftID = 97;
 
 
     function run() external {
         uint256 PrivateKey = vm.envUint("ASSETEOA_PRIVATE_KEY");
         vm.startBroadcast(PrivateKey);
         WrappedExternalBribe wExBribe = WrappedExternalBribe(wBribe);
+        Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
+
+        address pool = voter.poolVote(nftID, 1);
+        Pair pair = Pair(pool);
+        string memory pairSymbol = pair.symbol();        
+        console2.log(pairSymbol);
+
         
         uint balTkn1 = IERC20(tkn1).balanceOf(wBribe);
         uint balTkn2 = IERC20(tkn2).balanceOf(wBribe);
@@ -80,6 +92,10 @@ contract earnedBribe is Script {
 
 
         vm.stopBroadcast();
+    }
+
+    function getVotedOn() private {
+        
     }
 
 }
