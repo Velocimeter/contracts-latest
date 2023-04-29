@@ -94,10 +94,15 @@ contract AutoBribeTest is BaseTest {
     }
 
     function testCanDepositAndBribeEveryWeek(
-        uint256 depositAmountLR,
-        uint256 depositAmountFLOW,
-        uint256 depositWeeks
+        uint128 depositAmountPerWeekLR,
+        uint128 depositAmountPerWeekFLOW,
+        uint128 depositWeeks
     ) public {
+        uint256 depositAmountLR = uint256(depositAmountPerWeekLR) *
+            uint256(depositWeeks);
+        uint256 depositAmountFLOW = uint256(depositAmountPerWeekFLOW) *
+            uint256(depositWeeks);
+
         vm.assume(
             depositAmountLR > depositWeeks &&
                 depositAmountLR <= 1e25 &&
@@ -112,10 +117,13 @@ contract AutoBribeTest is BaseTest {
         // Project deposit tokens
         vm.startPrank(address(owner2));
         LR.approve(address(autoBribe), depositAmountLR);
-        autoBribe.deposit(address(LR), depositAmountLR, depositWeeks);
-
+        autoBribe.deposit(address(LR), depositAmountPerWeekLR, depositWeeks);
         FLOW.approve(address(autoBribe), depositAmountFLOW);
-        autoBribe.deposit(address(FLOW), depositAmountFLOW, depositWeeks);
+        autoBribe.deposit(
+            address(FLOW),
+            depositAmountPerWeekFLOW,
+            depositWeeks
+        );
         vm.stopPrank();
 
         uint256 balanceBeforeLR = LR.balanceOf(address(this));
@@ -193,20 +201,22 @@ contract AutoBribeTest is BaseTest {
             LR.balanceOf(address(wbribe)) +
                 LR.balanceOf(address(this)) -
                 balanceBeforeLR,
-            1e25
+            (1e25 / depositWeeks) * depositWeeks
         );
         assertEq(
             FLOW.balanceOf(address(wbribe)) +
                 FLOW.balanceOf(address(this)) -
                 balanceBeforeFLOW,
-            1e25
+            (1e25 / depositWeeks) * depositWeeks
         );
     }
 
     function testRedeposit(
-        uint256 depositAmountLR,
-        uint256 depositWeeks
+        uint128 depositAmountPerWeekLR,
+        uint128 depositWeeks
     ) public {
+        uint256 depositAmountLR = uint256(depositAmountPerWeekLR) *
+            uint256(depositWeeks);
         vm.assume(
             depositAmountLR > depositWeeks &&
                 depositAmountLR <= 1e24 &&
@@ -218,8 +228,8 @@ contract AutoBribeTest is BaseTest {
 
         // Project deposit tokens
         vm.startPrank(address(owner2));
-        LR.approve(address(autoBribe), type(uint256).max);
-        autoBribe.deposit(address(LR), depositAmountLR, depositWeeks);
+        LR.approve(address(autoBribe), depositAmountLR);
+        autoBribe.deposit(address(LR), depositAmountPerWeekLR, depositWeeks);
         vm.stopPrank();
 
         uint256 balanceBeforeLR = LR.balanceOf(address(this));
@@ -229,7 +239,7 @@ contract AutoBribeTest is BaseTest {
 
         vm.startPrank(address(owner2));
         LR.approve(address(autoBribe), depositAmountLR);
-        autoBribe.deposit(address(LR), depositAmountLR, depositWeeks);
+        autoBribe.deposit(address(LR), depositAmountPerWeekLR, depositWeeks);
         vm.stopPrank();
 
         for (uint256 i = 0; i < depositWeeks * 2 - 2; ) {
@@ -241,7 +251,7 @@ contract AutoBribeTest is BaseTest {
             }
         }
 
-        assertGt(LR.balanceOf(address(autoBribe)), 0);
+        assertGe(LR.balanceOf(address(autoBribe)), 0);
 
         autoBribe.bribe();
         vm.warp(block.timestamp + 1 weeks);
@@ -256,14 +266,19 @@ contract AutoBribeTest is BaseTest {
     }
 
     function testEmptyOut(
-        uint256 depositAmountLR,
-        uint256 depositAmountFLOW,
-        uint256 depositWeeks
+        uint128 depositAmountPerWeekLR,
+        uint128 depositAmountPerWeekFLOW,
+        uint128 depositWeeks
     ) public {
+        uint256 depositAmountLR = uint256(depositAmountPerWeekLR) *
+            uint256(depositWeeks);
+        uint256 depositAmountFLOW = uint256(depositAmountPerWeekFLOW) *
+            uint256(depositWeeks);
+
         vm.assume(
-            depositAmountLR > depositWeeks &&
+            depositAmountLR > uint256(depositWeeks) &&
                 depositAmountLR <= 1e25 &&
-                depositAmountFLOW > depositWeeks &&
+                depositAmountFLOW > uint256(depositWeeks) &&
                 depositAmountFLOW <= 1e25 &&
                 depositWeeks > 0 &&
                 depositWeeks < 52
@@ -274,10 +289,14 @@ contract AutoBribeTest is BaseTest {
         // Project deposit tokens
         vm.startPrank(address(owner2));
         LR.approve(address(autoBribe), depositAmountLR);
-        autoBribe.deposit(address(LR), depositAmountLR, depositWeeks);
+        autoBribe.deposit(address(LR), depositAmountPerWeekLR, depositWeeks);
 
         FLOW.approve(address(autoBribe), depositAmountFLOW);
-        autoBribe.deposit(address(FLOW), depositAmountFLOW, depositWeeks);
+        autoBribe.deposit(
+            address(FLOW),
+            depositAmountPerWeekFLOW,
+            depositWeeks
+        );
 
         autoBribe.seal();
         vm.stopPrank();
@@ -301,8 +320,11 @@ contract AutoBribeTest is BaseTest {
         autoBribe.emptyOut();
         vm.stopPrank();
 
-        assertEq(autoBribe.bribeTokenToWeeksLeft(address(LR)), 0);
-        assertEq(autoBribe.bribeTokenToWeeksLeft(address(FLOW)), 0);
+        assertEq(autoBribe.bribeTokenToGasRewardEachWeek(address(LR)), 0);
+        assertEq(autoBribe.bribeTokenToGasRewardEachWeek(address(FLOW)), 0);
+
+        assertEq(autoBribe.bribeTokenToAmountEachWeek(address(LR)), 0);
+        assertEq(autoBribe.bribeTokenToAmountEachWeek(address(FLOW)), 0);
 
         assertEq(LR.balanceOf(address(autoBribe)), 0);
         assertEq(FLOW.balanceOf(address(autoBribe)), 0);

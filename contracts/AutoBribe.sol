@@ -24,7 +24,8 @@ contract AutoBribe is Ownable {
     uint256 public nextWeek;
     address[] public bribeTokens;
     mapping(address => bool) public bribeTokensDeposited;
-    mapping(address => uint256) public bribeTokenToWeeksLeft;
+    mapping(address => uint256) public bribeTokenToAmountEachWeek;
+    mapping(address => uint256) public bribeTokenToGasRewardEachWeek;
 
     event Deposited(
         address indexed _bribeToken,
@@ -52,7 +53,7 @@ contract AutoBribe is Ownable {
             address bribeToken = _bribeTokens[i];
             deposit(
                 bribeToken,
-                IERC20(bribeToken).balanceOf(msg.sender),
+                IERC20(bribeToken).balanceOf(msg.sender) / _weeks,
                 _weeks
             );
             unchecked {
@@ -63,42 +64,61 @@ contract AutoBribe is Ownable {
 
     function deposit(
         address _bribeToken,
-        uint256 _amount,
+        uint256 _amountPerWeek,
         uint256 _weeks
     ) public {
         require(msg.sender == project, "only the project can bribe");
-        require(_amount > 0, "Why are you depositing 0 tokens?");
+        require(_amountPerWeek > 0, "Why are you depositing 0 tokens?");
         require(_weeks > 0, "You have to put at least 1 week");
-        _safeTransferFrom(_bribeToken, msg.sender, address(this), _amount);
+        _safeTransferFrom(
+            _bribeToken,
+            msg.sender,
+            address(this),
+            _amountPerWeek * _weeks
+        );
         uint256 allowance = IERC20(_bribeToken).allowance(
             address(this),
             wBribe
         );
-        _safeApprove(_bribeToken, wBribe, allowance + _amount);
+        _safeApprove(_bribeToken, wBribe, allowance + _amountPerWeek * _weeks);
         if (!bribeTokensDeposited[_bribeToken]) {
             bribeTokensDeposited[_bribeToken] = true;
             bribeTokens.push(_bribeToken);
         }
-        bribeTokenToWeeksLeft[_bribeToken] += _weeks;
+        uint256 gasRewardPerWeek = _amountPerWeek / 200;
+        bribeTokenToGasRewardEachWeek[_bribeToken] += gasRewardPerWeek;
 
-        emit Deposited(_bribeToken, _amount, _weeks);
+        uint256 amountEachWeek = _amountPerWeek - gasRewardPerWeek;
+        bribeTokenToAmountEachWeek[_bribeToken] += amountEachWeek;
+
+        emit Deposited(_bribeToken, _amountPerWeek * _weeks, _weeks);
     }
 
     function bribe() public {
         uint256 length = bribeTokens.length;
+        uint256 gasRewardPerWeek;
+        uint256 bribeAmountPerWeek;
+        uint256 tokenBalance;
         address _bribeToken;
         for (uint256 i = 0; i < length; ) {
             if (block.timestamp >= nextWeek) {
                 _bribeToken = bribeTokens[i];
-                uint256 weeksLeft = bribeTokenToWeeksLeft[_bribeToken];
-                uint256 bribeAmount = balance(_bribeToken) / weeksLeft;
-                uint256 gasReward = bribeAmount / 200;
-                _safeTransfer(_bribeToken, msg.sender, gasReward);
-                WrappedBribe(wBribe).notifyRewardAmount(
-                    _bribeToken,
-                    bribeAmount - gasReward
-                );
-                bribeTokenToWeeksLeft[_bribeToken] = weeksLeft - 1;
+                gasRewardPerWeek = bribeTokenToGasRewardEachWeek[_bribeToken];
+                bribeAmountPerWeek = bribeTokenToAmountEachWeek[_bribeToken];
+                tokenBalance = balance(_bribeToken);
+                if (tokenBalance >= gasRewardPerWeek + bribeAmountPerWeek) {
+                    _safeTransfer(_bribeToken, msg.sender, gasRewardPerWeek);
+                    WrappedBribe(wBribe).notifyRewardAmount(
+                        _bribeToken,
+                        bribeAmountPerWeek
+                    );
+                } else if (tokenBalance > gasRewardPerWeek) {
+                    _safeTransfer(_bribeToken, msg.sender, gasRewardPerWeek);
+                    WrappedBribe(wBribe).notifyRewardAmount(
+                        _bribeToken,
+                        tokenBalance - gasRewardPerWeek
+                    );
+                }
             }
             unchecked {
                 ++i;
@@ -120,11 +140,12 @@ contract AutoBribe is Ownable {
         require(!depositSealed, "deposit is sealed");
         uint256 length = bribeTokens.length;
         uint256 amount;
-
+        address bribeToken;
         for (uint256 i = 0; i < length; ) {
-            address bribeToken = bribeTokens[i];
+            bribeToken = bribeTokens[i];
             amount = balance(bribeToken);
-            bribeTokenToWeeksLeft[bribeToken] = 0;
+            bribeTokenToGasRewardEachWeek[bribeToken] = 0;
+            bribeTokenToAmountEachWeek[bribeToken] = 0;
             _safeTransfer(bribeToken, msg.sender, amount);
 
             unchecked {
