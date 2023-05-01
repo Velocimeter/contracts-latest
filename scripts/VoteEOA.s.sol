@@ -25,7 +25,7 @@ contract VoteEOA is Script {
     address[] private FLOW_ATOM = [0xddA6259A93649346535db8744502493ee023208D];
     address[] private ACS_USDC = [0x9A408eC2c41FADC0D73a61F46060E83fF864D2E6];
     address[] private ETH_WCANTO = [0x96D976892c6f01Ab5c13E843B38BEe90C2238F03];
-    address[] private underFLOW_FLOW = [0x531aa71E2B01Db990B8B1f5d94fBfdc9FFc217B6];
+    address[] private  WCANTO_BNB = [0x1f9AdfE106aA6220BCC898AE4B85d6F68d0aDbF5];
 
 
       uint256[] ONEHUNDRED = [10000];
@@ -41,16 +41,7 @@ contract VoteEOA is Script {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
-        getRebase();
-        // getRebase(29);
-        // getRebase(30);
-        // getRebase(31);
-        // getRebase(32);
-        // getRebase(51);
-        // getRebase(52);
-        // getRebase(53);
-        // getRebase(29);
-        
+        getRebase();     
 
         // votingEscrow.increase_unlock_time(29, 126242339); 
         // votingEscrow.increase_unlock_time(30, 126242339);
@@ -70,7 +61,7 @@ contract VoteEOA is Script {
         voter.vote(52, FLOW_ETH, ONEHUNDRED ); //  2M 
         voter.vote(53, FLOW_ETH, ONEHUNDRED ); //  2M 
         voter.vote(54, FLOW_ETH, ONEHUNDRED ); // 2M 
-        voter.vote(85, underFLOW_FLOW, ONEHUNDRED); //1M
+        voter.vote(85, WCANTO_BNB, ONEHUNDRED); //1M
 
 
 

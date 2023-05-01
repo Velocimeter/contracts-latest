@@ -29,7 +29,8 @@ contract VotePOVP is Script {
       address[] private  FLOW_USDT = [0x6f00840f81C41DC2f7C6f81Eb2E3EaeA973DBF5f]; //<-stop voting
       address[] private  FLOW_multiBTC = [0x4eDBd1606Ab49e22846dd1EE2529E5FdA48FE062];
       address[] private  FLOW_ATOM = [0xddA6259A93649346535db8744502493ee023208D];
-      address[] private  WCANTO_BNB = [0x1f9AdfE106aA6220BCC898AE4B85d6F68d0aDbF5];
+      address[] private underFLOW_FLOW = [0x531aa71E2B01Db990B8B1f5d94fBfdc9FFc217B6];
+
 
 
       uint256[] ONEHUNDRED = [10000];
@@ -63,7 +64,7 @@ contract VotePOVP is Script {
 
         voter.vote(2, FLOW_USDC, ONEHUNDRED); // 1M  
         voter.vote(3, FLOW_USDC, ONEHUNDRED); // 1M 
-        voter.vote(4, WCANTO_BNB, ONEHUNDRED); // 1M
+        voter.vote(4, underFLOW_FLOW, ONEHUNDRED); // 1M
         voter.vote(5, FLOW_WCANTO, ONEHUNDRED); // 1M
         voter.vote(6, FLOW_WCANTO, ONEHUNDRED); // 1M reset()
         voter.vote(7, FLOW_WCANTO, ONEHUNDRED); // 2M
