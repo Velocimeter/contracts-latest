@@ -265,6 +265,39 @@ contract AutoBribeTest is BaseTest {
         );
     }
 
+    function testCannotBribeTwice(
+        uint256 depositAmountLR,
+        uint256 depositWeeks
+    ) public {
+        vm.assume(
+            depositAmountLR > depositWeeks &&
+                depositAmountLR <= 1e25 &&
+                depositWeeks > 0 &&
+                depositWeeks < 52
+        );
+
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // Project deposit tokens
+        vm.startPrank(address(owner2));
+        LR.approve(address(autoBribe), depositAmountLR);
+        autoBribe.deposit(address(LR), depositAmountLR, depositWeeks);
+        vm.stopPrank();
+
+        uint256 pre = LR.balanceOf(address(wbribe));
+
+        autoBribe.bribe();
+
+        uint256 post = LR.balanceOf(address(wbribe));
+
+        autoBribe.bribe();
+
+        uint256 post_post = LR.balanceOf(address(wbribe));
+
+        assertGt(post - pre, 0);
+        assertEq(post_post - post, 0);
+    }
+
     function testEmptyOut(
         uint256 depositAmountLR,
         uint256 depositAmountFLOW,

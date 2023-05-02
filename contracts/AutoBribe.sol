@@ -41,6 +41,7 @@ contract AutoBribe is Ownable {
 
     constructor(address _wBribe, address _team, uint256 _csrNftId) {
         wBribe = _wBribe;
+        nextWeek = block.timestamp;
         _transferOwnership(_team);
         ITurnstile(TURNSTILE).assign(_csrNftId);
     }
