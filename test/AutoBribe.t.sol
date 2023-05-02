@@ -284,18 +284,10 @@ contract AutoBribeTest is BaseTest {
         autoBribe.deposit(address(LR), depositAmountLR, depositWeeks);
         vm.stopPrank();
 
-        uint256 pre = LR.balanceOf(address(wbribe));
-
         autoBribe.bribe();
 
-        uint256 post = LR.balanceOf(address(wbribe));
-
+        vm.expectRevert("already bribed this week");
         autoBribe.bribe();
-
-        uint256 post_post = LR.balanceOf(address(wbribe));
-
-        assertGt(post - pre, 0);
-        assertEq(post_post - post, 0);
     }
 
     function testEmptyOut(

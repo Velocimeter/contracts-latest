@@ -90,29 +90,26 @@ contract AutoBribe is Ownable {
     }
 
     function bribe() public {
+        require(block.timestamp >= nextWeek, "already bribed this week");
         uint256 length = bribeTokens.length;
         address _bribeToken;
         for (uint256 i = 0; i < length; ) {
-            if (block.timestamp >= nextWeek) {
-                _bribeToken = bribeTokens[i];
-                uint256 weeksLeft = bribeTokenToWeeksLeft[_bribeToken];
-                uint256 bribeAmount = balance(_bribeToken) / weeksLeft;
-                uint256 gasReward = bribeAmount / 200;
-                _safeTransfer(_bribeToken, msg.sender, gasReward);
-                WrappedBribe(wBribe).notifyRewardAmount(
-                    _bribeToken,
-                    bribeAmount - gasReward
-                );
-                bribeTokenToWeeksLeft[_bribeToken] = weeksLeft - 1;
-            }
+            _bribeToken = bribeTokens[i];
+            uint256 weeksLeft = bribeTokenToWeeksLeft[_bribeToken];
+            uint256 bribeAmount = balance(_bribeToken) / weeksLeft;
+            uint256 gasReward = bribeAmount / 200;
+            _safeTransfer(_bribeToken, msg.sender, gasReward);
+            WrappedBribe(wBribe).notifyRewardAmount(
+                _bribeToken,
+                bribeAmount - gasReward
+            );
+            bribeTokenToWeeksLeft[_bribeToken] = weeksLeft - 1;
             unchecked {
                 ++i;
             }
         }
-
-        emit Bribed(nextWeek, msg.sender);
-
         nextWeek = nextWeek + 604800;
+        emit Bribed(nextWeek, msg.sender);
     }
 
     function balance(address _bribeToken) public view returns (uint) {
