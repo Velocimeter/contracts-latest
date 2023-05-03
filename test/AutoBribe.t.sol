@@ -58,10 +58,7 @@ contract AutoBribeTest is BaseTest {
             address(wxbribeFactory),
             csrNftId
         );
-        wbribeFactory = new WrappedBribeFactory(
-            address(voter),
-            csrNftId
-        );
+        wbribeFactory = new WrappedBribeFactory(address(voter), csrNftId);
 
         escrow.setVoter(address(voter));
         factory.setVoter(address(voter));
@@ -93,7 +90,7 @@ contract AutoBribeTest is BaseTest {
         autoBribe = new AutoBribe(address(wbribe), address(owner), csrNftId);
 
         vm.startPrank(address(owner));
-        autoBribe.setProject(address(owner2));
+        autoBribe.initProject(address(owner2));
         vm.stopPrank();
     }
 
@@ -352,10 +349,10 @@ contract AutoBribeTest is BaseTest {
         );
     }
 
-    function testTeamCannotSetProjectTwice() public {
+    function testTeamCannotInitProjectTwice() public {
         vm.startPrank(address(owner));
-        vm.expectRevert("only project / team can only set once");
-        autoBribe.setProject(address(owner2));
+        vm.expectRevert("project wallet can only be set once by team");
+        autoBribe.initProject(address(owner2));
         vm.stopPrank();
     }
 
