@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
-import "openzeppelin-contracts/contracts/utils/Context.sol";
-import "openzeppelin-contracts/contracts/utils/Address.sol";
 import "contracts/interfaces/IERC20.sol";
 import "contracts/WrappedBribe.sol";
 
-pragma solidity 0.8.13;
+pragma solidity ^0.8.13;
 
 // the purpose of this contract is to allow the projects to deposit bribes that will bribe their pools for a period of time
 // they will need to set up a public keeper, anyone can send the bribes
@@ -25,6 +23,7 @@ contract AutoBribe is Ownable {
     address[] public bribeTokens;
     mapping(address => bool) public bribeTokensDeposited;
     mapping(address => uint256) public bribeTokenToWeeksLeft;
+    string public bribeName;
 
     event Deposited(
         address indexed _bribeToken,
@@ -36,55 +35,20 @@ contract AutoBribe is Ownable {
     event Sealed(uint256 indexed _timestamp);
     event UnSealed(uint256 indexed _timestamp);
 
-    constructor(address _wBribe, address _team) {
+    constructor(address _wBribe, address _team, string _name) {
         wBribe = _wBribe;
         nextWeek = block.timestamp;
         _transferOwnership(_team);
+        bribeName = _name;
     }
 
-    //####USER FUNCTIONS#####
+    //########################################
+    //###########PUBLIC FUNCTIONS#############
+    //########################################
 
-    function depositAll(
-        address[] memory _bribeTokens,
-        uint256 _weeks
-    ) external {
-        uint256 length = _bribeTokens.length;
-        for (uint256 i = 0; i < length; ) {
-            address bribeToken = _bribeTokens[i];
-            deposit(
-                bribeToken,
-                IERC20(bribeToken).balanceOf(msg.sender),
-                _weeks
-            );
-            unchecked {
-                ++i;
-            }
-        }
-    }
-
-    function deposit(
-        address _bribeToken,
-        uint256 _amount,
-        uint256 _weeks
-    ) public {
-        require(msg.sender == project, "only the project can bribe");
-        require(_amount > 0, "Why are you depositing 0 tokens?");
-        require(_weeks > 0, "You have to put at least 1 week");
-        _safeTransferFrom(_bribeToken, msg.sender, address(this), _amount);
-        uint256 allowance = IERC20(_bribeToken).allowance(
-            address(this),
-            wBribe
-        );
-        _safeApprove(_bribeToken, wBribe, allowance + _amount);
-        if (!bribeTokensDeposited[_bribeToken]) {
-            bribeTokensDeposited[_bribeToken] = true;
-            bribeTokens.push(_bribeToken);
-        }
-        bribeTokenToWeeksLeft[_bribeToken] += _weeks;
-
-        emit Deposited(_bribeToken, _amount, _weeks);
-    }
-
+    //This public function allows anyone to send the weekly allocation to the bribe contract
+    //There is a small reward for calling this function
+    //It can only be called once a week
     function bribe() public {
         require(block.timestamp >= nextWeek, "already bribed this week");
         uint256 length = bribeTokens.length;
@@ -108,11 +72,40 @@ contract AutoBribe is Ownable {
         emit Bribed(nextWeek, msg.sender);
     }
 
+    //This just returns the balance of bribe tokens in the contract
     function balance(address _bribeToken) public view returns (uint) {
         return IERC20(_bribeToken).balanceOf(address(this));
     }
 
-    //####Admin Functions#####
+    //########################################
+    //########PROJECT ADMIN FUNCTIONS#########
+    //########################################
+
+    //Allows project to deposit bribe tokens and set the weeks of which they are divided up into
+    function deposit(
+        address _bribeToken,
+        uint256 _amount,
+        uint256 _weeks
+    ) public {
+        require(msg.sender == project, "only the project can bribe");
+        require(_amount > 0, "Why are you depositing 0 tokens?");
+        require(_weeks > 0, "You have to put at least 1 week");
+        _safeTransferFrom(_bribeToken, msg.sender, address(this), _amount);
+        uint256 allowance = IERC20(_bribeToken).allowance(
+            address(this),
+            wBribe
+        );
+        _safeApprove(_bribeToken, wBribe, allowance + _amount);
+        if (!bribeTokensDeposited[_bribeToken]) {
+            bribeTokensDeposited[_bribeToken] = true;
+            bribeTokens.push(_bribeToken);
+        }
+        bribeTokenToWeeksLeft[_bribeToken] += _weeks;
+
+        emit Deposited(_bribeToken, _amount, _weeks);
+    }
+
+    //Allows the project to retrieve their bribe tokens
     function emptyOut() public {
         require(msg.sender == project, "only project can empty out");
         require(!depositSealed, "deposit is sealed");
@@ -141,6 +134,16 @@ contract AutoBribe is Ownable {
         emit Sealed(block.timestamp);
     }
 
+    //Allows project to change their controlling wallet
+    function setProject(address _newWallet) public {
+        require(msg.sender == project);
+        project = _newWallet;
+    }
+
+    //########################################
+    //#######VELOCIMETER ADMIN FUNCTIONS######
+    //########################################
+
     //Allows Velocimeter to re allow project to withdraw their tokens
     function unSeal() public onlyOwner {
         depositSealed = false;
@@ -148,11 +151,8 @@ contract AutoBribe is Ownable {
         emit UnSealed(block.timestamp);
     }
 
-    function setProject(address _newWallet) public {
-        require(
-            msg.sender == project || (msg.sender == owner() && !initialized),
-            "only project / team can only set once"
-        );
+    function initProject(address _newWallet) public onlyOwner {
+        require(!initialized, "project wallet can only be set once by team");
         if (!initialized) {
             initialized = true;
         }
@@ -164,6 +164,25 @@ contract AutoBribe is Ownable {
         uint256 amount = IERC20(_token).balanceOf(address(this));
         _safeTransfer(_token, msg.sender, amount);
     }
+
+    //########################################
+    //############RECLOCK FUNCTION############
+    //########################################
+
+    // Allows project or Velocimeter to reset the week to the current block
+    // This should only be called with consideration as it can allow for double bribes in a single week.
+    // Best use is to call it BEFORE, bribe() is called in a given week
+    function reclockBribeToNow() external {
+        require(
+            msg.sender == project || msg.sender == owner(),
+            "you can't call this"
+        );
+        nextWeek = block.timestamp;
+    }
+
+    //########################################
+    //############INTERNAL FUNCTIONS##########
+    //########################################
 
     function _safeTransfer(address token, address to, uint256 value) internal {
         require(token.code.length > 0);
