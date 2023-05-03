@@ -2,7 +2,7 @@
 pragma solidity 0.8.13;
 
 import {AutoBribe} from "contracts/AutoBribe.sol";
-import 'contracts/interfaces/ITurnstile.sol';
+import "contracts/interfaces/ITurnstile.sol";
 
 contract AutoBribeFactory {
     address public constant TURNSTILE =
@@ -19,9 +19,10 @@ contract AutoBribeFactory {
     }
 
     function createAutoBribe(
-        address wbribe
+        address wbribe,
+        string memory name
     ) external returns (address auto_bribe) {
         require(wbribe != address(0), "Wrapped bribe not yet created");
-        auto_bribe = address(new AutoBribe(wbribe, team, csrNftId));
+        auto_bribe = address(new AutoBribe(wbribe, team, csrNftId, name));
     }
 }

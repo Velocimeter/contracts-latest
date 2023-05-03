@@ -42,7 +42,7 @@ contract AutoBribe is Ownable {
         address _wBribe,
         address _team,
         uint256 _csrNftId,
-        string _name
+        string memory _name
     ) {
         wBribe = _wBribe;
         nextWeek = block.timestamp;
