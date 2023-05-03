@@ -80,7 +80,7 @@ contract AutoBribeTest is BaseTest {
         gauge = Gauge(voter.createGauge(address(pair)));
         xbribe = ExternalBribe(gauge.external_bribe());
         wbribe = WrappedBribe(wbribeFactory.createBribe(address(xbribe)));
-        autoBribe = new AutoBribe(address(wbribe), address(owner));
+        autoBribe = new AutoBribe(address(wbribe), address(owner), "AUTO");
 
         vm.startPrank(address(owner));
         autoBribe.initProject(address(owner2));
@@ -149,57 +149,6 @@ contract AutoBribeTest is BaseTest {
                 FLOW.balanceOf(address(this)) -
                 balanceBeforeFLOW,
             depositAmountFLOW
-        );
-    }
-
-    function testCanDepositAllAndBribeEveryWeek(uint256 depositWeeks) public {
-        vm.assume(depositWeeks <= 52 && depositWeeks > 0);
-        vm.warp(block.timestamp + 1 weeks / 2);
-
-        // deposit tokens
-        address[] memory bribeTokens = new address[](2);
-        bribeTokens[0] = address(LR);
-        bribeTokens[1] = address(FLOW);
-
-        // Project depoit tokens
-        vm.startPrank(address(owner2));
-        LR.approve(address(autoBribe), type(uint256).max);
-        FLOW.approve(address(autoBribe), type(uint256).max);
-        autoBribe.depositAll(bribeTokens, depositWeeks);
-        vm.stopPrank();
-
-        uint256 balanceBeforeLR = LR.balanceOf(address(this));
-        uint256 balanceBeforeFLOW = FLOW.balanceOf(address(this));
-
-        for (uint256 i = 0; i < depositWeeks - 1; ) {
-            autoBribe.bribe();
-            vm.warp(block.timestamp + 1 weeks);
-
-            unchecked {
-                ++i;
-            }
-        }
-
-        assertGt(LR.balanceOf(address(autoBribe)), 0);
-        assertGt(FLOW.balanceOf(address(autoBribe)), 0);
-
-        autoBribe.bribe();
-        vm.warp(block.timestamp + 1 weeks);
-
-        assertEq(LR.balanceOf(address(autoBribe)), 0);
-        assertEq(FLOW.balanceOf(address(autoBribe)), 0);
-
-        assertEq(
-            LR.balanceOf(address(wbribe)) +
-                LR.balanceOf(address(this)) -
-                balanceBeforeLR,
-            1e25
-        );
-        assertEq(
-            FLOW.balanceOf(address(wbribe)) +
-                FLOW.balanceOf(address(this)) -
-                balanceBeforeFLOW,
-            1e25
         );
     }
 

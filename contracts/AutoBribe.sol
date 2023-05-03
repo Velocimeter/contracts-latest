@@ -35,7 +35,7 @@ contract AutoBribe is Ownable {
     event Sealed(uint256 indexed _timestamp);
     event UnSealed(uint256 indexed _timestamp);
 
-    constructor(address _wBribe, address _team, string _name) {
+    constructor(address _wBribe, address _team, string memory _name) {
         wBribe = _wBribe;
         nextWeek = block.timestamp;
         _transferOwnership(_team);
