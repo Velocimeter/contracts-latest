@@ -41,17 +41,8 @@ contract VoteEOA is Script {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
-        getRebase();     
-
-        // votingEscrow.increase_unlock_time(29, 126242339); 
-        // votingEscrow.increase_unlock_time(30, 126242339);
-        // votingEscrow.increase_unlock_time(31, 126242339); 
-        // votingEscrow.increase_unlock_time(32, 126242339);
-        // votingEscrow.increase_unlock_time(51, 126242339); 
-        // votingEscrow.increase_unlock_time(52, 126242339); 
-        // votingEscrow.increase_unlock_time(53, 126242339); 
-        // votingEscrow.increase_unlock_time(54, 126242339); 
-
+        getRebase(); 
+        increaseLockTime();  
 
         voter.vote(29, FLOW_WCANTO, ONEHUNDRED ); // 3M 
         voter.vote(30, FLOW_ETH, ONEHUNDRED ); // 3M 
@@ -90,6 +81,21 @@ contract VoteEOA is Script {
         if (claimable > 50000 * 1e18){
           rewardsDistributor.claim_many(tokenIds);
         }
+    }
+
+    function increaseLockTime() private {
+      VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
+
+      if (votingEscrow.locked__end(29) <= block.timestamp - 1210000){
+        votingEscrow.increase_unlock_time(29, 126242339); 
+        votingEscrow.increase_unlock_time(30, 126242339);
+        votingEscrow.increase_unlock_time(31, 126242339); 
+        votingEscrow.increase_unlock_time(32, 126242339);
+        votingEscrow.increase_unlock_time(51, 126242339); 
+        votingEscrow.increase_unlock_time(52, 126242339); 
+        votingEscrow.increase_unlock_time(53, 126242339); 
+        votingEscrow.increase_unlock_time(54, 126242339); 
+      }
     }
 
 }

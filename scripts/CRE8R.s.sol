@@ -32,6 +32,8 @@ address constant stETHGauge = 0x85ff8B9AD71B667EF44E3A7D1aBeC3fE55d30831;
 address constant eth = 0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687;
 address constant cre8r = 0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055;
 uint256 constant tknID = 83;
+address private constant Eth_Cre8r_AutoBribe = 0x0CD1b0fAB074727D7504c9Dc23f131598cFE5427;
+
 
 
 contract CRE8R is Script {
@@ -47,30 +49,31 @@ contract CRE8R is Script {
         uint256 govPrivateKey = vm.envUint("CRE8R_PRIVATE_KEY");
         vm.startBroadcast(govPrivateKey);
 
-        // getRewards();
-        // getRebase();
-        // increaseLock();
-        // increaseTime();
-        // vote();
+        getRewards();
+        getRebase();
+        increaseLock();
+        increaseTime();
+        vote();
 
-        // claimBribes();
+        claimBribes();
 
         vm.stopBroadcast();
 
         }       
 
-    // function claimBribes() private{
-    //   address[] memory cre8r_eth_wbribe = [0xf81568C88b8dCD42764c31437f918eBBB705F067];
- function claimBribes() private { 
-      address[] memory cre8r_eth_wbribe = new address[](1); 
-      cre8r_eth_wbribe[0] = 0xf81568C88b8dCD42764c31437f918eBBB705F067
-      address[][] memory bribes = new address[][](1);
-      address[] memory bribeArray = new address[](2);
-      bribeArray[0] = eth;
-      bribeArray[1] = cre8r;
-      bribes[0] = bribeArray; 
-      
-      voter.claimBribes(cre8r_eth_wbribe, bribes, tknID);
+        // function claimBribes() private{
+        //   address[] memory cre8r_eth_wbribe = [0xf81568C88b8dCD42764c31437f918eBBB705F067];
+    function claimBribes() private { 
+          address[] memory cre8r_eth_wbribe = new address[](1); 
+          cre8r_eth_wbribe[0] = 0xf81568C88b8dCD42764c31437f918eBBB705F067;
+          address[][] memory bribes = new address[][](1);
+          address[] memory bribeArray = new address[](2);
+          bribeArray[0] = eth;
+          bribeArray[1] = cre8r;
+          bribes[0] = bribeArray; 
+          
+          voter.claimBribes(cre8r_eth_wbribe, bribes, tknID);
+    }
 
     function getRewards() private {        
         IGauge(cre8rGauge).getReward(hotwallet, rewards);

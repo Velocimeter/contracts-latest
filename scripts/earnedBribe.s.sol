@@ -26,6 +26,8 @@ address constant multiBTC = 0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844;
 address constant wBTC = 0x08638a74A8134c747Dce29B57472cc2B57F35653;
 address constant somm = 0xFA3C22C069B9556A4B2f7EcE1Ee3B467909f4864;
 address constant yfx = 0x8901cB2e82CC95c01e42206F8d1F417FE53e7Af0;
+address constant cbonk = 0x38D11B40D2173009aDB245b869e90525950aE345;
+address constant stAtom = 0x4A2a90D444DbB7163B5861b772f882BbA394Ca67;
 
 
 // wExBribe addresses
@@ -40,26 +42,28 @@ address constant wCanto_somm = 0x90Cd1d0F111c688C5FE89e7f3F8216F13f7Bbb3E;
 address constant cre8r_eth = 0xf81568C88b8dCD42764c31437f918eBBB705F067;
 address constant flow_somm = 0x7d82cf9EA31cF0B96b9a38671D3aE90076A9f5E0;
 address constant note_yfx = 0x5b2DB4398f579c53Ca04d1430DDC5f58100ae49d;
+address constant cBonk_wCanto = 0x02BbB7a476f186a0f46cF12eb43E0a5D40294c5e;
+address constant stAtom_wCanto = 0xAAcaB82657C7f10d66aE4E66CC86FA5fB3Dce9eb;
+address constant stAtom_wCanto2 = 0xddbdF41d909dFeF25414A424F6d70e6cFdF0d8b0;
 
 
 
 contract earnedBribe is Script { 
-      address private wBribe = wCanto_somm;
-      address private tkn1 = wCanto;
-      address private tkn2 = somm;
-      uint256 private nftID = 97;
+      address private wBribe = stAtom_wCanto;
+      address private tkn1 = stAtom;
+      address private tkn2 = wCanto;
+      uint256 private nftID = 76;
 
 
-    function run() external {
-        uint256 PrivateKey = vm.envUint("ASSETEOA_PRIVATE_KEY");
-        vm.startBroadcast(PrivateKey);
+    function run() external view {
+
         WrappedExternalBribe wExBribe = WrappedExternalBribe(wBribe);
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
-        address pool = voter.poolVote(nftID, 1);
-        Pair pair = Pair(pool);
-        string memory pairSymbol = pair.symbol();        
-        console2.log(pairSymbol);
+        // address pool = voter.poolVote(nftID, 0);
+        // Pair pair = Pair(pool);
+        // string memory pairSymbol = pair.symbol();        
+        // console2.log(pairSymbol);
 
         
         uint balTkn1 = IERC20(tkn1).balanceOf(wBribe);
@@ -91,12 +95,10 @@ contract earnedBribe is Script {
 
 
 
-        vm.stopBroadcast();
+
     }
 
-    function getVotedOn() private {
-        
-    }
+
 
 }
 
