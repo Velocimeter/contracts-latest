@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-//  forge script scripts/earnedBribe.s.sol:earnedBribe --rpc-url https://mainnode.plexnode.org:8545 -vvv
+
 pragma solidity 0.8.13;
 
 // Scripting tool
@@ -49,10 +49,10 @@ address constant stAtom_wCanto2 = 0xddbdF41d909dFeF25414A424F6d70e6cFdF0d8b0;
 
 
 contract earnedBribe is Script { 
-      address private wBribe = stAtom_wCanto;
-      address private tkn1 = stAtom;
+      address private wBribe = note_wCanto;
+      address private tkn1 = note;
       address private tkn2 = wCanto;
-      uint256 private nftID = 76;
+      uint256 private nftID = 22;
 
 
     function run() external view {
@@ -73,12 +73,12 @@ contract earnedBribe is Script {
         uint earnedAmt2 = wExBribe.earned(tkn2, nftID);
         uint earnedFlow = wExBribe.earned(flow, nftID);
 
-        console2.log('tkn1 balance', balTkn1);
-        console2.log('tkn1 earned', earnedAmt1);
+        console2.log('tkn1 balance', balTkn1 );
+        console2.log('tkn1 earned ', earnedAmt1);
         console2.log('tkn2 balance', balTkn2);
-        console2.log('tkn2 earned', earnedAmt2);
+        console2.log('tkn2 earned ', earnedAmt2);
         console2.log('flow balance', balFlow);
-        console2.log('flow earned', earnedFlow);
+        console2.log('flow earned ', earnedFlow);
 
         if(balTkn1 < earnedAmt1){
             uint need1 = earnedAmt1 - balTkn1;
@@ -93,16 +93,13 @@ contract earnedBribe is Script {
             console2.log("send", needFlow, "Flow tokens");
         }
 
-
-
-
     }
 
 
 
 }
 
-
+//  forge script scripts/earnedBribe.s.sol:earnedBribe --rpc-url https://mainnode.plexnode.org:8545 -vvv
 // note    520
 // wcanto  1220+530+33
 // wbtc 0.00389324

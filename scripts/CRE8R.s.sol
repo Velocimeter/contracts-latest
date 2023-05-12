@@ -1,10 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-
-// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://canto.slingshot.finance	  -vvv --broadcast --slow
-// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://mainnode.plexnode.org:8545	  -vvv --broadcast --slow
-
-
 pragma solidity 0.8.13;
 
 // Scripting tool
@@ -23,6 +18,7 @@ import {VotingEscrow} from "../contracts/VotingEscrow.sol";
 import {Gauge} from "../contracts/Gauge.sol";
 import {IGauge} from "../contracts/interfaces/IGauge.sol";
 import {Flow} from "../contracts/Flow.sol";
+import {IAutoBribe} from "../contracts/interfaces/IAutoBribe.sol";
 
 
 address constant flowAddy = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
@@ -32,18 +28,18 @@ address constant stETHGauge = 0x85ff8B9AD71B667EF44E3A7D1aBeC3fE55d30831;
 address constant eth = 0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687;
 address constant cre8r = 0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055;
 uint256 constant tknID = 83;
-address private constant Eth_Cre8r_AutoBribe = 0x0CD1b0fAB074727D7504c9Dc23f131598cFE5427;
+address constant Eth_Cre8r_AutoBribe = 0x0CD1b0fAB074727D7504c9Dc23f131598cFE5427;
 
 
 
 contract CRE8R is Script {
       uint256[] ONEHUNDRED = [10000];
-      address[] private cre8rPair = [0x237F9c6d2BBeAcc91049710ac47e3eAc83cDC55c];
+      address[]  cre8rPair = [0x237F9c6d2BBeAcc91049710ac47e3eAc83cDC55c];
       VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
       Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
       Flow flow = Flow(flowAddy);
-      address[] private toVote = [flowAddy];
-      address[] private rewards = [flowAddy];
+      address[]  toVote = [flowAddy];
+      address[]  rewards = [flowAddy];
 
     function run() external {
         uint256 govPrivateKey = vm.envUint("CRE8R_PRIVATE_KEY");
@@ -54,18 +50,17 @@ contract CRE8R is Script {
         increaseLock();
         increaseTime();
         vote();
-
         claimBribes();
-
+        addAutoBribes();        
         vm.stopBroadcast();
 
         }       
 
-        // function claimBribes() private{
-        //   address[] memory cre8r_eth_wbribe = [0xf81568C88b8dCD42764c31437f918eBBB705F067];
     function claimBribes() private { 
           address[] memory cre8r_eth_wbribe = new address[](1); 
           cre8r_eth_wbribe[0] = 0xf81568C88b8dCD42764c31437f918eBBB705F067;
+          address[] memory cre8r_eth_wwbribe = new address[](1); 
+          cre8r_eth_wwbribe[0] = 0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389; 
           address[][] memory bribes = new address[][](1);
           address[] memory bribeArray = new address[](2);
           bribeArray[0] = eth;
@@ -73,6 +68,7 @@ contract CRE8R is Script {
           bribes[0] = bribeArray; 
           
           voter.claimBribes(cre8r_eth_wbribe, bribes, tknID);
+          voter.claimBribes(cre8r_eth_wwbribe, bribes, tknID);
     }
 
     function getRewards() private {        
@@ -91,10 +87,19 @@ contract CRE8R is Script {
       votingEscrow.increase_amount(tknID, flowBalance);
     }
     function increaseTime() private {
-      votingEscrow.increase_unlock_time(tknID, 126272312);
+      if(votingEscrow.locked__end(tknID) <= 1800000000){
+          votingEscrow.increase_unlock_time(tknID, 126272200);
+      }    
     }
     function vote() private {
       voter.vote(tknID, cre8rPair, ONEHUNDRED);
+    }
+    function addAutoBribes()private{
+      uint256 CRE8RBal = IERC20(cre8r).balanceOf(hotwallet);
+      uint256 bWeeks =  CRE8RBal / 500000;
+        IERC20(cre8r).approve(Eth_Cre8r_AutoBribe, CRE8RBal);
+        IAutoBribe(Eth_Cre8r_AutoBribe).deposit(cre8r, CRE8RBal, bWeeks);
+        IAutoBribe(Eth_Cre8r_AutoBribe).reclockBribeToNow();
     }
 
 
@@ -102,5 +107,7 @@ contract CRE8R is Script {
 
 
 
+// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://canto.slingshot.finance	  -vvv --broadcast --slow
+// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://mainnode.plexnode.org:8545	  -vvv --broadcast --slow
 
 

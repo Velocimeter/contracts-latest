@@ -42,12 +42,9 @@ contract VotePOVP is Script {
         uint256 votePrivateKey = vm.envUint("VOTE_PRIVATE_KEY");
         vm.startBroadcast(votePrivateKey);
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
-        VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
         getRebase();
         increaseLockTime();
-
-
 
         voter.vote(2, FLOW_USDC, ONEHUNDRED); // 1M  
         voter.vote(3, FLOW_USDC, ONEHUNDRED); // 1M 

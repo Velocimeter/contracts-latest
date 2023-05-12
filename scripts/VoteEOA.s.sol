@@ -39,7 +39,6 @@ contract VoteEOA is Script {
         uint256 PrivateKey = vm.envUint("ASSETEOA_PRIVATE_KEY");
         vm.startBroadcast(PrivateKey);
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
-        VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
         getRebase(); 
         increaseLockTime();  
