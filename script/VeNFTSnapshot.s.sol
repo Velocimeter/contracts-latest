@@ -23,8 +23,8 @@ contract VeNFTSnapshot is Script {
                 // console2.log(currentTokenId);
                 // console2.log("Owner: ");
                 console2.log(owner);
-                // console2.log("Locked amount: ");
-                // console2.log(lockAmount);
+                console2.log("Locked amount: ");
+                console2.log(lockAmount);
             }
 
             currentTokenId++;
@@ -32,4 +32,3 @@ contract VeNFTSnapshot is Script {
     }
 }
 
-// 

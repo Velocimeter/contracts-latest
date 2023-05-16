@@ -1,9 +1,4 @@
 // SPDX-License-Identifier: MIT
-//  forge script scripts/VotePOVP.s.sol:VotePOVP --rpc-url https://mainnode.plexnode.org:8545 -vvv
-// forge script scripts/VotePOVP.s.sol:VotePOVP --rpc-url https://mainnode.plexnode.org:8545 -vvv --broadcast --slow
-
-//  forge script scripts/VotePOVP.s.sol:VotePOVP --rpc-url https://canto.slingshot.finance	 -vvv
-// forge script scripts/VotePOVP.s.sol:VotePOVP --rpc-url https://canto.slingshot.finance -vvv --broadcast --slow
 
 pragma solidity 0.8.13;
 
@@ -24,13 +19,14 @@ contract VotePOVP is Script {
 
       address[] private  FLOW_WCANTO = [0x2Cc24302fa019C5A8F252afC9A69fCfBB8Dd8D2F];
       address[] private  FLOW_NOTE = [0x7e79E7B91526414F49eA4D3654110250b7D9444f];
-      address[] private  FLOW_USDC  = [0x2267DAa9B7458F5cFE03d3485cc871800977c2c6]; 
+      address[] private  FLOW_USDC  = [0x2267DAa9B7458F5cFE03d3485cc871800977c2c6]; //<-stop voting 
       address[] private  FLOW_ETH = [0x57E8eFA2639A4cA7069cD90f7e27092758271e6b];
       address[] private  FLOW_USDT = [0x6f00840f81C41DC2f7C6f81Eb2E3EaeA973DBF5f]; //<-stop voting
       address[] private  FLOW_multiBTC = [0x4eDBd1606Ab49e22846dd1EE2529E5FdA48FE062];
       address[] private underFLOW_FLOW = [0x531aa71E2B01Db990B8B1f5d94fBfdc9FFc217B6];
-
-
+      address[] private  FLOW_sCANTO = [0x754AeD0D7A61dD3B03084d5bB8285D674D663703];
+      address[] private  sCANTO_wCANTO = [0xe506707dF5fE9b2F6c0Bd6C5039fc542Af1eeB50];
+      address[] private  sCANTO_BLOTR = [0x44724F2A542D9b7653923D87F17712b113FEB448];
 
       uint256[] ONEHUNDRED = [10000];
       uint256[] FIFTY = [5000];
@@ -46,8 +42,8 @@ contract VotePOVP is Script {
         getRebase();
         increaseLockTime();
 
-        voter.vote(2, FLOW_USDC, ONEHUNDRED); // 1M  
-        voter.vote(3, FLOW_USDC, ONEHUNDRED); // 1M 
+        voter.vote(2, sCANTO_BLOTR, ONEHUNDRED); // 1M  
+        voter.vote(3, sCANTO_wCANTO, ONEHUNDRED); // 1M 
         voter.vote(4, underFLOW_FLOW, ONEHUNDRED); // 1M
         voter.vote(5, FLOW_WCANTO, ONEHUNDRED); // 1M
         voter.vote(6, FLOW_WCANTO, ONEHUNDRED); // 1M reset()

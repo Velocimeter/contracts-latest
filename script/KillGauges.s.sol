@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-// forge script scripts/KillGauges.s.sol:KillGauges --rpc-url https://canto.slingshot.finance	  -vvv --broadcast
 pragma solidity 0.8.13;
 
 // Scripting tool

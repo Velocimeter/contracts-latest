@@ -18,7 +18,11 @@ contract AutoBribeUse is Script {
     address private constant Usdc_Flow_Test = 0x4bC90701a5f3e72A5Fe2686C62Da24B20ca1cfB6;
 
     address private constant Eth_Cre8r_Test = 0x0CD1b0fAB074727D7504c9Dc23f131598cFE5427;
-    address private constant Cizza_wCanto_Autobribe = 0x8dCf1a8086e700eAB31936af234b2D1212F257dB;
+    address private constant Cizza_wCanto_Autobribe = 0x8dCf1a8086e700eAB31936af234b2D1212F257dB; //likely ignored
+
+    address private constant sCANTO_FLOW_Autobribe = 0x7C57707fd607132128EEEFa93a087659EdD5BbE3;
+    address private constant sCANTO_wCANTO_Autobribe = 0x99a564Cb07A31A08Be98670f63DBc5554f0Ee7fE;
+    address private constant sCANTO_BLOTR_Autobribe = 0xfA3Be1bBEe6A2c30FcB790c3F53094f57AE2F104;
     
     
 

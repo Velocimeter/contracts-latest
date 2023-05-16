@@ -18,17 +18,22 @@ contract AutoBribeDeploy is Script {
     address private constant usdc_flow = 0x8b8E41196E00C7EDBA79Fc5431951f9E387769ea;
     address private constant eth_cre8r = 0x039A01e600BC54bcc16c29041383eFd18121605B;
     address private constant cizza_wCanto = 0xe36e26c9b62587c718c10F5060F20d56D51143Eb;
-    address private constant usdPLUS_wCanto = 0x9172605fedc6ff47dfa2364dcd7842b4069a62c7;
+    
+    address private constant sCanto_flow = 0x96139C7B2266539f23fed15D91046F4e8ee0b545;
+    address private constant sCanto_wCanto = 0x289859dAB2648b554512EfC5Ad01984966821350;
+    address private constant sCanto_Blotr = 0xc632487e01CA93C4D96438C5314F67796386EACC;
 
+    // notdeployed    
+    address private constant usdPLUS_wCanto = 0x9172605fEdc6ff47DfA2364dCD7842B4069A62C7;
     address private constant wCanto_Colin = 0xDC0224171b614854dC32c242099A217479e1ddE6;
 
     //TODO: Both these should be set BEFORE run()
-    address private constant WRAPPED_BRIBE = usdPLUS_wCanto; // TODO: change wrapped bribe address
-    string private constant name = "USD+_WCANTO_Autobribe"; // give the contract a unique name
-    address private constant PROJECT; //supply the projects wallet address here
+    address private constant WRAPPED_BRIBE = sCanto_Blotr; // TODO: change wrapped bribe address
+    string private constant name = "sCANTO_BLOTR_Autobribe"; // give the contract a unique name
+    address private constant PROJECT = 0x995F09D33AB1DbC68F6AB1f775E518b5fE842fB5; //supply the projects wallet address here
 
     function run() external {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        uint256 deployerPrivateKey = vm.envUint("VOTE_PRIVATE_KEY");
 
         vm.startBroadcast(deployerPrivateKey);
 
@@ -40,7 +45,7 @@ contract AutoBribeDeploy is Script {
             name
         );
 
-        // autoBribe.initProject(PROJECT);
+        autoBribe.initProject(PROJECT);
         // autoBribe.transferOwnership(TEAM_MULTI_SIG);
 
         vm.stopBroadcast();

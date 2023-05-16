@@ -107,7 +107,6 @@ contract CRE8R is Script {
 
 
 
-// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://canto.slingshot.finance	  -vvv --broadcast --slow
-// forge script scripts/CRE8R.s.sol:CRE8R --rpc-url https://mainnode.plexnode.org:8545	  -vvv --broadcast --slow
+
 
 

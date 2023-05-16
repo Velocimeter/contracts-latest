@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-//  forge script scripts/VoteEOA.s.sol:VoteEOA --rpc-url https://mainnode.plexnode.org:8545 -vvv
-// forge script scripts/VoteEOA.s.sol:VoteEOA --rpc-url https://mainnode.plexnode.org:8545 -vvv --broadcast --slow
+
 pragma solidity 0.8.13;
 
 // Scripting tool
@@ -25,7 +24,10 @@ contract VoteEOA is Script {
     address[] private FLOW_ATOM = [0xddA6259A93649346535db8744502493ee023208D];
     address[] private ACS_USDC = [0x9A408eC2c41FADC0D73a61F46060E83fF864D2E6];
     address[] private ETH_WCANTO = [0x96D976892c6f01Ab5c13E843B38BEe90C2238F03];
-    address[] private  WCANTO_BNB = [0x1f9AdfE106aA6220BCC898AE4B85d6F68d0aDbF5];
+    address[] private WCANTO_BNB = [0x1f9AdfE106aA6220BCC898AE4B85d6F68d0aDbF5];
+    address[] private sCANTO_wCANTO = [0xe506707dF5fE9b2F6c0Bd6C5039fc542Af1eeB50];
+    address[] private sCANTO_BLOTR = [0x44724F2A542D9b7653923D87F17712b113FEB448];
+    address[] private FLOW_sCANTO = [0x754AeD0D7A61dD3B03084d5bB8285D674D663703];
 
 
       uint256[] ONEHUNDRED = [10000];
@@ -43,15 +45,16 @@ contract VoteEOA is Script {
         getRebase(); 
         increaseLockTime();  
 
-        voter.vote(29, FLOW_WCANTO, ONEHUNDRED ); // 3M 
+        voter.vote(29, FLOW_ETH, ONEHUNDRED ); // 3M 
         voter.vote(30, FLOW_ETH, ONEHUNDRED ); // 3M 
-        voter.vote(31, FLOW_USDC, ONEHUNDRED ); // 3M 
-        voter.vote(32, FLOW_USDC, ONEHUNDRED ); // 3M 
-        voter.vote(51, FLOW_ETH, ONEHUNDRED ); // 2M 
-        voter.vote(52, FLOW_ETH, ONEHUNDRED ); //  2M 
-        voter.vote(53, FLOW_ETH, ONEHUNDRED ); //  2M 
-        voter.vote(54, FLOW_ETH, ONEHUNDRED ); // 2M 
-        voter.vote(85, WCANTO_BNB, ONEHUNDRED); //1M
+        voter.vote(31, FLOW_ETH, ONEHUNDRED ); // 3M 
+        voter.vote(32, FLOW_sCANTO, ONEHUNDRED ); // 3M 
+        voter.vote(51, FLOW_WCANTO, ONEHUNDRED ); // 2M 
+        voter.vote(52, sCANTO_wCANTO, ONEHUNDRED ); //  2M 
+        voter.vote(53, sCANTO_wCANTO, ONEHUNDRED ); //  2M 
+        voter.vote(54, sCANTO_BLOTR, ONEHUNDRED ); // 2M 
+        // voter.vote(85, WCANTO_BNB, ONEHUNDRED); //1.5M RESet to sell, but backed out
+        voter.vote(93, WCANTO_BNB, ONEHUNDRED); //1M
 
 
 
