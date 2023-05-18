@@ -23,6 +23,9 @@ contract AutoBribeUse is Script {
     address private constant sCANTO_FLOW_Autobribe = 0x7C57707fd607132128EEEFa93a087659EdD5BbE3;
     address private constant sCANTO_wCANTO_Autobribe = 0x99a564Cb07A31A08Be98670f63DBc5554f0Ee7fE;
     address private constant sCANTO_BLOTR_Autobribe = 0xfA3Be1bBEe6A2c30FcB790c3F53094f57AE2F104;
+
+    address private constant agg_wcanto_autoBribe = 0x27f5C96dC4fE8E4538E838BaE762B5d168BbE46b;
+    address private constant agg_sCanto_autoBirbe = 0xF435B0d94663E25605eD26Eb067070eF362cf8c9;
     
     
 

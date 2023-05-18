@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-//   forge script scripts/MintForCoorApe.s.sol:MintForCoorApe --rpc-url https://mainnode.plexnode.org:8545 -vvv --broadcast --slow
 
 pragma solidity 0.8.13;
 
@@ -35,9 +34,10 @@ address constant shatterproof = 0x7c22953Bf2245A8298baf26D586Bd4b08a87caaa;
 address constant h1kupz = 0x714C8A1DB40eedc9240AF30bB25D5440796536aa;
 address constant pujimak = 0x3C2d6d7144241F1F1203c29C124585e55B58975E;
 address constant oxSaturn = 0x71baFD458A46b3BE856C64cdFc25845c0cf9C6Ca;
+address constant Schizo = 0x1c46564c7476f3F846abcf73e0a885E445ca85e8;
 
 uint256 constant FOUR_YEARS = 126_144_000;
-uint256 constant TotalFLOW = 838_000 * 1e18;
+uint256 constant TotalFLOW = 200_000_000 * 1e18;
 
 
 
@@ -50,32 +50,16 @@ contract MintForCoorApe is Script {
 
         flow.approve(0x8E003242406FBa53619769F31606ef2Ed8A65C00, TotalFLOW);
 
-
-
     
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,arrowpm);
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,Lartistokrat);
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,leon7m);
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,eleven);
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,Cryptodoi);
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,prof);
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,millicare7);
-    votingEscrow.create_lock_for(2000000000000000000000,FOUR_YEARS,Steph);
-    votingEscrow.create_lock_for(10000000000000000000000,FOUR_YEARS,Oxuep);
-    votingEscrow.create_lock_for(14000000000000000000000,FOUR_YEARS,MempoolEd);
-    votingEscrow.create_lock_for(18000000000000000000000,FOUR_YEARS,jamesDigital);
-    votingEscrow.create_lock_for(30000000000000000000000,FOUR_YEARS,Ethboi);
-    votingEscrow.create_lock_for(32000000000000000000000,FOUR_YEARS,Flowers);
-    votingEscrow.create_lock_for(36000000000000000000000,FOUR_YEARS,Stephen);
-    votingEscrow.create_lock_for(36000000000000000000000,FOUR_YEARS,RektFoodFarmer);
-    votingEscrow.create_lock_for(38000000000000000000000,FOUR_YEARS,Drakeondigital);
-    votingEscrow.create_lock_for(42000000000000000000000,FOUR_YEARS,DavidXYZ);
-    votingEscrow.create_lock_for(56000000000000000000000,FOUR_YEARS,OxPonci);
-    votingEscrow.create_lock_for(62000000000000000000000,FOUR_YEARS,Strawberryking);
-    votingEscrow.create_lock_for(74000000000000000000000,FOUR_YEARS,shatterproof);
-    votingEscrow.create_lock_for(94000000000000000000000,FOUR_YEARS,h1kupz);
-    votingEscrow.create_lock_for(102000000000000000000000,FOUR_YEARS,pujimak);
-    votingEscrow.create_lock_for(178000000000000000000000,FOUR_YEARS,oxSaturn);
+votingEscrow.create_lock_for(	213953722334004000000000	,	FOUR_YEARS	,	oxSaturn	);
+votingEscrow.create_lock_for(	93692152917505000000000	,	FOUR_YEARS	,	shatterproof	);
+votingEscrow.create_lock_for(	82505030181086500000000	,	FOUR_YEARS	,	h1kupz	);
+votingEscrow.create_lock_for(	55935613682092600000000	,	FOUR_YEARS	,	Schizo	);
+votingEscrow.create_lock_for(	60130784708249500000000	,	FOUR_YEARS	,	Strawberryking	);
+votingEscrow.create_lock_for(	54537223340040200000000	,	FOUR_YEARS	,	Flowers	);
+votingEscrow.create_lock_for(	51740442655935600000000	,	FOUR_YEARS	,	OxPonci	);
+votingEscrow.create_lock_for(	48943661971831000000000	,	FOUR_YEARS	,	pujimak	);
+votingEscrow.create_lock_for(	33561368209255500000000	,	FOUR_YEARS	,	jamesDigital	);
 
         vm.stopBroadcast();
         }
