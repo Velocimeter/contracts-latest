@@ -80,10 +80,10 @@ contract AutoBribeTest is BaseTest {
         gauge = Gauge(voter.createGauge(address(pair)));
         xbribe = ExternalBribe(gauge.external_bribe());
         wbribe = WrappedBribe(wbribeFactory.createBribe(address(xbribe)));
-        autoBribe = new AutoBribe(address(wbribe), address(owner));
+        autoBribe = new AutoBribe(address(wbribe), address(owner), "AUTO");
 
         vm.startPrank(address(owner));
-        autoBribe.setProject(address(owner2));
+        autoBribe.initProject(address(owner2));
         vm.stopPrank();
     }
 
@@ -160,6 +160,7 @@ contract AutoBribeTest is BaseTest {
         );
     }
 
+<<<<<<< HEAD
     function testCanDepositAllAndBribeEveryWeek(uint256 depositWeeks) public {
         vm.assume(depositWeeks <= 52 && depositWeeks > 0);
         vm.warp(block.timestamp + 1 weeks / 2);
@@ -211,6 +212,8 @@ contract AutoBribeTest is BaseTest {
         );
     }
 
+=======
+>>>>>>> d984cb02972628a716f7dfab24147acd288ba013
     function testRedeposit(
         uint128 depositAmountPerWeekLR,
         uint128 depositWeeks
@@ -263,6 +266,31 @@ contract AutoBribeTest is BaseTest {
                 balanceBeforeLR,
             depositAmountLR * 2
         );
+    }
+
+    function testCannotBribeTwice(
+        uint256 depositAmountLR,
+        uint256 depositWeeks
+    ) public {
+        vm.assume(
+            depositAmountLR > depositWeeks &&
+                depositAmountLR <= 1e25 &&
+                depositWeeks > 0 &&
+                depositWeeks < 52
+        );
+
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // Project deposit tokens
+        vm.startPrank(address(owner2));
+        LR.approve(address(autoBribe), depositAmountLR);
+        autoBribe.deposit(address(LR), depositAmountLR, depositWeeks);
+        vm.stopPrank();
+
+        autoBribe.bribe();
+
+        vm.expectRevert("already bribed this week");
+        autoBribe.bribe();
     }
 
     function testEmptyOut(
@@ -339,10 +367,10 @@ contract AutoBribeTest is BaseTest {
         );
     }
 
-    function testTeamCannotSetProjectTwice() public {
+    function testTeamCannotInitProjectTwice() public {
         vm.startPrank(address(owner));
-        vm.expectRevert("only project / team can only set once");
-        autoBribe.setProject(address(owner2));
+        vm.expectRevert("project wallet can only be set once by team");
+        autoBribe.initProject(address(owner2));
         vm.stopPrank();
     }
 

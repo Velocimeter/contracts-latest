@@ -13,9 +13,10 @@ contract AutoBribeFactory {
     }
 
     function createAutoBribe(
-        address wbribe
+        address wbribe,
+        string memory name
     ) external returns (address auto_bribe) {
         require(wbribe != address(0), "Wrapped bribe not yet created");
-        auto_bribe = address(new AutoBribe(wbribe, team));
+        auto_bribe = address(new AutoBribe(wbribe, team, name));
     }
 }
