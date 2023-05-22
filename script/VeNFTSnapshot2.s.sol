@@ -9,42 +9,40 @@ import {VotingEscrow} from "../contracts/VotingEscrow.sol";
 
 contract VeNFTSnapshot2 is Script {
 
-
-    // function filtered() public view returns (address _filter) {
-    //         address[] memory filterList = new address[](14);
-    //             filterList[0] = 0xF6ec240620aD5288028ad1F96D8725db0c838B90; 
-    //             filterList[1] = 0x4F09B919d969b58A96E8BD7673f12372D09395E8;
-    //             filterList[2] = 0xD204E3dC1937d3a30fc6F20ABc48AC5506C94D1E;
-    //             filterList[3] = 0xfF2AD84b31f046dECC8A4F627c7cf81fe61FF54b;
-    //             filterList[4] = 0xa31d50414535263A9b217C7A517253Db0E9e8519;
-    //             filterList[5] = 0x53a5dD07127739e5038cE81eff24ec503A6CC479;
-    //             filterList[6] = 0xF0e4e74Ce34738826477b9280776fc797506fE13;
-    //             filterList[7] = 0xC5C821dE580A01f5979F3223cb2A34a8832eF3A4;
-    //             filterList[8] = 0x5BD97307A40DfBFDBAEf4B3d997ADB816F2dadCC;
-    //             filterList[9] = 0xCAfc58De1E6A071790eFbB6B83b35397023E1544;
-    //             filterList[10] = 0xA67D2c03c3cfe6177a60cAed0a4cfDA7C7a563e0;
-    //             filterList[11] = 0xC6493626be58Dc647A5103970Da5BcF9F7FdbFd2;
-    //             filterList[12] = 0xAA3736052423f768D224E38771F6D08802a6a3De;
-    //             filterList[13] = 0xa7f37a4699dD344440341134e9f94a4E7BA83110;         
+mapping(address => bool) filter;
 
 
-    //             uint256 length = filterList.length;
+    function makeFilter() internal {
 
-    //         for (uint256 i = 0; i < length;) {
-    //             address filterNow = filterList[i];
-    //             return (filterNow);
-    //             ++i;
-    //         }
-    // }       
+        filter[0xF6ec240620aD5288028ad1F96D8725db0c838B90] = true; //somm
+        filter[0x4F09B919d969b58A96E8BD7673f12372D09395E8] = true; //velodrom
+        filter[0xD204E3dC1937d3a30fc6F20ABc48AC5506C94D1E] = true; //tarot
+        filter[0xfF2AD84b31f046dECC8A4F627c7cf81fe61FF54b] = true; //impermax
+        filter[0xa31d50414535263A9b217C7A517253Db0E9e8519] = true; //dexVault
+        filter[0x53a5dD07127739e5038cE81eff24ec503A6CC479] = true; //acsveFLOW
+        filter[0xF0e4e74Ce34738826477b9280776fc797506fE13] = true; //cINU
+        filter[0xC5C821dE580A01f5979F3223cb2A34a8832eF3A4] = true; //firebird
+        filter[0x5BD97307A40DfBFDBAEf4B3d997ADB816F2dadCC] = true; //aCryptos
+        filter[0xCAfc58De1E6A071790eFbB6B83b35397023E1544] = true; // DOG
+        filter[0xA67D2c03c3cfe6177a60cAed0a4cfDA7C7a563e0] = true; // Cre8r
+        filter[0xC6493626be58Dc647A5103970Da5BcF9F7FdbFd2] = true; //YFX
+        filter[0xAA3736052423f768D224E38771F6D08802a6a3De] = true; //Openx
+        filter[0xa7f37a4699dD344440341134e9f94a4E7BA83110] = true; // stride
+        filter[0xF09d213EE8a8B159C884b276b86E08E26B3bfF75] = true; //beefy
+        filter[0xcC06464C7bbCF81417c08563dA2E1847c22b703a] = true; //voterEOA
+        filter[0x1bAe1083CF4125eD5dEeb778985C1Effac0ecC06] = true; //asset EOA
+        filter[0x13eeB8EdfF60BbCcB24Ec7Dd5668aa246525Dc51] = true; // safe
+    }             
 
 
-    function run() external view {
+    function run() external {
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
         // maxID taken from https://tuber.build/token/0x8E003242406FBa53619769F31606ef2Ed8A65C00/token-transfers
         // maxId 1115
         uint256 currentTokenId = 1;
-        uint256 maxTokenId = 1116;
+        uint256 maxTokenId = 1115;
+        makeFilter();
 
         while (currentTokenId <= maxTokenId) {
             address owner = votingEscrow.ownerOf(currentTokenId);
@@ -52,7 +50,7 @@ contract VeNFTSnapshot2 is Script {
 
             if (owner != address(0)) {
                 if (lockedLeft >= (block.timestamp + 94608000)) {
-                    // if (owner != filtered()) {
+                    if (filter[owner] == false) {
 
                         (int128 lockAmount,) = votingEscrow.locked(currentTokenId);
 
@@ -62,7 +60,7 @@ contract VeNFTSnapshot2 is Script {
                         console2.log(owner);
                         console2.log("Locked amount: ");
                         console2.log(lockAmount);
-                    // }
+                    }
                 }
             }
 
