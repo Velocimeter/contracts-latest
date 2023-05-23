@@ -3,6 +3,7 @@
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 import "contracts/interfaces/ITurnstile.sol";
 import "contracts/interfaces/IERC20.sol";
+import "contracts/interfaces/IVoter.sol";
 import "contracts/WrappedBribe.sol";
 
 pragma solidity ^0.8.13;
@@ -17,6 +18,7 @@ pragma solidity ^0.8.13;
 contract AutoBribe is Ownable {
     address public constant TURNSTILE =
         0xEcf044C5B4b867CFda001101c617eCd347095B44;
+    address public immutable voter;
     address public immutable wBribe;
 
     address public project;
@@ -39,11 +41,13 @@ contract AutoBribe is Ownable {
     event UnSealed(uint256 indexed _timestamp);
 
     constructor(
+        address _voter,
         address _wBribe,
         address _team,
-        uint256 _csrNftId,
-        string memory _name
+        string memory _name,
+        uint256 _csrNftId
     ) {
+        voter = _voter;
         wBribe = _wBribe;
         nextWeek = block.timestamp;
         _transferOwnership(_team);
@@ -99,6 +103,10 @@ contract AutoBribe is Ownable {
         require(msg.sender == project, "only the project can bribe");
         require(_amount > 0, "Why are you depositing 0 tokens?");
         require(_weeks > 0, "You have to put at least 1 week");
+        require(
+            IVoter(voter).isWhitelisted(_bribeToken),
+            "Bribe Token is not whitelisted"
+        );
         _safeTransferFrom(_bribeToken, msg.sender, address(this), _amount);
         uint256 allowance = IERC20(_bribeToken).allowance(
             address(this),

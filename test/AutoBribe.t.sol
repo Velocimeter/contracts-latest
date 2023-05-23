@@ -37,6 +37,7 @@ contract AutoBribeTest is BaseTest {
         amounts[2] = 1e25;
         mintFlow(owners, amounts);
         mintLR(owners, amounts);
+        mintWETH(owners, amounts);
         VeArtProxy artProxy = new VeArtProxy();
         escrow = new VotingEscrow(
             address(FLOW),
@@ -88,10 +89,11 @@ contract AutoBribeTest is BaseTest {
         xbribe = ExternalBribe(gauge.external_bribe());
         wbribe = WrappedBribe(wbribeFactory.createBribe(address(xbribe)));
         autoBribe = new AutoBribe(
+            address(voter),
             address(wbribe),
             address(owner),
-            csrNftId,
-            "AUTO"
+            "AUTO",
+            csrNftId
         );
 
         vm.startPrank(address(owner));
@@ -162,6 +164,17 @@ contract AutoBribeTest is BaseTest {
                 balanceBeforeFLOW,
             depositAmountFLOW
         );
+    }
+
+    function testCannotDepositNonWhitelistedTokens() public {
+        vm.warp(block.timestamp + 1 weeks / 2);
+
+        // Project deposit tokens
+        vm.startPrank(address(owner2));
+        LR.approve(address(autoBribe), type(uint256).max);
+        vm.expectRevert("Bribe Token is not whitelisted");
+        autoBribe.deposit(address(WETH), 1e18, 2);
+        vm.stopPrank();
     }
 
     function testRedeposit(

@@ -9,9 +9,11 @@ contract AutoBribeFactory {
         0xEcf044C5B4b867CFda001101c617eCd347095B44;
     uint256 public immutable csrNftId;
     address public immutable team;
+    address public immutable voter;
     address public immutable wBribeFactory;
 
-    constructor(address _team, address _wBribeFactory, uint256 _csrNftId) {
+    constructor(address _voter, address _team, address _wBribeFactory, uint256 _csrNftId) {
+        voter = _voter;
         team = _team;
         wBribeFactory = _wBribeFactory;
         ITurnstile(TURNSTILE).assign(_csrNftId);
@@ -23,6 +25,6 @@ contract AutoBribeFactory {
         string memory name
     ) external returns (address auto_bribe) {
         require(wbribe != address(0), "Wrapped bribe not yet created");
-        auto_bribe = address(new AutoBribe(wbribe, team, csrNftId, name));
+        auto_bribe = address(new AutoBribe(voter, wbribe, team, name, csrNftId));
     }
 }
