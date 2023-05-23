@@ -2,6 +2,7 @@
 
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 import "contracts/interfaces/IERC20.sol";
+import "contracts/interfaces/IVoter.sol";
 import "contracts/WrappedBribe.sol";
 
 pragma solidity ^0.8.13;
@@ -14,6 +15,7 @@ pragma solidity ^0.8.13;
 // !!!!!!!!!!!this contract handles multiple bribe tokens, and a single bribe contract!!!!!!!!!
 
 contract AutoBribe is Ownable {
+    address public immutable voter;
     address public immutable wBribe;
 
     address public project;
@@ -22,13 +24,8 @@ contract AutoBribe is Ownable {
     uint256 public nextWeek;
     address[] public bribeTokens;
     mapping(address => bool) public bribeTokensDeposited;
-<<<<<<< HEAD
-    mapping(address => uint256) public bribeTokenToAmountEachWeek;
-    mapping(address => uint256) public bribeTokenToGasRewardEachWeek;
-=======
     mapping(address => uint256) public bribeTokenToWeeksLeft;
     string public bribeName;
->>>>>>> d984cb02972628a716f7dfab24147acd288ba013
 
     event Deposited(
         address indexed _bribeToken,
@@ -40,7 +37,8 @@ contract AutoBribe is Ownable {
     event Sealed(uint256 indexed _timestamp);
     event UnSealed(uint256 indexed _timestamp);
 
-    constructor(address _wBribe, address _team, string memory _name) {
+    constructor(address _voter, address _wBribe, address _team, string memory _name) {
+        voter = _voter;
         wBribe = _wBribe;
         nextWeek = block.timestamp;
         _transferOwnership(_team);
@@ -59,13 +57,6 @@ contract AutoBribe is Ownable {
         uint256 length = bribeTokens.length;
         address _bribeToken;
         for (uint256 i = 0; i < length; ) {
-<<<<<<< HEAD
-            address bribeToken = _bribeTokens[i];
-            deposit(
-                bribeToken,
-                IERC20(bribeToken).balanceOf(msg.sender) / _weeks,
-                _weeks
-=======
             _bribeToken = bribeTokens[i];
             uint256 weeksLeft = bribeTokenToWeeksLeft[_bribeToken];
             uint256 bribeAmount = balance(_bribeToken) / weeksLeft;
@@ -74,7 +65,6 @@ contract AutoBribe is Ownable {
             WrappedBribe(wBribe).notifyRewardAmount(
                 _bribeToken,
                 bribeAmount - gasReward
->>>>>>> d984cb02972628a716f7dfab24147acd288ba013
             );
             bribeTokenToWeeksLeft[_bribeToken] = weeksLeft - 1;
             unchecked {
@@ -97,92 +87,42 @@ contract AutoBribe is Ownable {
     //Allows project to deposit bribe tokens and set the weeks of which they are divided up into
     function deposit(
         address _bribeToken,
-        uint256 _amountPerWeek,
+        uint256 _amount,
         uint256 _weeks
     ) public {
         require(msg.sender == project, "only the project can bribe");
-        require(_amountPerWeek > 0, "Why are you depositing 0 tokens?");
+        require(_amount > 0, "Why are you depositing 0 tokens?");
         require(_weeks > 0, "You have to put at least 1 week");
-        _safeTransferFrom(
-            _bribeToken,
-            msg.sender,
-            address(this),
-            _amountPerWeek * _weeks
+        require(
+            IVoter(voter).isWhitelisted(_bribeToken),
+            "Bribe Token is not whitelisted"
         );
+        _safeTransferFrom(_bribeToken, msg.sender, address(this), _amount);
         uint256 allowance = IERC20(_bribeToken).allowance(
             address(this),
             wBribe
         );
-        _safeApprove(_bribeToken, wBribe, allowance + _amountPerWeek * _weeks);
+        _safeApprove(_bribeToken, wBribe, allowance + _amount);
         if (!bribeTokensDeposited[_bribeToken]) {
             bribeTokensDeposited[_bribeToken] = true;
             bribeTokens.push(_bribeToken);
         }
-        uint256 gasRewardPerWeek = _amountPerWeek / 200;
-        bribeTokenToGasRewardEachWeek[_bribeToken] += gasRewardPerWeek;
+        bribeTokenToWeeksLeft[_bribeToken] += _weeks;
 
-        uint256 amountEachWeek = _amountPerWeek - gasRewardPerWeek;
-        bribeTokenToAmountEachWeek[_bribeToken] += amountEachWeek;
-
-        emit Deposited(_bribeToken, _amountPerWeek * _weeks, _weeks);
+        emit Deposited(_bribeToken, _amount, _weeks);
     }
 
-<<<<<<< HEAD
-    function bribe() public {
-        uint256 length = bribeTokens.length;
-        uint256 gasRewardPerWeek;
-        uint256 bribeAmountPerWeek;
-        uint256 tokenBalance;
-        address _bribeToken;
-        for (uint256 i = 0; i < length; ) {
-            if (block.timestamp >= nextWeek) {
-                _bribeToken = bribeTokens[i];
-                gasRewardPerWeek = bribeTokenToGasRewardEachWeek[_bribeToken];
-                bribeAmountPerWeek = bribeTokenToAmountEachWeek[_bribeToken];
-                tokenBalance = balance(_bribeToken);
-                if (tokenBalance >= gasRewardPerWeek + bribeAmountPerWeek) {
-                    _safeTransfer(_bribeToken, msg.sender, gasRewardPerWeek);
-                    WrappedBribe(wBribe).notifyRewardAmount(
-                        _bribeToken,
-                        bribeAmountPerWeek
-                    );
-                } else if (tokenBalance > gasRewardPerWeek) {
-                    _safeTransfer(_bribeToken, msg.sender, gasRewardPerWeek);
-                    WrappedBribe(wBribe).notifyRewardAmount(
-                        _bribeToken,
-                        tokenBalance - gasRewardPerWeek
-                    );
-                }
-            }
-            unchecked {
-                ++i;
-            }
-        }
-
-        emit Bribed(nextWeek, msg.sender);
-
-        nextWeek = nextWeek + 604800;
-    }
-
-    function balance(address _bribeToken) public view returns (uint) {
-        return IERC20(_bribeToken).balanceOf(address(this));
-    }
-
-    //####Admin Functions#####
-=======
     //Allows the project to retrieve their bribe tokens
->>>>>>> d984cb02972628a716f7dfab24147acd288ba013
     function emptyOut() public {
         require(msg.sender == project, "only project can empty out");
         require(!depositSealed, "deposit is sealed");
         uint256 length = bribeTokens.length;
         uint256 amount;
-        address bribeToken;
+
         for (uint256 i = 0; i < length; ) {
-            bribeToken = bribeTokens[i];
+            address bribeToken = bribeTokens[i];
             amount = balance(bribeToken);
-            bribeTokenToGasRewardEachWeek[bribeToken] = 0;
-            bribeTokenToAmountEachWeek[bribeToken] = 0;
+            bribeTokenToWeeksLeft[bribeToken] = 0;
             _safeTransfer(bribeToken, msg.sender, amount);
 
             unchecked {
