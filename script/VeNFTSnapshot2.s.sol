@@ -38,10 +38,10 @@ mapping(address => bool) filter;
     function run() external {
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
-        // maxID taken from https://tuber.build/token/0x8E003242406FBa53619769F31606ef2Ed8A65C00/token-transfers
-        // maxId 1115
-        uint256 currentTokenId = 1;
-        uint256 maxTokenId = 1115;
+        // maxID taken from https://tuber.build/address/0x8E003242406FBa53619769F31606ef2Ed8A65C00/transactions#address-tabs
+        // maxId 1127
+        uint256 currentTokenId = 580;
+        uint256 maxTokenId = 589;
         makeFilter();
 
         while (currentTokenId <= maxTokenId) {
@@ -54,11 +54,10 @@ mapping(address => bool) filter;
 
                         (int128 lockAmount,) = votingEscrow.locked(currentTokenId);
 
-                        console2.log("Token ID: ");
-                        console2.log(currentTokenId);
-                        console2.log("Owner: ");
+                        // console2.log("Owner: ");
+                        // console2.log("Locked amount: ");
+
                         console2.log(owner);
-                        console2.log("Locked amount: ");
                         console2.log(lockAmount);
                     }
                 }

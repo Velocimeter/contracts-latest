@@ -6,4 +6,6 @@ interface IAutoBribe {
     function emptyOut() external;
     function balance(address _bribeToken) external view returns (uint);
     function reclockBribeToNow() external;
+    function bribe() external;
+    function nextWeek() external view returns (uint256);
 }

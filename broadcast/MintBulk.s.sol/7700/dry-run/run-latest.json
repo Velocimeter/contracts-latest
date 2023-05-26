@@ -12,10 +12,10 @@
         "type": "0x02",
         "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
         "to": "0xb5b060055f0d1ef5174329913ef861bc3addf029",
-        "gas": "0xf943",
+        "gas": "0x9cef",
         "value": "0x0",
-        "data": "0x095ea7b30000000000000000000000008e003242406fba53619769f31606ef2ed8a65c00000000000000000000000000000000000000000000027b46536c66c8e3000000",
-        "nonce": "0x217",
+        "data": "0x095ea7b30000000000000000000000008e003242406fba53619769f31606ef2ed8a65c0000000000000000000000000000000000000000000000d3c21bcecceda1000000",
+        "nonce": "0x3a6",
         "accessList": []
       },
       "additionalContracts": [],
@@ -33,73 +33,10 @@
         "type": "0x02",
         "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
         "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
-        "gas": "0x90084",
+        "gas": "0xb8887",
         "value": "0x0",
-        "data": "0xd4e54c3b000000000000000000000000000000000000000000009ed194db19b238c00000000000000000000000000000000000000000000000000000000000000784ce00000000000000000000000000939714d0fecf95d77d068838910cb6ce921a08a5",
-        "nonce": "0x218",
-        "accessList": []
-      },
-      "additionalContracts": [],
-      "isFixedGasLimit": false
-    },
-    {
-      "hash": null,
-      "transactionType": "CALL",
-      "contractName": null,
-      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
-      "function": null,
-      "arguments": null,
-      "rpc": "https://mainnode.plexnode.org:8545",
-      "transaction": {
-        "type": "0x02",
-        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
-        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
-        "gas": "0x9501a",
-        "value": "0x0",
-        "data": "0xd4e54c3b000000000000000000000000000000000000000000009ed194db19b238c00000000000000000000000000000000000000000000000000000000000000784ce00000000000000000000000000939714d0fecf95d77d068838910cb6ce921a08a5",
-        "nonce": "0x219",
-        "accessList": []
-      },
-      "additionalContracts": [],
-      "isFixedGasLimit": false
-    },
-    {
-      "hash": null,
-      "transactionType": "CALL",
-      "contractName": null,
-      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
-      "function": null,
-      "arguments": null,
-      "rpc": "https://mainnode.plexnode.org:8545",
-      "transaction": {
-        "type": "0x02",
-        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
-        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
-        "gas": "0x9d65d",
-        "value": "0x0",
-        "data": "0xd4e54c3b000000000000000000000000000000000000000000009ed194db19b238c00000000000000000000000000000000000000000000000000000000000000784ce00000000000000000000000000939714d0fecf95d77d068838910cb6ce921a08a5",
-        "nonce": "0x21a",
-        "accessList": []
-      },
-      "additionalContracts": [],
-      "isFixedGasLimit": false
-    },
-    {
-      "hash": null,
-      "transactionType": "CALL",
-      "contractName": null,
-      "contractAddress": "0x8E003242406FBa53619769F31606ef2Ed8A65C00",
-      "function": null,
-      "arguments": null,
-      "rpc": "https://mainnode.plexnode.org:8545",
-      "transaction": {
-        "type": "0x02",
-        "from": "0xcc06464c7bbcf81417c08563da2e1847c22b703a",
-        "to": "0x8e003242406fba53619769f31606ef2ed8a65c00",
-        "gas": "0xadd3b",
-        "value": "0x0",
-        "data": "0xd4e54c3b000000000000000000000000000000000000000000009ed194db19b238c00000000000000000000000000000000000000000000000000000000000000784ce00000000000000000000000000939714d0fecf95d77d068838910cb6ce921a08a5",
-        "nonce": "0x21b",
+        "data": "0xd4e54c3b0000000000000000000000000000000000000000000054b40b1f852bda000000000000000000000000000000000000000000000000000000000000000784ce000000000000000000000000003c2d6d7144241f1f1203c29c124585e55b58975e",
+        "nonce": "0x3a7",
         "accessList": []
       },
       "additionalContracts": [],
@@ -111,8 +48,8 @@
   "pending": [],
   "path": "/Users/chris/Documents/Velocimeter/contracts-latest/broadcast/MintBulk.s.sol/7700/dry-run/run-latest.json",
   "returns": {},
-  "timestamp": 1682696728,
+  "timestamp": 1684971496,
   "chain": 7700,
   "multi": false,
-  "commit": "08ede3c"
+  "commit": "eae27d4"
 }

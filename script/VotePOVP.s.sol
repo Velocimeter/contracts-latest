@@ -47,8 +47,8 @@ contract VotePOVP is Script {
         voter.vote(4, underFLOW_FLOW, ONEHUNDRED); // 1M
         voter.vote(5, FLOW_WCANTO, ONEHUNDRED); // 1M
         voter.vote(6, FLOW_WCANTO, ONEHUNDRED); // 1M reset()
-        voter.vote(7, FLOW_WCANTO, ONEHUNDRED); // 2M
-        voter.vote(8, FLOW_NOTE, ONEHUNDRED); //  2M
+        voter.vote(7, sCANTO_wCANTO, ONEHUNDRED); // 2M
+        voter.vote(8, sCANTO_wCANTO, ONEHUNDRED); //  2M
         voter.vote(9, FLOW_NOTE, ONEHUNDRED); // 2M
         voter.vote(10, FLOW_NOTE, ONEHUNDRED); //  2M
         voter.vote(11, FLOW_NOTE, ONEHUNDRED); // 2M

@@ -51,7 +51,9 @@ contract CRE8R is Script {
         increaseTime();
         vote();
         claimBribes();
-        addAutoBribes();        
+        bribe();
+        addAutoBribes();
+
         vm.stopBroadcast();
 
         }       
@@ -68,7 +70,7 @@ contract CRE8R is Script {
           bribes[0] = bribeArray; 
           
           voter.claimBribes(cre8r_eth_wbribe, bribes, tknID);
-          voter.claimBribes(cre8r_eth_wwbribe, bribes, tknID);
+          // voter.claimBribes(cre8r_eth_wwbribe, bribes, tknID);
     }
 
     function getRewards() private {        
@@ -94,12 +96,19 @@ contract CRE8R is Script {
     function vote() private {
       voter.vote(tknID, cre8rPair, ONEHUNDRED);
     }
+    function bribe() private {
+        IAutoBribe(Eth_Cre8r_AutoBribe).reclockBribeToNow();
+        IAutoBribe(Eth_Cre8r_AutoBribe).bribe();
+    }
+
     function addAutoBribes()private{
       uint256 CRE8RBal = IERC20(cre8r).balanceOf(hotwallet);
-      uint256 bWeeks =  CRE8RBal / 500000;
+      if(CRE8RBal >= 50000 * 1e18) {
+        uint256 bWeeks =  CRE8RBal / 500000;
         IERC20(cre8r).approve(Eth_Cre8r_AutoBribe, CRE8RBal);
         IAutoBribe(Eth_Cre8r_AutoBribe).deposit(cre8r, CRE8RBal, bWeeks);
-        IAutoBribe(Eth_Cre8r_AutoBribe).reclockBribeToNow();
+
+      }
     }
 
 

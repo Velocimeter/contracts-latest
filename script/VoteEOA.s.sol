@@ -45,11 +45,11 @@ contract VoteEOA is Script {
         getRebase(); 
         increaseLockTime();  
 
-        voter.vote(29, FLOW_ETH, ONEHUNDRED ); // 3M 
+        voter.vote(29, sCANTO_wCANTO, ONEHUNDRED ); // 3M 
         voter.vote(30, FLOW_ETH, ONEHUNDRED ); // 3M 
         voter.vote(31, FLOW_ETH, ONEHUNDRED ); // 3M 
         voter.vote(32, FLOW_sCANTO, ONEHUNDRED ); // 3M 
-        voter.vote(51, FLOW_WCANTO, ONEHUNDRED ); // 2M 
+        voter.vote(51, FLOW_sCANTO, ONEHUNDRED ); // 2M 
         voter.vote(52, sCANTO_wCANTO, ONEHUNDRED ); //  2M 
         voter.vote(53, sCANTO_wCANTO, ONEHUNDRED ); //  2M 
         voter.vote(54, sCANTO_BLOTR, ONEHUNDRED ); // 2M 
