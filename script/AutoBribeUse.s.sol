@@ -12,6 +12,7 @@ import "forge-std/console2.sol";
 contract AutoBribeUse is Script {
     // POVP Autobribes
     address private constant FLOW = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
+    address private constant BLOTR = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE;
     address private constant WCanto_Flow_Autobribe = 0x1fc94f96fdd3Fc51E39575161BD6ed920c03fFA0;
     address private constant Note_Flow_AutoBribe = 0x5318FfE879e6027fD009beA6837E21F40EEf3903;
     address private constant Eth_Flow_AutoBribe = 0xb091b7816112d870609Ca1c6E64bD140c189BA34;
@@ -30,6 +31,9 @@ contract AutoBribeUse is Script {
     address private constant sCANTO_FLOW_Autobribe = 0x7C57707fd607132128EEEFa93a087659EdD5BbE3;
     address private constant sCANTO_wCANTO_Autobribe = 0x99a564Cb07A31A08Be98670f63DBc5554f0Ee7fE;
     address private constant sCANTO_BLOTR_Autobribe = 0xfA3Be1bBEe6A2c30FcB790c3F53094f57AE2F104;
+
+    //Voter
+    address private constant PVOP = 0xcc06464c7bbcf81417c08563da2e1847c22b703a;
 
 
     
@@ -55,9 +59,10 @@ contract AutoBribeUse is Script {
         // depositFlowBribes(autoBribes, totalFlow, _weeks);
         
         // emptyOutAll(autoBribes);
+                
+        // reClockAll(autoBribes);
         // bribe(autoBribes);
-        reClockAll(autoBribes);
-
+        depositBlotr();
 
         vm.stopBroadcast();
     }
@@ -107,6 +112,15 @@ contract AutoBribeUse is Script {
                 ++i;
 
             }
+    }
+    function depositBlotr() private {
+        uint256 balBlotr = IERC20(BLOTR).balanceOf(PVOP);
+        uint256 weekHere = balBlotr / 10_000 * 1e18;
+
+        if (balBlotr >= 20_000 * 1e18) {
+            IAutoBribe(sCANTO_FLOW_Autobribe_FLOW).deposit(BLOTR, 10_000, weekHere);
+            IAutoBribe(sCANTO_wCANTO_Autobribe_FLOW).deposit(BLOTR, 10_000, weekHere);
+        }
     }
     function reClockAll(address[] memory _autoBribes) private {
 
