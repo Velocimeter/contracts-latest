@@ -16,7 +16,7 @@ contract AutoBribeUse is Script {
     address private constant WCanto_Flow_Autobribe = 0x1fc94f96fdd3Fc51E39575161BD6ed920c03fFA0;
     address private constant Note_Flow_AutoBribe = 0x5318FfE879e6027fD009beA6837E21F40EEf3903;
     address private constant Eth_Flow_AutoBribe = 0xb091b7816112d870609Ca1c6E64bD140c189BA34;
-    address private constant underFlow_Flow_Autobribe = 0xd855dbbb8ca20b6df9459eea613d7645c8f8ad93;
+    address private constant underFlow_Flow_Autobribe = 0xd855dbBB8ca20B6dF9459EEA613D7645c8F8ad93;
     address private constant sCANTO_wCANTO_Autobribe_FLOW = 0xb53350884016E9b398F9F43c4B1C62d87D809DA7;
     address private constant sCANTO_FLOW_Autobribe_FLOW = 0x01790Da7Df49e620694ff2f10382C01D6ef33179;
 
@@ -33,7 +33,7 @@ contract AutoBribeUse is Script {
     address private constant sCANTO_BLOTR_Autobribe = 0xfA3Be1bBEe6A2c30FcB790c3F53094f57AE2F104;
 
     //Voter
-    address private constant PVOP = 0xcc06464c7bbcf81417c08563da2e1847c22b703a;
+    address private constant PVOP = 0xcC06464C7bbCF81417c08563dA2E1847c22b703a;
 
 
     
@@ -47,7 +47,7 @@ contract AutoBribeUse is Script {
         // SET THESE TO RUN THE FLOW BRIBES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         uint256 totalFlow = 500_000 * 1e18;
         uint256 _weeks = 4;
-        address[] memory autoBribes = new address[](5);
+        address[] memory autoBribes = new address[](6);
             autoBribes[0] = WCanto_Flow_Autobribe; 
             autoBribes[1] = Note_Flow_AutoBribe;
             autoBribes[2] = Eth_Flow_AutoBribe;
@@ -115,9 +115,13 @@ contract AutoBribeUse is Script {
     }
     function depositBlotr() private {
         uint256 balBlotr = IERC20(BLOTR).balanceOf(PVOP);
+        uint256 balBlotrHalf = balBlotr / 2;
         uint256 weekHere = balBlotr / 10_000 * 1e18;
 
         if (balBlotr >= 20_000 * 1e18) {
+            IERC20(BLOTR).approve(sCANTO_FLOW_Autobribe_FLOW, balBlotrHalf);
+            IERC20(BLOTR).approve(sCANTO_wCANTO_Autobribe_FLOW, balBlotrHalf);    
+
             IAutoBribe(sCANTO_FLOW_Autobribe_FLOW).deposit(BLOTR, 10_000, weekHere);
             IAutoBribe(sCANTO_wCANTO_Autobribe_FLOW).deposit(BLOTR, 10_000, weekHere);
         }
