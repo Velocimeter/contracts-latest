@@ -39,31 +39,47 @@ mapping(address => bool) filter;
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
         // maxID taken from https://tuber.build/address/0x8E003242406FBa53619769F31606ef2Ed8A65C00/transactions#address-tabs
-        // maxId 1127
+        // maxId 1138
         uint256 currentTokenId = 1;
-        uint256 maxTokenId = 11;
+        uint256 currentTokenId2 = 1;
+        uint256 maxTokenId = 1138;
         makeFilter();
 
         while (currentTokenId <= maxTokenId) {
             address owner = votingEscrow.ownerOf(currentTokenId);
             uint256 lockedLeft = votingEscrow.locked__end(currentTokenId);
+            uint256 lockedAmnt = votingEscrow.balanceOfNFT(currentTokenId);
 
             if (owner != address(0)) {
                 if (lockedLeft >= (block.timestamp + 94608000)) {
-                    if (filter[owner] == false) {
+                    if (lockedAmnt >= 30000 * 1e18){ 
+                        if (filter[owner] == false) {
 
-                        (int128 lockAmount,) = votingEscrow.locked(currentTokenId);
-
-                        // console2.log("Owner: ");
-                        // console2.log("Locked amount: ");
-
-                        console2.log(owner);
-                        console2.log(lockAmount);
+                            console2.log(owner);
+                        }
                     }
                 }
             }
-
             currentTokenId++;
+        }
+        while (currentTokenId2 <= maxTokenId) {
+            address owner = votingEscrow.ownerOf(currentTokenId2);
+            uint256 lockedLeft = votingEscrow.locked__end(currentTokenId2);
+            uint256 lockedAmnt = votingEscrow.balanceOfNFT(currentTokenId2);
+
+                if (owner != address(0)) {
+                 if (lockedLeft >= (block.timestamp + 94608000)) {
+                    if (lockedAmnt >= 30000 * 1e18){
+                        if (filter[owner] == false) {
+
+                            (int128 lockAmount,) = votingEscrow.locked(currentTokenId2);
+
+                            console2.log(lockAmount);
+                        }
+                    }
+                }
+            }
+            currentTokenId2++;
         }
     }
 }

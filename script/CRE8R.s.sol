@@ -52,17 +52,18 @@ contract CRE8R is Script {
         vote();
         claimBribes();
         bribe();
-        addAutoBribes();
+        // addAutoBribes();
 
         vm.stopBroadcast();
 
-        }       
+        }     
+
 
     function claimBribes() private { 
           address[] memory cre8r_eth_wbribe = new address[](1); 
           cre8r_eth_wbribe[0] = 0xf81568C88b8dCD42764c31437f918eBBB705F067;
           address[] memory cre8r_eth_wwbribe = new address[](1); 
-          cre8r_eth_wwbribe[0] = 0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389; 
+          cre8r_eth_wwbribe[0] = 0x039A01e600BC54bcc16c29041383eFd18121605B; 
           address[][] memory bribes = new address[][](1);
           address[] memory bribeArray = new address[](2);
           bribeArray[0] = eth;
@@ -70,7 +71,9 @@ contract CRE8R is Script {
           bribes[0] = bribeArray; 
           
           voter.claimBribes(cre8r_eth_wbribe, bribes, tknID);
-          // voter.claimBribes(cre8r_eth_wwbribe, bribes, tknID);
+          voter.claimBribes(cre8r_eth_wwbribe, bribes, tknID);
+
+
     }
 
     function getRewards() private {        

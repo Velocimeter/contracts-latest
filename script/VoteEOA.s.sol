@@ -29,6 +29,12 @@ contract VoteEOA is Script {
     address[] private sCANTO_BLOTR = [0x44724F2A542D9b7653923D87F17712b113FEB448];
     address[] private FLOW_sCANTO = [0x754AeD0D7A61dD3B03084d5bB8285D674D663703];
 
+    address[] private sCANTO_FLOW = [0x754AeD0D7A61dD3B03084d5bB8285D674D663703];
+    address[] private BLOTR_FLOW = [0x257B3C794E8b0b1ef2260E2747fFf354b70bb4C5];
+    address[] private underFLOW_FLOW = [0x531aa71E2B01Db990B8B1f5d94fBfdc9FFc217B6];
+    address[] private ETH_sCANTO = [0x563C5377215E06e501C0F093012eE4b91D5F55D4];
+
+
 
       uint256[] ONEHUNDRED = [10000];
       uint256[] FIFTY = [5000];
@@ -45,17 +51,14 @@ contract VoteEOA is Script {
         getRebase(); 
         increaseLockTime();  
 
-        voter.vote(29, sCANTO_wCANTO, ONEHUNDRED ); // 3M 
-        voter.vote(30, FLOW_ETH, ONEHUNDRED ); // 3M 
-        voter.vote(31, FLOW_ETH, ONEHUNDRED ); // 3M 
-        voter.vote(32, FLOW_sCANTO, ONEHUNDRED ); // 3M 
-        voter.vote(51, FLOW_sCANTO, ONEHUNDRED ); // 2M 
-        voter.vote(52, sCANTO_wCANTO, ONEHUNDRED ); //  2M 
-        voter.vote(53, sCANTO_wCANTO, ONEHUNDRED ); //  2M 
-        voter.vote(54, sCANTO_BLOTR, ONEHUNDRED ); // 2M 
-        // voter.vote(85, WCANTO_BNB, ONEHUNDRED); //1.5M RESet to sell, but backed out
-        voter.vote(93, WCANTO_BNB, ONEHUNDRED); //1M
-
+        voter.vote(29, BLOTR_FLOW, ONEHUNDRED ); // 3M 
+        voter.vote(30, BLOTR_FLOW, ONEHUNDRED ); // 3M 
+        voter.vote(31, underFLOW_FLOW, ONEHUNDRED ); // 3M 
+        voter.vote(32, underFLOW_FLOW, ONEHUNDRED ); // 3M 
+        voter.vote(51, BLOTR_FLOW, ONEHUNDRED ); // 2M 
+        voter.vote(52, BLOTR_FLOW, ONEHUNDRED ); //  2M 
+        voter.vote(53, ETH_sCANTO, ONEHUNDRED ); //  2M 
+        voter.vote(54, ETH_sCANTO, ONEHUNDRED ); // 2M 
 
 
         // voter.reset(29); // 3m
@@ -66,12 +69,11 @@ contract VoteEOA is Script {
         // voter.reset(52); // 2m
         // voter.reset(53); // 2m
         // voter.reset(54); // 2m
-        // voter.reset(85); // 1m 4yr voting
-        // voter.reset(84); // 1m 2yr listed on ALTO
-        // voter.reset(90); // 1m 1yr 
-        // voter.reset(91); // 1m 1yr
-        // voter.reset(92); // 1m 1yr
-        // voter.reset(93); // 1m 1yr 
+        voter.reset(85); // 1m 4yr voting
+        voter.reset(84); // 1m 2yr listed on ALTO
+        voter.reset(90); // 1m 1yr 
+        voter.reset(91); // 1m 1yr
+        voter.reset(93); // 1m 1yr 
 
 
         vm.stopBroadcast();

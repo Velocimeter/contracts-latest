@@ -59,15 +59,30 @@ contract AutoBribeUse is Script {
         // depositFlowBribes(autoBribes, totalFlow, _weeks);
         
         // emptyOutAll(autoBribes);
+        emptyOutSome(3, autoBribes);
                 
         // reClockAll(autoBribes);
         // bribe(autoBribes);
-        depositBlotr();
+        // depositBlotr();
 
         vm.stopBroadcast();
     }
 
+    function emptyOutSome(uint _length, address[] memory _autoBribes) private {
+            uint256 length = _length;
 
+            for (uint256 i = 0; i < length;) {
+                address autoBribeNow = _autoBribes[i];
+
+                uint256 balanceBefore = IAutoBribe(autoBribeNow).balance(FLOW);
+                console2.log("balanceBefore", balanceBefore);
+                IAutoBribe(_autoBribes[i]).emptyOut();
+                uint256 balance = IAutoBribe(autoBribeNow).balance(FLOW);
+                console2.log("balance", balance);
+
+                ++i;
+            }
+    }
     function emptyOutAll(address[] memory _autoBribes) private {
             uint256 length = _autoBribes.length;
 
@@ -145,4 +160,7 @@ contract AutoBribeUse is Script {
 // old AutoBribe Contracts
     // address private constant Flow_wCanto_Test = 0xb066870D748a6Caf901eAE881DC96C2a9B004179;
     // address private constant wCanto_Colin_Test = 0x0BF10Dd051856FFf28Df0b033108C7513c3E637e;
-    //    address private constant Usdc_Flow_AutoBribe = 0x4bC90701a5f3e72A5Fe2686C62Da24B20ca1cfB6;
+    // address private constant Usdc_Flow_AutoBribe = 0x4bC90701a5f3e72A5Fe2686C62Da24B20ca1cfB6;
+    // address private constant WCanto_Flow_Autobribe = 0x1fc94f96fdd3Fc51E39575161BD6ed920c03fFA0;
+    // address private constant Note_Flow_AutoBribe = 0x5318FfE879e6027fD009beA6837E21F40EEf3903;
+    // address private constant Eth_Flow_AutoBribe = 0xb091b7816112d870609Ca1c6E64bD140c189BA34;
