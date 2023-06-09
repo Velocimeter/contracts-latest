@@ -7,7 +7,7 @@ import {Script} from "../lib/forge-std/src/Script.sol";
 
 import {VotingEscrow} from "../contracts/VotingEscrow.sol";
 
-contract VeNFTSnapshot2 is Script {
+contract VeNFTSnapshot3 is Script {
 
 mapping(address => bool) filter;
 
@@ -52,7 +52,7 @@ mapping(address => bool) filter;
 
             if (owner != address(0)) {
                 if (lockedLeft >= (block.timestamp + 94608000)) {
-                    if (lockedAmnt >= 30000 * 1e18){ 
+                    if (lockedAmnt <= 30000 * 1e18 && lockedAmnt >= 200 * 1e18){ 
                         if (filter[owner] == false) {
 
                             console2.log(owner);
@@ -69,7 +69,7 @@ mapping(address => bool) filter;
 
                 if (owner != address(0)) {
                  if (lockedLeft >= (block.timestamp + 94608000)) {
-                    if (lockedAmnt >= 30000 * 1e18){
+                    if (lockedAmnt <= 30000 * 1e18 && lockedAmnt >= 200 * 1e18){
                         if (filter[owner] == false) {
 
                             (int128 lockAmount,) = votingEscrow.locked(currentTokenId2);

@@ -13,9 +13,8 @@ contract AutoBribeUse is Script {
     // POVP Autobribes
     address private constant FLOW = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
     address private constant BLOTR = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE;
-    address private constant WCanto_Flow_Autobribe = 0x1fc94f96fdd3Fc51E39575161BD6ed920c03fFA0;
-    address private constant Note_Flow_AutoBribe = 0x5318FfE879e6027fD009beA6837E21F40EEf3903;
-    address private constant Eth_Flow_AutoBribe = 0xb091b7816112d870609Ca1c6E64bD140c189BA34;
+    address private constant oBLOTR = 0x9f9A1Aa08910867F38359F4287865c4A1162C202;
+
     address private constant underFlow_Flow_Autobribe = 0xd855dbBB8ca20B6dF9459EEA613D7645c8F8ad93;
     address private constant sCANTO_wCANTO_Autobribe_FLOW = 0xb53350884016E9b398F9F43c4B1C62d87D809DA7;
     address private constant sCANTO_FLOW_Autobribe_FLOW = 0x01790Da7Df49e620694ff2f10382C01D6ef33179;
@@ -33,7 +32,7 @@ contract AutoBribeUse is Script {
     address private constant sCANTO_BLOTR_Autobribe = 0xfA3Be1bBEe6A2c30FcB790c3F53094f57AE2F104;
 
     //Voter
-    address private constant PVOP = 0xcC06464C7bbCF81417c08563dA2E1847c22b703a;
+    address private constant POVP = 0xcC06464C7bbCF81417c08563dA2E1847c22b703a;
 
 
     
@@ -45,25 +44,22 @@ contract AutoBribeUse is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // SET THESE TO RUN THE FLOW BRIBES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        uint256 totalFlow = 500_000 * 1e18;
-        uint256 _weeks = 4;
-        address[] memory autoBribes = new address[](6);
-            autoBribes[0] = WCanto_Flow_Autobribe; 
-            autoBribes[1] = Note_Flow_AutoBribe;
-            autoBribes[2] = Eth_Flow_AutoBribe;
-            autoBribes[3] = sCANTO_wCANTO_Autobribe_FLOW;
-            autoBribes[4] = sCANTO_FLOW_Autobribe_FLOW;
-            autoBribes[5] = underFlow_Flow_Autobribe;
+        address[] memory autoBribes = new address[](3);
+
+            autoBribes[0] = sCANTO_wCANTO_Autobribe_FLOW;
+            autoBribes[1] = sCANTO_FLOW_Autobribe_FLOW;
+            autoBribes[2] = underFlow_Flow_Autobribe;
 
 
-        // depositFlowBribes(autoBribes, totalFlow, _weeks);
         
         // emptyOutAll(autoBribes);
-        emptyOutSome(3, autoBribes);
-                
-        // reClockAll(autoBribes);
-        // bribe(autoBribes);
-        // depositBlotr();
+        // emptyOutSome(3, autoBribes);
+
+        depositFlowBribes(autoBribes);
+        depositoBlotr(autoBribes);        
+        reClockAll(autoBribes);
+        bribe(autoBribes);
+
 
         vm.stopBroadcast();
     }
@@ -99,21 +95,41 @@ contract AutoBribeUse is Script {
             }
     }
 
-    function depositFlowBribes(address[] memory _autoBribes, uint256 _totalAmount, uint256 _weeks) private {
-
+    function depositFlowBribes(address[] memory _autoBribes) private {
             uint256 length = _autoBribes.length;
-            uint256 split = _totalAmount / length;
-            
+            uint256 flowBal = IERC20(FLOW).balanceOf(POVP);
+            if(flowBal >= 300_000 * 1e18) {
+                uint256 split = flowBal / 3;   
+                uint256 _weeks = 4;           
 
-            for (uint256 i = 0; i < length;) {
-                address autoBribeNow = _autoBribes[i];
-                IFlow(FLOW).approve(autoBribeNow, split);            
-                IAutoBribe(autoBribeNow).deposit(FLOW, split, _weeks);
+                for (uint256 i = 0; i < length;) {
+                    address autoBribeNow = _autoBribes[i];
+                    IFlow(FLOW).approve(autoBribeNow, split);            
+                    IAutoBribe(autoBribeNow).deposit(FLOW, split, _weeks);
 
-                ++i;
+                    ++i;
 
+                }
             }
     }
+    function depositoBlotr(address[] memory _autoBribes) private {
+        uint256 length = _autoBribes.length;
+        uint256 balBlotr = IERC20(oBLOTR).balanceOf(POVP);
+        if(balBlotr >=120_000 * 1e18) {
+            uint256 split = balBlotr / 3;
+            uint256 _weeks = 4;
+
+            for (uint256 i = 0; i < length;) {
+                    address autoBribeNow = _autoBribes[i];
+                    IERC20(oBLOTR).approve(autoBribeNow, split);            
+                    IAutoBribe(autoBribeNow).deposit(oBLOTR, split, _weeks);
+
+                    ++i;
+            }
+        }
+    }
+
+
     function bribe(address[] memory _autoBribes) private {
 
             uint256 length = _autoBribes.length;            
@@ -128,19 +144,7 @@ contract AutoBribeUse is Script {
 
             }
     }
-    function depositBlotr() private {
-        uint256 balBlotr = IERC20(BLOTR).balanceOf(PVOP);
-        uint256 balBlotrHalf = balBlotr / 2;
-        uint256 weekHere = balBlotr / 10_000 * 1e18;
 
-        if (balBlotr >= 20_000 * 1e18) {
-            IERC20(BLOTR).approve(sCANTO_FLOW_Autobribe_FLOW, balBlotrHalf);
-            IERC20(BLOTR).approve(sCANTO_wCANTO_Autobribe_FLOW, balBlotrHalf);    
-
-            IAutoBribe(sCANTO_FLOW_Autobribe_FLOW).deposit(BLOTR, 10_000, weekHere);
-            IAutoBribe(sCANTO_wCANTO_Autobribe_FLOW).deposit(BLOTR, 10_000, weekHere);
-        }
-    }
     function reClockAll(address[] memory _autoBribes) private {
 
             uint256 length = _autoBribes.length;            
@@ -161,6 +165,9 @@ contract AutoBribeUse is Script {
     // address private constant Flow_wCanto_Test = 0xb066870D748a6Caf901eAE881DC96C2a9B004179;
     // address private constant wCanto_Colin_Test = 0x0BF10Dd051856FFf28Df0b033108C7513c3E637e;
     // address private constant Usdc_Flow_AutoBribe = 0x4bC90701a5f3e72A5Fe2686C62Da24B20ca1cfB6;
+    // address private constant WCanto_Flow_Autobribe = 0x1fc94f96fdd3Fc51E39575161BD6ed920c03fFA0;
+    // address private constant Note_Flow_AutoBribe = 0x5318FfE879e6027fD009beA6837E21F40EEf3903;
+    // address private constant Eth_Flow_AutoBribe = 0xb091b7816112d870609Ca1c6E64bD140c189BA34;
     // address private constant WCanto_Flow_Autobribe = 0x1fc94f96fdd3Fc51E39575161BD6ed920c03fFA0;
     // address private constant Note_Flow_AutoBribe = 0x5318FfE879e6027fD009beA6837E21F40EEf3903;
     // address private constant Eth_Flow_AutoBribe = 0xb091b7816112d870609Ca1c6E64bD140c189BA34;

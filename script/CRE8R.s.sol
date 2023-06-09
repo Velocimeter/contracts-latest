@@ -52,7 +52,7 @@ contract CRE8R is Script {
         vote();
         claimBribes();
         bribe();
-        // addAutoBribes();
+        addAutoBribes();
 
         vm.stopBroadcast();
 

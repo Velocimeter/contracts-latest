@@ -10,14 +10,15 @@ import {RewardsDistributor} from "../contracts/RewardsDistributor.sol";
 import {VotingEscrow} from "../contracts/VotingEscrow.sol";
 import {IBribe} from "../contracts/interfaces/IBribe.sol";
 import {IERC20} from 'contracts/interfaces/IERC20.sol';
+import {IOBLOTR} from 'contracts/interfaces/IOBlotr.sol';
 
 // This script is use to vote with the POVP, it calls the voter.voter(uint256 tokenId, address[] _poolVote, uint256[] _weights) 10000 =100%
 // It can also take arrays but increases gas cost.
 
-address constant VoterEOA = 0xcC06464C7bbCF81417c08563dA2E1847c22b703a;
-address constant flow = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
-address constant oBlotr = 0x9f9A1Aa08910867F38359F4287865c4A1162C202;
-address constant blotr = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE;
+address constant POVP = 0xcC06464C7bbCF81417c08563dA2E1847c22b703a;
+address constant FLOW = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
+address constant OBLOTR = 0x9f9A1Aa08910867F38359F4287865c4A1162C202;
+address constant BLOTR = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE;
 address constant sCanto = 0x9F823D534954Fc119E31257b3dDBa0Db9E2Ff4ed;
 
 
@@ -43,7 +44,7 @@ contract VotePOVP is Script {
         // vote();
 
         // claimBribes();
-
+        // mintOBlotr();
         bribe();
 
         vm.stopBroadcast();
@@ -67,20 +68,57 @@ contract VotePOVP is Script {
         voter.vote(14, sCANTO_FLOW, ONEHUNDRED ); // 3M
     }
 
-    function bribe() private {
-      uint256 balFLOW = IERC20(flow).balanceOf(VoterEOA);
-      uint256 balBlotr = IERC20(blotr).balanceOf(VoterEOA);
-      uint256 balOBlotr = IERC20(oBlotr).balanceOf(VoterEOA);
 
-      address xxBribe = 0x96139C7B2266539f23fed15D91046F4e8ee0b545;
-      if (balFLOW >= 100_000 * 1e18) {
-        IBribe(xxBribe).notifyRewardAmount(flow, 100_000 * 1e18);
+
+    function bribe() private {
+      uint256 balFLOW = IERC20(FLOW).balanceOf(POVP);
+      uint256 balOBlotr = IERC20(OBLOTR).balanceOf(POVP);
+
+      address xxBribe_sCanto_Flow = 0x96139C7B2266539f23fed15D91046F4e8ee0b545;
+      address xxBribe_Blotr_Flow = 0x35C9bbab52d14373cF8cB2ca58a4CA9C57A2FC11;
+      address xxBribe_Blotr_sCanto = 0xc632487e01CA93C4D96438C5314F67796386EACC;
+      
+      if(IERC20(FLOW).allowance(POVP, xxBribe_Blotr_Flow) <= 50_000 * 1e18) {
+        IERC20(FLOW).approve(xxBribe_Blotr_Flow, 10_000_000 * 1e18);
       }
-      if (balBlotr >= 50_000 * 1e18) {
-        IBribe(xxBribe).notifyRewardAmount(blotr, 50_000 * 1e18);
+      if(IERC20(FLOW).allowance(POVP, xxBribe_Blotr_sCanto) <= 50_000 * 1e18) {
+        IERC20(FLOW).approve(xxBribe_Blotr_sCanto, 10_000_000 * 1e18);
+      }      
+      if(IERC20(FLOW).allowance(POVP, xxBribe_sCanto_Flow) <= 50_000 * 1e18) {
+        IERC20(FLOW).approve(xxBribe_sCanto_Flow, 10_000_000 * 1e18);
       }
-      if (balOBlotr >= 50_000 * 1e18) {
-        IBribe(xxBribe).notifyRewardAmount(oBlotr, 50_000 * 1e18);
+
+      if(IERC20(OBLOTR).allowance(POVP, xxBribe_Blotr_Flow) <= 50_000 * 1e18) {
+        IERC20(OBLOTR).approve(xxBribe_Blotr_Flow, 10_000_000 * 1e18);
+      }
+      if(IERC20(OBLOTR).allowance(POVP, xxBribe_Blotr_sCanto) <= 50_000 * 1e18) {
+        IERC20(OBLOTR).approve(xxBribe_Blotr_sCanto, 10_000_000 * 1e18);
+      }      
+      if(IERC20(OBLOTR).allowance(POVP, xxBribe_sCanto_Flow) <= 50_000 * 1e18) {
+        IERC20(OBLOTR).approve(xxBribe_sCanto_Flow, 10_000_000 * 1e18);
+      }
+
+      if (balFLOW >= 150_000 * 1e18) {
+        IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(FLOW, 50_000 * 1e18);
+        IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(FLOW, 50_000 * 1e18);
+        IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(FLOW, 50_000 * 1e18);
+      }
+
+      if (balOBlotr >= 150_000 * 1e18) {
+        IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(OBLOTR, 50_000 * 1e18);
+        IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(OBLOTR, 50_000 * 1e18);
+        IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(OBLOTR, 50_000 * 1e18);
+
+      }
+
+    }
+    function mintOBlotr() private {
+      uint256 balBlotr = IERC20(BLOTR).balanceOf(POVP);
+      if(IERC20(BLOTR).allowance(POVP, OBLOTR) <= balBlotr) {
+          IERC20(BLOTR).approve(OBLOTR, 10_000_000 * 1e18);
+      }
+      if(balBlotr >= 10_000 * 1e18){
+        IOBLOTR(OBLOTR).mint(POVP, balBlotr);
       }
 
     }
@@ -94,9 +132,9 @@ contract VotePOVP is Script {
           address[][] memory bribes = new address[][](1);
           address[] memory bribeArray = new address[](4);
           bribeArray[0] = sCanto; 
-          bribeArray[1] = oBlotr; 
-          bribeArray[2] = blotr; 
-          bribeArray[3] = flow; 
+          bribeArray[1] = OBLOTR; 
+          bribeArray[2] = BLOTR; 
+          bribeArray[3] = FLOW; 
           bribes[0] = bribeArray; 
 
           uint256 curID = 2;

@@ -69,11 +69,11 @@ contract VoteEOA is Script {
         // voter.reset(52); // 2m
         // voter.reset(53); // 2m
         // voter.reset(54); // 2m
-        voter.reset(85); // 1m 4yr voting
-        voter.reset(84); // 1m 2yr listed on ALTO
-        voter.reset(90); // 1m 1yr 
-        voter.reset(91); // 1m 1yr
-        voter.reset(93); // 1m 1yr 
+        // voter.reset(85); // 1m 4yr voting
+        // voter.reset(84); // 1m 2yr listed on ALTO
+        // voter.reset(90); // 1m 1yr 
+        // voter.reset(91); // 1m 1yr
+        // voter.reset(93); // 1m 1yr 
 
 
         vm.stopBroadcast();
