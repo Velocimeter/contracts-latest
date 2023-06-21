@@ -11,6 +11,8 @@ import {VotingEscrow} from "../contracts/VotingEscrow.sol";
 import {IBribe} from "../contracts/interfaces/IBribe.sol";
 import {IERC20} from 'contracts/interfaces/IERC20.sol';
 import {IOBLOTR} from 'contracts/interfaces/IOBlotr.sol';
+import {IGauge} from "../contracts/interfaces/IGauge.sol";
+
 
 // This script is use to vote with the POVP, it calls the voter.voter(uint256 tokenId, address[] _poolVote, uint256[] _weights) 10000 =100%
 // It can also take arrays but increases gas cost.
@@ -20,6 +22,7 @@ address constant FLOW = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
 address constant OBLOTR = 0x9f9A1Aa08910867F38359F4287865c4A1162C202;
 address constant BLOTR = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE;
 address constant sCanto = 0x9F823D534954Fc119E31257b3dDBa0Db9E2Ff4ed;
+address constant sCANTO_wCANTO_Gauge = 0x368A98078eC7bD360d0715e92aE8B57c20154937;
 
 
 contract VotePOVP is Script { 
@@ -43,9 +46,16 @@ contract VotePOVP is Script {
         // increaseLockTime();
         // vote();
 
-        // claimBribes();
-        // mintOBlotr();
-        bribe();
+        claimBribes();
+        mintOBlotr();        
+        
+        uint256 balOBlotr = IERC20(OBLOTR).balanceOf(POVP);
+        if (balOBlotr >= 200_000 * 1e18){
+          bribe(150_000 * 1e18);
+          gauge(50_000 * 1e18);
+          } else {
+           gauge(50_000 * 1e18);
+        }
 
         vm.stopBroadcast();
 
@@ -67,12 +77,16 @@ contract VotePOVP is Script {
         voter.vote(13, sCANTO_FLOW, ONEHUNDRED ); //  3M
         voter.vote(14, sCANTO_FLOW, ONEHUNDRED ); // 3M
     }
+    function gauge(uint256 _amount) private {
+      if(IERC20(OBLOTR).allowance(POVP, sCANTO_wCANTO_Gauge) <= _amount) {
+        IERC20(OBLOTR).approve(sCANTO_wCANTO_Gauge, 10_000_000 * 1e18);
+      }
+      IGauge(sCANTO_wCANTO_Gauge).notifyRewardAmount(OBLOTR, _amount);
+    }
 
-
-
-    function bribe() private {
+    function bribe(uint256 _amountOBlotr) private {
       uint256 balFLOW = IERC20(FLOW).balanceOf(POVP);
-      uint256 balOBlotr = IERC20(OBLOTR).balanceOf(POVP);
+      uint256 balOBlotr = _amountOBlotr;
 
       address xxBribe_sCanto_Flow = 0x96139C7B2266539f23fed15D91046F4e8ee0b545;
       address xxBribe_Blotr_Flow = 0x35C9bbab52d14373cF8cB2ca58a4CA9C57A2FC11;
