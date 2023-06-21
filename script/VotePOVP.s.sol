@@ -42,12 +42,12 @@ contract VotePOVP is Script {
         uint256 votePrivateKey = vm.envUint("VOTE_PRIVATE_KEY");
         vm.startBroadcast(votePrivateKey);
 
-        // getRebase();
-        // increaseLockTime();
-        // vote();
+        getRebase();
+        increaseLockTime();
+        vote();
 
-        claimBribes();
-        mintOBlotr();        
+        // claimBribes();
+        // mintOBlotr();        
         
         uint256 balOBlotr = IERC20(OBLOTR).balanceOf(POVP);
         if (balOBlotr >= 200_000 * 1e18){
