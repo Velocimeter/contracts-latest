@@ -8,10 +8,17 @@ import {Script} from "../lib/forge-std/src/Script.sol";
 import {Voter} from "../contracts/Voter.sol";
 import {RewardsDistributor} from "../contracts/RewardsDistributor.sol";
 import {VotingEscrow} from "../contracts/VotingEscrow.sol";
+import {IERC20} from 'contracts/interfaces/IERC20.sol';
+import {IOBLOTR} from 'contracts/interfaces/IOBlotr.sol';
 
 
 // This script is used to reset all the NFTs that have voted
 
+address constant EOA = 0x1bAe1083CF4125eD5dEeb778985C1Effac0ecC06;
+address constant POVP = 0xcC06464C7bbCF81417c08563dA2E1847c22b703a;
+address constant FLOW = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
+address constant OBLOTR = 0x9f9A1Aa08910867F38359F4287865c4A1162C202;
+address constant BLOTR = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE; 
 
 
 contract VoteEOA is Script { 
@@ -46,10 +53,20 @@ contract VoteEOA is Script {
     function run() external {
         uint256 PrivateKey = vm.envUint("ASSETEOA_PRIVATE_KEY");
         vm.startBroadcast(PrivateKey);
+
+        // getRebase(); 
+        // increaseLockTime();
+        // vote();  
+
+        mintOBlotrAndSend(); 
+       
+        vm.stopBroadcast();
+      
+
+    }
+    function vote() private {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
-        getRebase(); 
-        increaseLockTime();  
 
         voter.vote(29, BLOTR_FLOW, ONEHUNDRED ); // 3M 
         voter.vote(30, BLOTR_FLOW, ONEHUNDRED ); // 3M 
@@ -76,8 +93,21 @@ contract VoteEOA is Script {
         // voter.reset(93); // 1m 1yr 
 
 
-        vm.stopBroadcast();
     }
+    function mintOBlotrAndSend() private {
+      uint256 balBlotr = IERC20(BLOTR).balanceOf(EOA);
+      if(IERC20(BLOTR).allowance(EOA, OBLOTR) <= balBlotr) {
+          IERC20(BLOTR).approve(OBLOTR, 10_000_000 * 1e18);
+      }
+      if(balBlotr >= 1_000 * 1e18){
+        IOBLOTR(OBLOTR).mint(EOA, balBlotr);
+      }
+      uint256 oBlotrBal = IERC20(OBLOTR).balanceOf(EOA);
+      IERC20(OBLOTR).transfer(POVP, oBlotrBal);
+      uint256 flowBal = IERC20(FLOW).balanceOf(EOA);
+      IERC20(FLOW).transfer(POVP, flowBal);
+    }
+
     function getRebase() private {
         RewardsDistributor rewardsDistributor = RewardsDistributor(0x73278a66b75aC0714c4B049dFF26e5CddF365c85);
 

@@ -42,22 +42,21 @@ contract VotePOVP is Script {
         uint256 votePrivateKey = vm.envUint("VOTE_PRIVATE_KEY");
         vm.startBroadcast(votePrivateKey);
 
-        getRebase();
-        increaseLockTime();
-        vote();
+        // getRebase();
+        // increaseLockTime();
+        // vote();
 
-        // claimBribes();
-        // mintOBlotr();        
-        
-        uint256 balOBlotr = IERC20(OBLOTR).balanceOf(POVP);
-        if (balOBlotr >= 200_000 * 1e18){
-          bribe(150_000 * 1e18);
-          gauge(50_000 * 1e18);
-          } else {
-           gauge(50_000 * 1e18);
-        }
-
+        claimBribes();
+        mintOBlotr();  
+        sendRewards();
+    
         vm.stopBroadcast();
+
+    }      
+    function sendRewards() private {
+        uint256 balOBlotr = IERC20(OBLOTR).balanceOf(POVP);
+
+          bribe(balOBlotr);
 
     }
     function vote() private {
@@ -77,53 +76,51 @@ contract VotePOVP is Script {
         voter.vote(13, sCANTO_FLOW, ONEHUNDRED ); //  3M
         voter.vote(14, sCANTO_FLOW, ONEHUNDRED ); // 3M
     }
-    function gauge(uint256 _amount) private {
-      if(IERC20(OBLOTR).allowance(POVP, sCANTO_wCANTO_Gauge) <= _amount) {
-        IERC20(OBLOTR).approve(sCANTO_wCANTO_Gauge, 10_000_000 * 1e18);
-      }
-      IGauge(sCANTO_wCANTO_Gauge).notifyRewardAmount(OBLOTR, _amount);
-    }
+    // function gauge(uint256 _amount) private {
+    //   if(IERC20(OBLOTR).allowance(POVP, sCANTO_wCANTO_Gauge) <= _amount) {
+    //     IERC20(OBLOTR).approve(sCANTO_wCANTO_Gauge, 10_000_000 * 1e18);
+    //   }
+    //   IGauge(sCANTO_wCANTO_Gauge).notifyRewardAmount(OBLOTR, _amount);
+    // }
 
     function bribe(uint256 _amountOBlotr) private {
       uint256 balFLOW = IERC20(FLOW).balanceOf(POVP);
-      uint256 balOBlotr = _amountOBlotr;
+      uint256 flowSplit = balFLOW / 3;
+      uint256 blotrSplit = _amountOBlotr / 3;
 
       address xxBribe_sCanto_Flow = 0x96139C7B2266539f23fed15D91046F4e8ee0b545;
       address xxBribe_Blotr_Flow = 0x35C9bbab52d14373cF8cB2ca58a4CA9C57A2FC11;
       address xxBribe_Blotr_sCanto = 0xc632487e01CA93C4D96438C5314F67796386EACC;
       
-      if(IERC20(FLOW).allowance(POVP, xxBribe_Blotr_Flow) <= 50_000 * 1e18) {
+      if(IERC20(FLOW).allowance(POVP, xxBribe_Blotr_Flow) <= flowSplit) {
         IERC20(FLOW).approve(xxBribe_Blotr_Flow, 10_000_000 * 1e18);
       }
-      if(IERC20(FLOW).allowance(POVP, xxBribe_Blotr_sCanto) <= 50_000 * 1e18) {
+      if(IERC20(FLOW).allowance(POVP, xxBribe_Blotr_sCanto) <= flowSplit) {
         IERC20(FLOW).approve(xxBribe_Blotr_sCanto, 10_000_000 * 1e18);
       }      
-      if(IERC20(FLOW).allowance(POVP, xxBribe_sCanto_Flow) <= 50_000 * 1e18) {
+      if(IERC20(FLOW).allowance(POVP, xxBribe_sCanto_Flow) <= flowSplit) {
         IERC20(FLOW).approve(xxBribe_sCanto_Flow, 10_000_000 * 1e18);
       }
 
-      if(IERC20(OBLOTR).allowance(POVP, xxBribe_Blotr_Flow) <= 50_000 * 1e18) {
+      if(IERC20(OBLOTR).allowance(POVP, xxBribe_Blotr_Flow) <= blotrSplit) {
         IERC20(OBLOTR).approve(xxBribe_Blotr_Flow, 10_000_000 * 1e18);
       }
-      if(IERC20(OBLOTR).allowance(POVP, xxBribe_Blotr_sCanto) <= 50_000 * 1e18) {
+      if(IERC20(OBLOTR).allowance(POVP, xxBribe_Blotr_sCanto) <= blotrSplit) {
         IERC20(OBLOTR).approve(xxBribe_Blotr_sCanto, 10_000_000 * 1e18);
       }      
-      if(IERC20(OBLOTR).allowance(POVP, xxBribe_sCanto_Flow) <= 50_000 * 1e18) {
+      if(IERC20(OBLOTR).allowance(POVP, xxBribe_sCanto_Flow) <= blotrSplit) {
         IERC20(OBLOTR).approve(xxBribe_sCanto_Flow, 10_000_000 * 1e18);
       }
 
-      if (balFLOW >= 150_000 * 1e18) {
-        IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(FLOW, 50_000 * 1e18);
-        IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(FLOW, 50_000 * 1e18);
-        IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(FLOW, 50_000 * 1e18);
-      }
+ 
+        IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(FLOW, flowSplit);
+        IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(FLOW, flowSplit);
+        IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(FLOW, flowSplit); 
+        IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(OBLOTR, blotrSplit);
+        IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(OBLOTR, blotrSplit);
+        IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(OBLOTR, blotrSplit);
 
-      if (balOBlotr >= 150_000 * 1e18) {
-        IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(OBLOTR, 50_000 * 1e18);
-        IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(OBLOTR, 50_000 * 1e18);
-        IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(OBLOTR, 50_000 * 1e18);
 
-      }
 
     }
     function mintOBlotr() private {
