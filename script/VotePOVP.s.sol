@@ -21,6 +21,7 @@ address constant POVP = 0xcC06464C7bbCF81417c08563dA2E1847c22b703a;
 address constant FLOW = 0xB5b060055F0d1eF5174329913ef861bC3aDdF029;
 address constant OBLOTR = 0x9f9A1Aa08910867F38359F4287865c4A1162C202;
 address constant BLOTR = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE;
+address constant ETH = 0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687;
 address constant sCanto = 0x9F823D534954Fc119E31257b3dDBa0Db9E2Ff4ed;
 address constant sCANTO_wCANTO_Gauge = 0x368A98078eC7bD360d0715e92aE8B57c20154937;
 
@@ -62,7 +63,7 @@ contract VotePOVP is Script {
     function vote() private {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
-        voter.vote(2, ETH_sCANTO, ONEHUNDRED ); // 4.8M  
+        voter.vote(2, sCANTO_FLOW, ONEHUNDRED ); // 4.8M  
         voter.vote(3, sCANTO_FLOW, ONEHUNDRED ); // 4.2M 
         voter.vote(4, sCANTO_FLOW, ONEHUNDRED ); // 1M
         voter.vote(5, sCANTO_FLOW, ONEHUNDRED ); // 1M
@@ -74,7 +75,7 @@ contract VotePOVP is Script {
         voter.vote(11, sCANTO_FLOW, ONEHUNDRED ); // 2M
         voter.vote(12, sCANTO_FLOW, ONEHUNDRED ); // 2M
         voter.vote(13, sCANTO_FLOW, ONEHUNDRED ); //  3M
-        voter.vote(14, sCANTO_FLOW, ONEHUNDRED ); // 3M
+        voter.vote(14, ETH_sCANTO, ONEHUNDRED ); // 3M
     }
     // function gauge(uint256 _amount) private {
     //   if(IERC20(OBLOTR).allowance(POVP, sCANTO_wCANTO_Gauge) <= _amount) {
@@ -148,8 +149,8 @@ contract VotePOVP is Script {
           bribeArray[3] = FLOW; 
           bribes[0] = bribeArray; 
 
-          uint256 curID = 3;
-          uint256 lastID = 14;
+          uint256 curID = 2;
+          uint256 lastID = 13;
 
           while (curID <= lastID) {
             voter.claimBribes(xbribe, bribes, curID);
@@ -157,6 +158,20 @@ contract VotePOVP is Script {
             curID++;
           }
           
+
+          address[] memory ethXBribes = new address[](2);
+          ethXBribes[0]= 0x8d01c692a5e7724132d9c6BDf4D4Fb93ef25860c;
+          ethXBribes[1]= 0x2c3bCc7b7b7fbb66f7FEF5f2593A845966d2838c;
+          address [][] memory ethBribes = new address[][](1);
+          address [] memory ethBribeArray = new address[](4);
+            ethBribeArray[0] = sCanto;
+            ethBribeArray[1] = OBLOTR;
+            ethBribeArray[2] = FLOW;
+            ethBribeArray[3] = ETH;
+          ethBribes[0] = ethBribeArray; 
+
+          voter.claimBribes(ethXBribes, ethBribes, 14);
+
         
     }
 
