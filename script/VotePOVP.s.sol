@@ -62,8 +62,8 @@ contract VotePOVP is Script {
     function vote() private {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
-        voter.vote(2, sCANTO_FLOW, ONEHUNDRED ); // 1M  
-        voter.vote(3, sCANTO_FLOW, ONEHUNDRED ); // 1M 
+        voter.vote(2, ETH_sCANTO, ONEHUNDRED ); // 4.8M  
+        voter.vote(3, sCANTO_FLOW, ONEHUNDRED ); // 4.2M 
         voter.vote(4, sCANTO_FLOW, ONEHUNDRED ); // 1M
         voter.vote(5, sCANTO_FLOW, ONEHUNDRED ); // 1M
         voter.vote(6, sCANTO_FLOW, ONEHUNDRED ); // 1M 
@@ -148,7 +148,7 @@ contract VotePOVP is Script {
           bribeArray[3] = FLOW; 
           bribes[0] = bribeArray; 
 
-          uint256 curID = 2;
+          uint256 curID = 3;
           uint256 lastID = 14;
 
           while (curID <= lastID) {
@@ -156,6 +156,8 @@ contract VotePOVP is Script {
             voter.claimBribes(xxBribe, bribes, curID);
             curID++;
           }
+          
+        
     }
 
     function getRebase() private {

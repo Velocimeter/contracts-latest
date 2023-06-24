@@ -47,7 +47,7 @@ contract VoteEOA is Script {
       uint256[] FIFTY = [5000];
       uint256[] THIRTY = [3000];
 
-    uint256[] tokenIds = [29,30,31,32,51,52,53,54,85];
+    uint256[] tokenIds = [29,30,31,32,51,52,53,54];
 
 
     function run() external {
@@ -74,8 +74,6 @@ contract VoteEOA is Script {
         voter.vote(32, underFLOW_FLOW, ONEHUNDRED ); // 3M 
         voter.vote(51, BLOTR_FLOW, ONEHUNDRED ); // 2M 
         voter.vote(52, BLOTR_FLOW, ONEHUNDRED ); //  2M 
-        voter.vote(53, ETH_sCANTO, ONEHUNDRED ); //  2M 
-        voter.vote(54, ETH_sCANTO, ONEHUNDRED ); // 2M 
 
 
         // voter.reset(29); // 3m
@@ -85,9 +83,6 @@ contract VoteEOA is Script {
         // voter.reset(51); // 2m
         // voter.reset(52); // 2m
         // voter.reset(53); // 2m
-        // voter.reset(54); // 2m
-        // voter.reset(85); // 1m 4yr voting
-        // voter.reset(84); // 1m 2yr listed on ALTO
         // voter.reset(90); // 1m 1yr 
         // voter.reset(91); // 1m 1yr
         // voter.reset(93); // 1m 1yr 
@@ -127,8 +122,6 @@ contract VoteEOA is Script {
         votingEscrow.increase_unlock_time(32, 126242339);
         votingEscrow.increase_unlock_time(51, 126242339); 
         votingEscrow.increase_unlock_time(52, 126242339); 
-        votingEscrow.increase_unlock_time(53, 126242339); 
-        votingEscrow.increase_unlock_time(54, 126242339); 
       }
     }
 
