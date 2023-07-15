@@ -24,6 +24,7 @@ address constant BLOTR = 0xFf0BAF077e8035A3dA0dD2abeCECFbd98d8E63bE;
 address constant ETH = 0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687;
 address constant sCanto = 0x9F823D534954Fc119E31257b3dDBa0Db9E2Ff4ed;
 address constant sCANTO_wCANTO_Gauge = 0x368A98078eC7bD360d0715e92aE8B57c20154937;
+address constant underFLOW = 0x42F4a26B58bC1f4Fa9652D208a0223947AB742c7;
 
 
 contract VotePOVP is Script { 
@@ -31,6 +32,7 @@ contract VotePOVP is Script {
       address[] private sCANTO_FLOW = [0x754AeD0D7A61dD3B03084d5bB8285D674D663703];
       address[] private BLOTR_FLOW = [0x257B3C794E8b0b1ef2260E2747fFf354b70bb4C5];
       address[] private ETH_sCANTO = [0x563C5377215E06e501C0F093012eE4b91D5F55D4];
+      address[] private underFLOW_FLOW = [0x531aa71E2B01Db990B8B1f5d94fBfdc9FFc217B6];
 
 
       uint256[] ONEHUNDRED = [10000];
@@ -43,46 +45,41 @@ contract VotePOVP is Script {
         uint256 votePrivateKey = vm.envUint("VOTE_PRIVATE_KEY");
         vm.startBroadcast(votePrivateKey);
 
-        // getRebase();
-        // increaseLockTime();
-        // vote();
-
         claimBribes();
         mintOBlotr();  
         sendRewards();
-    
-        vm.stopBroadcast();
 
+        // claimETHBribes();
+        // claimFlowBlotrBribes();
+        // claimUnderFlowBribes();
+
+        getRebase();
+        increaseLockTime();
+        vote();
+
+        vm.stopBroadcast();
     }      
     function sendRewards() private {
         uint256 balOBlotr = IERC20(OBLOTR).balanceOf(POVP);
-
           bribe(balOBlotr);
-
     }
     function vote() private {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
         voter.vote(2, sCANTO_FLOW, ONEHUNDRED ); // 4.8M  
         voter.vote(3, sCANTO_FLOW, ONEHUNDRED ); // 4.2M 
-        voter.vote(4, sCANTO_FLOW, ONEHUNDRED ); // 1M
-        voter.vote(5, sCANTO_FLOW, ONEHUNDRED ); // 1M
-        voter.vote(6, sCANTO_FLOW, ONEHUNDRED ); // 1M 
+        voter.vote(4, sCANTO_FLOW, ONEHUNDRED ); // 4.3M
+        voter.vote(5, sCANTO_FLOW, ONEHUNDRED ); // 4.3M
+        voter.vote(6, sCANTO_FLOW, ONEHUNDRED ); // 4.3M 
         voter.vote(7, sCANTO_FLOW, ONEHUNDRED ); // 2M
         voter.vote(8, sCANTO_FLOW, ONEHUNDRED ); //  2M
         voter.vote(9, sCANTO_FLOW, ONEHUNDRED ); // 2M
         voter.vote(10, sCANTO_FLOW, ONEHUNDRED ); //  2M
         voter.vote(11, sCANTO_FLOW, ONEHUNDRED ); // 2M
-        voter.vote(12, sCANTO_FLOW, ONEHUNDRED ); // 2M
-        voter.vote(13, sCANTO_FLOW, ONEHUNDRED ); //  3M
-        voter.vote(14, ETH_sCANTO, ONEHUNDRED ); // 3M
+        voter.vote(12, underFLOW_FLOW, ONEHUNDRED ); // 4.2M
+        voter.vote(13, BLOTR_FLOW, ONEHUNDRED ); //  5.3M
+        voter.vote(14, ETH_sCANTO, ONEHUNDRED ); // 6.4M
     }
-    // function gauge(uint256 _amount) private {
-    //   if(IERC20(OBLOTR).allowance(POVP, sCANTO_wCANTO_Gauge) <= _amount) {
-    //     IERC20(OBLOTR).approve(sCANTO_wCANTO_Gauge, 10_000_000 * 1e18);
-    //   }
-    //   IGauge(sCANTO_wCANTO_Gauge).notifyRewardAmount(OBLOTR, _amount);
-    // }
 
     function bribe(uint256 _amountOBlotr) private {
       uint256 balFLOW = IERC20(FLOW).balanceOf(POVP);
@@ -111,18 +108,13 @@ contract VotePOVP is Script {
       }      
       if(IERC20(OBLOTR).allowance(POVP, xxBribe_sCanto_Flow) <= blotrSplit) {
         IERC20(OBLOTR).approve(xxBribe_sCanto_Flow, 10_000_000 * 1e18);
-      }
-
- 
+      } 
         IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(FLOW, flowSplit);
         IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(FLOW, flowSplit);
         IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(FLOW, flowSplit); 
         IBribe(xxBribe_sCanto_Flow).notifyRewardAmount(OBLOTR, blotrSplit);
         IBribe(xxBribe_Blotr_Flow).notifyRewardAmount(OBLOTR, blotrSplit);
         IBribe(xxBribe_Blotr_sCanto).notifyRewardAmount(OBLOTR, blotrSplit);
-
-
-
     }
     function mintOBlotr() private {
       uint256 balBlotr = IERC20(BLOTR).balanceOf(POVP);
@@ -132,7 +124,6 @@ contract VotePOVP is Script {
       if(balBlotr >= 10_000 * 1e18){
         IOBLOTR(OBLOTR).mint(POVP, balBlotr);
       }
-
     }
     function claimBribes() private { 
           Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
@@ -150,14 +141,16 @@ contract VotePOVP is Script {
           bribes[0] = bribeArray; 
 
           uint256 curID = 2;
-          uint256 lastID = 13;
+          uint256 lastID = 11;
 
           while (curID <= lastID) {
             voter.claimBribes(xbribe, bribes, curID);
             voter.claimBribes(xxBribe, bribes, curID);
             curID++;
-          }
-          
+          } 
+    }         
+    function claimETHBribes() private {
+      Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
           address[] memory ethXBribes = new address[](2);
           ethXBribes[0]= 0x8d01c692a5e7724132d9c6BDf4D4Fb93ef25860c;
@@ -170,11 +163,37 @@ contract VotePOVP is Script {
             ethBribeArray[3] = ETH;
           ethBribes[0] = ethBribeArray; 
 
-          voter.claimBribes(ethXBribes, ethBribes, 14);
-
-        
+          voter.claimBribes(ethXBribes, ethBribes, 14);        
     }
+    function claimFlowBlotrBribes() private {
+      Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
+          address[] memory XBribes = new address[](2);
+          XBribes[0]= 0x35C9bbab52d14373cF8cB2ca58a4CA9C57A2FC11;
+          XBribes[1]= 0xd11A815FCea7bD7B4BcB4E8774bE86F9AA33558c;
+          address [][] memory Bribes = new address[][](1);
+          address [] memory BribeArray = new address[](3);
+            BribeArray[0] = BLOTR;
+            BribeArray[1] = OBLOTR;
+            BribeArray[2] = FLOW;
+          Bribes[0] = BribeArray; 
+
+          voter.claimBribes(XBribes, Bribes, 13);        
+    }
+    function claimUnderFlowBribes() private {
+       Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
+
+          address[] memory XBribes = new address[](2);
+          XBribes[0]= 0xD51FdD3AAce02adC7451aDAd679E73DB5e21B702;
+          XBribes[1]= 0xd0D17C23Fd3d0E1fbFbBa4ca30F7E1533C62AF81;
+          address [][] memory Bribes = new address[][](1);
+          address [] memory BribeArray = new address[](2);
+            BribeArray[0] = underFLOW;
+            BribeArray[1] = FLOW;
+          Bribes[0] = BribeArray; 
+
+          voter.claimBribes(XBribes, Bribes, 12);        
+    }
     function getRebase() private {
         RewardsDistributor rewardsDistributor = RewardsDistributor(0x73278a66b75aC0714c4B049dFF26e5CddF365c85);
         uint256 claimable = rewardsDistributor.claimable(2);
@@ -182,12 +201,10 @@ contract VotePOVP is Script {
           rewardsDistributor.claim_many(tokenIds);
         }
     }
-
-
     function increaseLockTime() private {
       VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
-      if (votingEscrow.locked__end(29) <= block.timestamp - 1210000){
+      if (votingEscrow.locked__end(2) <= block.timestamp + 125032339){
         votingEscrow.increase_unlock_time(2, 126242339); 
         votingEscrow.increase_unlock_time(3, 126242339);
         votingEscrow.increase_unlock_time(4, 126242339); 
@@ -203,6 +220,13 @@ contract VotePOVP is Script {
         votingEscrow.increase_unlock_time(14, 126242339); 
       }
     }
+    // function gauge(uint256 _amount) private {
+    //   if(IERC20(OBLOTR).allowance(POVP, sCANTO_wCANTO_Gauge) <= _amount) {
+    //     IERC20(OBLOTR).approve(sCANTO_wCANTO_Gauge, 10_000_000 * 1e18);
+    //   }
+    //   IGauge(sCANTO_wCANTO_Gauge).notifyRewardAmount(OBLOTR, _amount);
+    // }
+
 }
 
 

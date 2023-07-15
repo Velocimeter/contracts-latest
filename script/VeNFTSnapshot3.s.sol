@@ -9,7 +9,8 @@ import {VotingEscrow} from "../contracts/VotingEscrow.sol";
 
 contract VeNFTSnapshot3 is Script {
 
-mapping(address => bool) filter;
+    uint256 constant public THREE_YEARS = 94608000;
+    mapping(address => bool) filter;
 
 
     function makeFilter() internal {
@@ -39,10 +40,9 @@ mapping(address => bool) filter;
         VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
 
         // maxID taken from https://tuber.build/address/0x8E003242406FBa53619769F31606ef2Ed8A65C00/transactions#address-tabs
-        // maxId 1138
         uint256 currentTokenId = 1;
         uint256 currentTokenId2 = 1;
-        uint256 maxTokenId = 1162;
+        uint256 maxTokenId = 1250;
         makeFilter();
 
         while (currentTokenId <= maxTokenId) {
@@ -68,7 +68,7 @@ mapping(address => bool) filter;
             uint256 lockedAmnt = votingEscrow.balanceOfNFT(currentTokenId2);
 
                 if (owner != address(0)) {
-                 if (lockedLeft >= (block.timestamp + 94608000)) {
+                 if (lockedLeft >= (block.timestamp + THREE_YEARS)) {
                     if (lockedAmnt <= 30000 * 1e18 && lockedAmnt >= 200 * 1e18){
                         if (filter[owner] == false) {
 

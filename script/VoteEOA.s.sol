@@ -67,22 +67,6 @@ contract VoteEOA is Script {
     function vote() private {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
-
-        voter.vote(29, BLOTR_FLOW, ONEHUNDRED ); // 3M 
-        voter.vote(30, BLOTR_FLOW, ONEHUNDRED ); // 3M 
-        voter.vote(31, underFLOW_FLOW, ONEHUNDRED ); // 3M 
-        voter.vote(32, underFLOW_FLOW, ONEHUNDRED ); // 3M 
-        voter.vote(51, BLOTR_FLOW, ONEHUNDRED ); // 2M 
-        voter.vote(52, BLOTR_FLOW, ONEHUNDRED ); //  2M 
-
-
-        // voter.reset(29); // 3m
-        // voter.reset(30); // 3m
-        // voter.reset(31); // 3m
-        // voter.reset(32); // 3m
-        // voter.reset(51); // 2m
-        // voter.reset(52); // 2m
-        // voter.reset(53); // 2m
         // voter.reset(90); // 1m 1yr 
         // voter.reset(91); // 1m 1yr
         // voter.reset(93); // 1m 1yr 

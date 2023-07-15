@@ -33,7 +33,7 @@ address constant Strawberryking = 0xC9eebecb1d0AfF4fb2B9978516E075A33639892C;
 address constant shatterproof = 0x7c22953Bf2245A8298baf26D586Bd4b08a87caaa;
 address constant h1kupz = 0x714C8A1DB40eedc9240AF30bB25D5440796536aa;
 address constant pujimak = 0x3C2d6d7144241F1F1203c29C124585e55B58975E;
-address constant oxSaturn = 0x71baFD458A46b3BE856C64cdFc25845c0cf9C6Ca;
+address constant oxSaturn = 0xA7228C62842C2099301a1759313cF52b803C2CD6;
 address constant Schizo = 0x1c46564c7476f3F846abcf73e0a885E445ca85e8;
 
 uint256 constant FOUR_YEARS = 126_144_000;
@@ -51,15 +51,17 @@ contract MintForCoorApe is Script {
         flow.approve(0x8E003242406FBa53619769F31606ef2Ed8A65C00, TotalFLOW);
 
     
-votingEscrow.create_lock_for(	213953722334004000000000	,	FOUR_YEARS	,	oxSaturn	);
-votingEscrow.create_lock_for(	93692152917505000000000	,	FOUR_YEARS	,	shatterproof	);
-votingEscrow.create_lock_for(	82505030181086500000000	,	FOUR_YEARS	,	h1kupz	);
-votingEscrow.create_lock_for(	55935613682092600000000	,	FOUR_YEARS	,	Schizo	);
-votingEscrow.create_lock_for(	60130784708249500000000	,	FOUR_YEARS	,	Strawberryking	);
-votingEscrow.create_lock_for(	54537223340040200000000	,	FOUR_YEARS	,	Flowers	);
-votingEscrow.create_lock_for(	51740442655935600000000	,	FOUR_YEARS	,	OxPonci	);
-votingEscrow.create_lock_for(	48943661971831000000000	,	FOUR_YEARS	,	pujimak	);
-votingEscrow.create_lock_for(	33561368209255500000000	,	FOUR_YEARS	,	jamesDigital	);
+votingEscrow.create_lock_for(	169315545243620000000000	,	FOUR_YEARS,	shatterproof	);
+votingEscrow.create_lock_for(	135452436194896000000000	,	FOUR_YEARS,	Schizo	);
+votingEscrow.create_lock_for(	960081353194896000000000	,	FOUR_YEARS,	pujimak	);
+votingEscrow.create_lock_for(	127389791183295000000000	,	FOUR_YEARS,	Strawberryking	);
+votingEscrow.create_lock_for(	87076566125290000000000	,	FOUR_YEARS,	jamesDigital	);
+votingEscrow.create_lock_for(	69338747099768000000000	,	FOUR_YEARS,	OxPonci	);
+votingEscrow.create_lock_for(	56438515081206500000000	,	FOUR_YEARS,	arrowpm	);
+votingEscrow.create_lock_for(	56438515081206500000000	,	FOUR_YEARS,	Cryptodoi	);
+votingEscrow.create_lock_for(	56438515081206500000000	,	FOUR_YEARS,	Oxuep	);
+votingEscrow.create_lock_for(	53213457076566100000000	,	FOUR_YEARS,	Flowers	);
+votingEscrow.create_lock_for(	43538283062645000000000	,	FOUR_YEARS,	DavidXYZ	);
 
         vm.stopBroadcast();
         }

@@ -42,7 +42,7 @@ mapping(address => bool) filter;
         // maxId 1138
         uint256 currentTokenId = 1;
         uint256 currentTokenId2 = 1;
-        uint256 maxTokenId = 1162;
+        uint256 maxTokenId = 1213;
         makeFilter();
 
         while (currentTokenId <= maxTokenId) {
@@ -52,7 +52,7 @@ mapping(address => bool) filter;
 
             if (owner != address(0)) {
                 if (lockedLeft >= (block.timestamp + 94608000)) {
-                    if (lockedAmnt >= 30000 * 1e18){ 
+                    if (lockedAmnt >= 1000 * 1e18){ 
                         if (filter[owner] == false) {
 
                             console2.log(owner);
@@ -69,7 +69,7 @@ mapping(address => bool) filter;
 
                 if (owner != address(0)) {
                  if (lockedLeft >= (block.timestamp + 94608000)) {
-                    if (lockedAmnt >= 30000 * 1e18){
+                    if (lockedAmnt >= 1000 * 1e18){
                         if (filter[owner] == false) {
 
                             (int128 lockAmount,) = votingEscrow.locked(currentTokenId2);
