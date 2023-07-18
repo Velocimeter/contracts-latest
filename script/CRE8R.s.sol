@@ -29,12 +29,14 @@ address constant eth = 0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687;
 address constant cre8r = 0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055;
 uint256 constant tknID = 83;
 address constant Eth_Cre8r_AutoBribe = 0x0CD1b0fAB074727D7504c9Dc23f131598cFE5427;
+address constant ETH_CRE8R_Pair = 0x237F9c6d2BBeAcc91049710ac47e3eAc83cDC55c;
+address constant ETH_WSTETH_Pair = 0x7E282E6538163e7afb76027490486F59B3218310;
 
 
 
 contract CRE8R is Script {
       uint256[] ONEHUNDRED = [10000];
-      address[]  cre8rPair = [0x237F9c6d2BBeAcc91049710ac47e3eAc83cDC55c];
+      address[]  VotePair = [ETH_WSTETH_Pair];
       VotingEscrow votingEscrow = VotingEscrow(0x8E003242406FBa53619769F31606ef2Ed8A65C00);
       Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
       Flow flow = Flow(flowAddy);
@@ -51,8 +53,8 @@ contract CRE8R is Script {
         increaseTime();
         vote();
         claimBribes();
-        bribe();
-        addAutoBribes();
+        // bribe();
+        // addAutoBribes();
 
         vm.stopBroadcast();
 
@@ -97,7 +99,7 @@ contract CRE8R is Script {
       }    
     }
     function vote() private {
-      voter.vote(tknID, cre8rPair, ONEHUNDRED);
+      voter.vote(tknID, VotePair, ONEHUNDRED);
     }
     function bribe() private {
         IAutoBribe(Eth_Cre8r_AutoBribe).reclockBribeToNow();

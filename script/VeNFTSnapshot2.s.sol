@@ -40,9 +40,9 @@ mapping(address => bool) filter;
 
         // maxID taken from https://tuber.build/address/0x8E003242406FBa53619769F31606ef2Ed8A65C00/transactions#address-tabs
         // maxId 1138
-        uint256 currentTokenId = 1;
-        uint256 currentTokenId2 = 1;
-        uint256 maxTokenId = 1213;
+        uint256 currentTokenId = 1214;
+        uint256 currentTokenId2 = 1214;
+        uint256 maxTokenId = 1216;
         makeFilter();
 
         while (currentTokenId <= maxTokenId) {
