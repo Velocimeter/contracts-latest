@@ -45,9 +45,9 @@ contract VotePOVP is Script {
         uint256 votePrivateKey = vm.envUint("VOTE_PRIVATE_KEY");
         vm.startBroadcast(votePrivateKey);
 
-        claimBribes();
-        mintOBlotr();  
-        sendRewards();
+        // claimBribes();
+        // mintOBlotr();  
+        // sendRewards();
 
         // claimETHBribes();
         // claimFlowBlotrBribes();
@@ -66,16 +66,11 @@ contract VotePOVP is Script {
     function vote() private {
         Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
 
-        voter.vote(2, sCANTO_FLOW, ONEHUNDRED ); // 4.8M  
-        voter.vote(3, sCANTO_FLOW, ONEHUNDRED ); // 4.2M 
+        voter.vote(2, sCANTO_FLOW, ONEHUNDRED ); // 11.5M  
+        voter.vote(3, sCANTO_FLOW, ONEHUNDRED ); // 11.6M 
         voter.vote(4, sCANTO_FLOW, ONEHUNDRED ); // 4.3M
         voter.vote(5, sCANTO_FLOW, ONEHUNDRED ); // 4.3M
         voter.vote(6, sCANTO_FLOW, ONEHUNDRED ); // 4.3M 
-        voter.vote(7, sCANTO_FLOW, ONEHUNDRED ); // 2M
-        voter.vote(8, sCANTO_FLOW, ONEHUNDRED ); //  2M
-        voter.vote(9, sCANTO_FLOW, ONEHUNDRED ); // 2M
-        voter.vote(10, sCANTO_FLOW, ONEHUNDRED ); //  2M
-        voter.vote(11, sCANTO_FLOW, ONEHUNDRED ); // 2M
         voter.vote(12, underFLOW_FLOW, ONEHUNDRED ); // 4.2M
         voter.vote(13, BLOTR_FLOW, ONEHUNDRED ); //  5.3M
         voter.vote(14, ETH_sCANTO, ONEHUNDRED ); // 6.4M
@@ -141,7 +136,7 @@ contract VotePOVP is Script {
           bribes[0] = bribeArray; 
 
           uint256 curID = 2;
-          uint256 lastID = 11;
+          uint256 lastID = 6;
 
           while (curID <= lastID) {
             voter.claimBribes(xbribe, bribes, curID);
@@ -210,11 +205,7 @@ contract VotePOVP is Script {
         votingEscrow.increase_unlock_time(4, 126242339); 
         votingEscrow.increase_unlock_time(5, 126242339);
         votingEscrow.increase_unlock_time(6, 126242339); 
-        votingEscrow.increase_unlock_time(7, 126242339); 
-        votingEscrow.increase_unlock_time(8, 126242339); 
-        votingEscrow.increase_unlock_time(9, 126242339); 
-        votingEscrow.increase_unlock_time(10, 126242339); 
-        votingEscrow.increase_unlock_time(11, 126242339); 
+
         votingEscrow.increase_unlock_time(12, 126242339);
         votingEscrow.increase_unlock_time(13, 126242339); 
         votingEscrow.increase_unlock_time(14, 126242339); 
@@ -239,3 +230,6 @@ contract VotePOVP is Script {
       // address[] private underFLOW_FLOW = [0x531aa71E2B01Db990B8B1f5d94fBfdc9FFc217B6];
       // address[] private  sCANTO_wCANTO = [0xe506707dF5fE9b2F6c0Bd6C5039fc542Af1eeB50];
       // address[] private  sCANTO_BLOTR = [0x44724F2A542D9b7653923D87F17712b113FEB448];
+
+
+      // forge script script/VotePOVP.s.sol:VotePOVP --rpc-url https://velocimeter.tr.zone/ --vvvv --broadcast --slow
