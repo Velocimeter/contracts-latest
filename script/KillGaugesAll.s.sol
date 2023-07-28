@@ -419,7 +419,8 @@ mapping(address => address) gauges;
 
             address gauge = gauges[pairs[currentPair]];    
             console2.log(gauge);
-            _killGauges(gauge);
+            // _killGauges(gauge);
+            _isAlive(gauge);
             currentPair++;
         }
 
@@ -428,14 +429,15 @@ mapping(address => address) gauges;
 
 
     function _killGauges(address _gauge) private {
-        Voter voter = Voter(0xC5B58aE761a77fF16d548dE9b42933c8FBfe4c33);
+        Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
         if (voter.isAlive(_gauge) == true){
             voter.killGauge(_gauge);
+            console2.log(_gauge, "was killed");
             }
     }
 
     function _isAlive(address _gauge) private view {
-        Voter voter = Voter(0xC5B58aE761a77fF16d548dE9b42933c8FBfe4c33);
+        Voter voter = Voter(0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389);
           bool alive = voter.isAlive(_gauge);
           console2.log(_gauge, "is alive?", alive);
         }
